@@ -67,6 +67,7 @@ namespace M22
 
             void Start()
             {
+                var test = ScriptCompiler.CompileScript("START_SCRIPT");
                 if (TEXT == null)
                 {
                     Debug.Log("TEXT not found in ScriptMaster; falling back to searching...");
