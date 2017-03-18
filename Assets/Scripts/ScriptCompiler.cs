@@ -66,8 +66,17 @@ public class ScriptCompiler
         {
             SplitString(scriptLines[i], CURRENT_LINE_SPLIT, ' ');// scriptLines[i]
             if (CURRENT_LINE_SPLIT.Count == 0) continue;
-            M22.Script.line_c tempLine_c;
-            tempLine_c.m_lineType = M22.Script.ScriptMaster.(CURRENT_LINE_SPLIT[0]);
+            M22.Script.line_c tempLine_c = new M22.Script.line_c();
+            tempLine_c.m_lineType = M22.Script.ScriptMaster.CheckLineType(CURRENT_LINE_SPLIT[0]);
+
+            if(tempLine_c.m_lineType == M22.Script.LINETYPE.NARRATIVE)
+            {
+                tempLine_c.m_lineContents = scriptLines[i];
+            }
+            else
+            {
+                CompileLine(tempLine_c, CURRENT_LINE_SPLIT);
+            }
         }
 
         foreach (var item in scriptLines)
@@ -76,5 +85,10 @@ public class ScriptCompiler
         }
 
         return new List<M22.Script.line_c>();
+    }
+
+    static void CompileLine(M22.Script.line_c _lineC, List<string> _splitStr)
+    {
+        return;
     }
 }

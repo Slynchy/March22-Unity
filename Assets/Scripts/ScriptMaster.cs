@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Text.RegularExpressions;
 
 namespace M22
 {
@@ -40,7 +41,18 @@ namespace M22
             private List<script_checkpoint> currentScript_checkpoints = new List<script_checkpoint>();
             private int lineIndex = 0;
 
+
             public TypeWriterScript TEXT;
+
+            private static readonly string[] FunctionNames = { "thIsIssNarraTIVE", "NewPage" };
+            public static Dictionary<UInt64, LINETYPE> FunctionHashes;
+            void Awake()
+            {
+                for (int i = 0; i < FunctionNames.Length; i++)
+                {
+                    FunctionHashes.Add(CalculateHash(FunctionNames[i]), (LINETYPE)i);
+                }
+            }
             
             void DebugScript()
             {
@@ -125,6 +137,34 @@ namespace M22
                 {
                     FireInput();
                 }
+            }
+
+            // from http://stackoverflow.com/questions/9545619/a-fast-hash-function-for-string-in-c-sharp
+            static UInt64 CalculateHash(string read)
+            {
+                UInt64 hashedValue = 3074457345618258791ul;
+                for (int i = 0; i < read.Length; i++)
+                {
+                    hashedValue += read[i];
+                    hashedValue *= 3074457345618258799ul;
+                }
+                return hashedValue;
+            }
+
+            static public LINETYPE CheckLineType(string _input)
+            {
+                Regex.Replace(_input, @"\s+", "");
+                LINETYPE TYPE;
+                if (!FunctionHashes.TryGetValue(CalculateHash(_input), out TYPE))
+                {
+                    // narrative
+                    return LINETYPE.NARRATIVE;
+                }
+                else
+                {
+                    return TYPE;
+                }
+
             }
         }
     }
