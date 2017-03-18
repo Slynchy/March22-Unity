@@ -1,8 +1,8 @@
---start
+ï»¿--start
 SetActiveTransition Fade
 DrawBackground bedroom_night
 
-…
+...
 
 I can't sleep.
 
@@ -20,7 +20,7 @@ NewPage
 
 I, [MC_FIRSTNAME] [MC_LASTNAME], a gifted student, taking classes for gifted students. Not entirely sure how this came about but I'll try my best to collect my memory. 
 
-Essentially, I took the same standardised tests as the rest of the country at the end of middle school. English, Science, History… and Math. Apparently my performance in mathematics warranted a scholarship to a boarding school for the "exceptionally gifted". 
+Essentially, I took the same standardised tests as the rest of the country at the end of middle school. English, Science, History... and Math. Apparently my performance in mathematics warranted a scholarship to a boarding school for the "exceptionally gifted". 
 
 Now, I'm not being modest here; I genuinely just enjoy maths. 
 
@@ -56,7 +56,7 @@ Sardines? Ocean? What?
 NewPage
 // ==================================================
 
-So… harder homework?
+So... harder homework?
 
 "No, no," he laughed in reply. "It's a bit more than that." 
 
@@ -93,7 +93,7 @@ It was depressing to think about, frankly.
 
 Kingshead?
 
-"Yes, that's the name of the school. I think I have a pamphlet somewhere…"
+"Yes, that's the name of the school. I think I have a pamphlet somewhere..."
 
 NewPage
 // ==================================================
@@ -110,7 +110,7 @@ This was all I was really looking at in the expensive-to-print handbook-slash-'p
 
 There's nothing tying me here, so why stay?
 
-"Kingshead…"
+"Kingshead..."
 
 He smiles at me, asking my thoughts. I look up from the pamphlet to his smiling complexion.
 

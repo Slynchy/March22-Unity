@@ -13,7 +13,9 @@ namespace M22
         public enum LINETYPE
         {
             NEW_PAGE,
-            NARRATIVE
+            NARRATIVE,
+            DRAW_BACKGROUND,
+            NUM_OF_LINETYPES
         }
 
         public struct line_c
@@ -37,49 +39,33 @@ namespace M22
             [HideInInspector]
             public line_c CURRENT_LINE;
 
+            private static readonly string[] FunctionNames = { "thIsIssNarraTIVE", "NewPage", "DrawBackground" };
+
+            [HideInInspector]
+            public static Dictionary<UInt64, LINETYPE> FunctionHashes;
+
             private List<line_c> currentScript_c = new List<line_c>();
             private List<script_checkpoint> currentScript_checkpoints = new List<script_checkpoint>();
             private int lineIndex = 0;
 
-
             public TypeWriterScript TEXT;
-
-            private static readonly string[] FunctionNames = { "thIsIssNarraTIVE", "NewPage" };
-            public static Dictionary<UInt64, LINETYPE> FunctionHashes;
             void Awake()
             {
+                FunctionHashes = new Dictionary<UInt64, LINETYPE>();
+
+                if (FunctionNames.Length != (int)LINETYPE.NUM_OF_LINETYPES)
+                    Debug.LogError("Number of LINETYPE entries do not match number of FunctionNames");
+
                 for (int i = 0; i < FunctionNames.Length; i++)
                 {
                     FunctionHashes.Add(CalculateHash(FunctionNames[i]), (LINETYPE)i);
                 }
             }
-            
-            void DebugScript()
-            {
-                line_c temp;
-                for (int i = 0; i < 5; i++)
-                {
-                    temp = new Script.line_c();
-                    temp.m_lineType = LINETYPE.NARRATIVE;
-                    temp.m_lineContents = "Well...";
-                    currentScript_c.Add(temp);
-                }
-                temp = new Script.line_c();
-                temp.m_lineType = LINETYPE.NEW_PAGE;
-                temp.m_lineContents = "";
-                currentScript_c.Add(temp);
-                for (int i = 0; i < 5; i++)
-                {
-                    temp = new Script.line_c();
-                    temp.m_lineType = LINETYPE.NARRATIVE;
-                    temp.m_lineContents = "Well...";
-                    currentScript_c.Add(temp);
-                }
-            }
 
             void Start()
             {
-                var test = ScriptCompiler.CompileScript("START_SCRIPT");
+                currentScript_c.Clear();
+                currentScript_c = ScriptCompiler.CompileScript("START_SCRIPT");
                 if (TEXT == null)
                 {
                     Debug.Log("TEXT not found in ScriptMaster; falling back to searching...");
@@ -87,13 +73,16 @@ namespace M22
                     if (TEXT == null)
                         Debug.Log("This also failed! :(");
                 }
-
-                // ---------==============
-                DebugScript();
-                // ---------==============
-
+                
+                Debug.Log(currentScript_c.Count);
                 CURRENT_LINE = currentScript_c[lineIndex];
                 TEXT.SetNewCurrentLine(CURRENT_LINE.m_lineContents);
+            }
+
+            void NextLine()
+            {
+                CURRENT_LINE = currentScript_c[++lineIndex];
+                ExecuteFunction(CURRENT_LINE);
             }
 
             public void ExecuteFunction(line_c _line)
@@ -105,8 +94,11 @@ namespace M22
                         break;
                     case LINETYPE.NEW_PAGE:
                         TEXT.Reset(true);
-                        CURRENT_LINE = currentScript_c[++lineIndex];
-                        ExecuteFunction(CURRENT_LINE);
+                        NextLine();
+                        break;
+                    case LINETYPE.DRAW_BACKGROUND:
+
+                        NextLine();
                         break;
                 }
             }
