@@ -36,7 +36,7 @@ public class ScriptCompiler
         return result.Count;
     }
 
-    static public List<M22.Script.line_c> CompileScript(string filename)
+    static public List<M22.Script.line_c> CompileScript(string filename, ref List<M22.Script.script_checkpoint> _chkpnt)
     {
         var result = new List<M22.Script.line_c>();
         var file = Resources.Load(filename) as TextAsset;
@@ -62,6 +62,7 @@ public class ScriptCompiler
         scriptLines.RemoveAll(IsComment);
 
         List<string> CURRENT_LINE_SPLIT = new List<string>();
+        int scriptPos = 0;
         for (int i = 0; i < scriptLines.Count; i++)
         {
             SplitString(scriptLines[i], CURRENT_LINE_SPLIT, ' ');
@@ -75,19 +76,33 @@ public class ScriptCompiler
             }
             else
             {
-                CompileLine(ref tempLine_c, CURRENT_LINE_SPLIT);
+                CompileLine(ref tempLine_c, CURRENT_LINE_SPLIT, ref _chkpnt, scriptPos);
             }
 
             result.Add(tempLine_c);
+            scriptPos++;
         }
 
         return result;
     }
 
-    static void CompileLine(ref M22.Script.line_c _lineC, List<string> _splitStr)
+    static void CompileLine(ref M22.Script.line_c _lineC, List<string> _splitStr, ref List<M22.Script.script_checkpoint> _chkpnt, int _scriptPos)
     {
         switch(_lineC.m_lineType)
         {
+            case M22.Script.LINETYPE.CHECKPOINT:
+                _chkpnt.Add(new M22.Script.script_checkpoint(_scriptPos, _splitStr[0]));
+                break;
+            case M22.Script.LINETYPE.SET_ACTIVE_TRANSITION:
+                if (_splitStr.Count > 1)
+                {
+                    _lineC.m_parameters_txt = new List<string>();
+                    _splitStr[1] = _splitStr[1].TrimEnd('\r', '\n');
+                    _lineC.m_parameters_txt.Add(_splitStr[1]);
+                }
+                break;
+            case M22.Script.LINETYPE.NEW_PAGE:
+                break;
             case M22.Script.LINETYPE.DRAW_BACKGROUND:
                 if(_splitStr.Count > 1)
                 {

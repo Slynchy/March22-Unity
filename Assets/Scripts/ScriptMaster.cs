@@ -15,6 +15,11 @@ namespace M22
             NEW_PAGE,
             NARRATIVE,
             DRAW_BACKGROUND,
+            PLAY_MUSIC,
+            PLAY_STING,
+            CHECKPOINT,
+            COMMENT,
+            SET_ACTIVE_TRANSITION,
             NUM_OF_LINETYPES
         }
 
@@ -32,6 +37,11 @@ namespace M22
         {
             int m_position;
             string m_name;
+            public script_checkpoint(int _a, string _b)
+            {
+                m_position = _a;
+                m_name = _b;
+            }
         }
 
         public class ScriptMaster : MonoBehaviour
@@ -39,13 +49,23 @@ namespace M22
             [HideInInspector]
             public line_c CURRENT_LINE;
 
-            private static readonly string[] FunctionNames = { "thIsIssNarraTIVE", "NewPage", "DrawBackground" };
+            private static readonly string[] FunctionNames = {
+                "NewPage",
+                "thIsIssNarraTIVE", // <- This should never be returned!
+                "DrawBackground",
+                "PlayMusic",
+                "PlaySting",
+                "--",
+                "//", // Nor this, but is set up to handle it
+                "SetActiveTransition"
+            };
 
             [HideInInspector]
             public static Dictionary<UInt64, LINETYPE> FunctionHashes;
 
             private List<line_c> currentScript_c = new List<line_c>();
-            private List<script_checkpoint> currentScript_checkpoints = new List<script_checkpoint>();
+            [HideInInspector]
+            public List<script_checkpoint> currentScript_checkpoints = new List<script_checkpoint>();
             private int lineIndex = 0;
 
             public TypeWriterScript TEXT;
@@ -65,7 +85,7 @@ namespace M22
             void Start()
             {
                 currentScript_c.Clear();
-                currentScript_c = ScriptCompiler.CompileScript("START_SCRIPT");
+                currentScript_c = ScriptCompiler.CompileScript("START_SCRIPT", ref currentScript_checkpoints);
                 if (TEXT == null)
                 {
                     Debug.Log("TEXT not found in ScriptMaster; falling back to searching...");
@@ -77,8 +97,10 @@ namespace M22
                 Debug.Log(currentScript_c.Count);
                 CURRENT_LINE = currentScript_c[lineIndex];
                 TEXT.SetNewCurrentLine(CURRENT_LINE.m_lineContents);
+                ExecuteFunction(CURRENT_LINE);
             }
 
+            public delegate void VoidDelegate();
             void NextLine()
             {
                 CURRENT_LINE = currentScript_c[++lineIndex];
@@ -93,11 +115,16 @@ namespace M22
                         TEXT.SetNewCurrentLine(CURRENT_LINE.m_lineContents);
                         break;
                     case LINETYPE.NEW_PAGE:
-                        TEXT.Reset(true);
+                        TEXT.Reset(true, NextLine);
+                        break;
+                    case LINETYPE.PLAY_MUSIC:
+                    case LINETYPE.PLAY_STING:
+                    case LINETYPE.CHECKPOINT:
+                    case LINETYPE.SET_ACTIVE_TRANSITION:
+                    case LINETYPE.DRAW_BACKGROUND:
                         NextLine();
                         break;
-                    case LINETYPE.DRAW_BACKGROUND:
-
+                    default:
                         NextLine();
                         break;
                 }
@@ -145,12 +172,26 @@ namespace M22
 
             static public LINETYPE CheckLineType(string _input)
             {
-                Regex.Replace(_input, @"\s+", "");
+                string temp = _input.TrimEnd('\r', '\n');
                 LINETYPE TYPE;
-                if (!FunctionHashes.TryGetValue(CalculateHash(_input), out TYPE))
+                if (!FunctionHashes.TryGetValue(CalculateHash(temp), out TYPE))
                 {
-                    // narrative
-                    return LINETYPE.NARRATIVE;
+                    // could be narrative, need to check if comment
+                    if (temp.Length > 1)
+                    {
+                        if (temp[0] == '-' && temp[1] == '-')
+                        {
+                            return LINETYPE.CHECKPOINT;
+                        }
+                        else if (temp[0] == '/' && temp[1] == '/')
+                        {
+                            return LINETYPE.COMMENT;
+                        }
+                        else
+                            return LINETYPE.NARRATIVE;
+                    }
+                    else
+                        return LINETYPE.NARRATIVE;
                 }
                 else
                 {

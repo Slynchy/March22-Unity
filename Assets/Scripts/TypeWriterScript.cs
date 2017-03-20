@@ -34,6 +34,16 @@ namespace M22
                 LineComplete = false;
             }
 
+            public void Reset(bool _clearPage, M22.Script.ScriptMaster.VoidDelegate callbackFunc)
+            {
+                if (page != null && _clearPage == true)
+                    page.text = "";
+                currStrPos = 0;
+                strPos = 0.0f;
+                LineComplete = false;
+                callbackFunc();
+            }
+
             private void Awake()
             {
                 Reset(true);
@@ -73,7 +83,7 @@ namespace M22
             {
 
                 if (LineComplete == true) return;
-                if (currentLine == "") return;
+                if (currentLine == null || currentLine == "") return;
 
                 if (strPos < currentLine.Length)
                     strPos += TextSpeed * Time.deltaTime;
