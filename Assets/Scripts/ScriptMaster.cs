@@ -10,40 +10,6 @@ namespace M22
     namespace Script
     {
 
-        public enum LINETYPE
-        {
-            NEW_PAGE,
-            NARRATIVE,
-            DRAW_BACKGROUND,
-            PLAY_MUSIC,
-            PLAY_STING,
-            CHECKPOINT,
-            COMMENT,
-            SET_ACTIVE_TRANSITION,
-            NUM_OF_LINETYPES
-        }
-
-        public struct line_c
-        {
-            public M22.Script.LINETYPE m_lineType;
-            public List<int> m_parameters;
-            public List<string> m_parameters_txt;
-            public string m_lineContents;
-            public int m_speaker; // deprecated?
-            public int m_ID;
-        }
-
-        public struct script_checkpoint
-        {
-            int m_position;
-            string m_name;
-            public script_checkpoint(int _a, string _b)
-            {
-                m_position = _a;
-                m_name = _b;
-            }
-        }
-
         public class ScriptMaster : MonoBehaviour
         {
             [HideInInspector]
