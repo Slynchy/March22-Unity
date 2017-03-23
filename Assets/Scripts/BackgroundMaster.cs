@@ -17,7 +17,7 @@ namespace M22
 
         public static bool LoadBackground(string name)
         {
-            string filename = "./Backgrounds/" + name;
+            string filename = "Backgrounds/" + name;
             Texture2D temp = Resources.Load(filename) as Texture2D;
             if (temp)
             {
@@ -25,7 +25,11 @@ namespace M22
                 loadedBackgrounds.Add(name, tempSpr);
                 return true;
             }
-            else return false;
+            else
+            {
+                Debug.LogError("Failed to load background: " + filename);
+                return false;
+            }
         }
 
         static public Sprite GetBackground(string file)
@@ -36,7 +40,11 @@ namespace M22
                 loadedBackgrounds.TryGetValue(file, out returnVal);
                 return returnVal;
             }
-            else return new Sprite();
+            else
+            {
+                Debug.LogError("Failed to find background: " + file);
+                return new Sprite();
+            }
         }
 
         void UnloadBackgrounds()

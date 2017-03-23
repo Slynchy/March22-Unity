@@ -81,6 +81,10 @@ namespace M22
                     background.sprite = M22.BackgroundMaster.GetBackground(_line.m_parameters_txt[0]);
                     NextLine();
                     break;
+                case LINETYPE.PLAY_MUSIC:
+                    M22.AudioMaster.ChangeTrack(_line.m_parameters_txt[0]);
+                    NextLine();
+                    break;
                 default:
                     NextLine();
                     break;
