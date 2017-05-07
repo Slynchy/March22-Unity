@@ -103,9 +103,9 @@ namespace M22
             return result.Count;
         }
 
-        static public List<M22.line_c> CompileScript(string filename)
+        static public M22.Script.Script CompileScript(string filename)
         {
-            var result = new List<M22.line_c>();
+            var result = new M22.Script.Script();
 
             //var file = File.ReadAllText(filename, Encoding.UTF8);
             string file = M22.UnityWrapper.LoadTextFileToString(filename);
@@ -149,7 +149,7 @@ namespace M22
                     CompileLine(ref tempLine_c, CURRENT_LINE_SPLIT, ref currentScript_checkpoints, scriptPos);
                 }
 
-                result.Add(tempLine_c);
+                result.AddLine(tempLine_c);
                 scriptPos++;
             }
 

@@ -56,7 +56,7 @@ namespace M22
         void FinishLine()
         {
             page.text += currentLine.Substring(currStrPos);
-            page.text += "\n\n";
+            page.text += "\n";
             strPos = currentLine.Length;
             currStrPos = currentLine.Length;
             LineComplete = true;

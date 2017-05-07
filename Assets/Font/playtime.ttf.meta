@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: fc61bbbf43e05ae4eb811742e3eb672b
+timeCreated: 1494162310
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 32
+  forceTextureCase: -1
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Playtime With Hot Toddies
+  fontNames:
+  - Playtime
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 1
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

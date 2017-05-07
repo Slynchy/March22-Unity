@@ -7,7 +7,7 @@ namespace M22
 
     public class AudioMaster : MonoBehaviour
     {
-        static Dictionary<string, AudioClip> loadedAudio;
+        static Dictionary<string, AudioClip> loadedAudio = new Dictionary<string, AudioClip>();
 
         static AudioSource musicSrc;
 
@@ -28,7 +28,7 @@ namespace M22
         {
             string filename = "Music/" + name;
             AudioClip temp = Resources.Load(filename) as AudioClip;
-            if (temp)
+            if (temp != null)
             {
                 loadedAudio.Add(name, temp);
                 return true;

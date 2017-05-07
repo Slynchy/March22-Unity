@@ -26,7 +26,7 @@ namespace M22
                 "SetActiveTransition"
             };
 
-        private List<line_c> currentScript_c = new List<line_c>();
+        private M22.Script.Script currentScript_c = new M22.Script.Script();
         private int lineIndex = 0;
 
         public TypeWriterScript TEXT;
@@ -37,7 +37,6 @@ namespace M22
 
         void Start()
         {
-            currentScript_c.Clear();
             currentScript_c = M22.ScriptCompiler.CompileScript("START_SCRIPT");
             if (TEXT == null)
             {
@@ -54,8 +53,7 @@ namespace M22
                     Debug.Log("This also failed! :(");
             }
 
-            Debug.Log(currentScript_c.Count);
-            CURRENT_LINE = currentScript_c[lineIndex];
+            CURRENT_LINE = currentScript_c.GetLine(lineIndex);
             TEXT.SetNewCurrentLine(CURRENT_LINE.m_lineContents);
             ExecuteFunction(CURRENT_LINE);
         }
@@ -63,7 +61,8 @@ namespace M22
         public delegate void VoidDelegate();
         void NextLine()
         {
-            CURRENT_LINE = currentScript_c[++lineIndex];
+            ++lineIndex;
+            CURRENT_LINE = currentScript_c.GetLine(lineIndex);
             ExecuteFunction(CURRENT_LINE);
         }
 
@@ -97,7 +96,8 @@ namespace M22
             {
                 try
                 {
-                    CURRENT_LINE = currentScript_c[++lineIndex];
+                    ++lineIndex;
+                    CURRENT_LINE = currentScript_c.GetLine(lineIndex);
                     ExecuteFunction(CURRENT_LINE);
                 }
                 catch (Exception e)
