@@ -84,6 +84,10 @@ namespace M22
                     M22.AudioMaster.ChangeTrack(_line.m_parameters_txt[0]);
                     NextLine();
                     break;
+                case LINETYPE.PLAY_STING:
+                    M22.AudioMaster.PlaySting(_line.m_parameters_txt[0]);
+                    NextLine();
+                    break;
                 default:
                     NextLine();
                     break;

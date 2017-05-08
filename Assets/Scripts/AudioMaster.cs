@@ -24,9 +24,35 @@ namespace M22
         {
         }
 
-        static public bool LoadAudio(string name)
+        static public bool PlaySting(string name)
+        {
+            AudioClip sfx;
+            loadedAudio.TryGetValue(name, out sfx);
+            if (sfx == null)
+                return false;
+            musicSrc.PlayOneShot(sfx);
+            return true;
+        }
+
+        static public bool LoadMusic(string name)
         {
             string filename = "Music/" + name;
+            AudioClip temp = Resources.Load(filename) as AudioClip;
+            if (temp != null)
+            {
+                loadedAudio.Add(name, temp);
+                return true;
+            }
+            else
+            {
+                Debug.LogError("Failed to load audio: " + filename);
+                return false;
+            }
+        }
+
+        static public bool LoadSting(string name)
+        {
+            string filename = "SFX/" + name;
             AudioClip temp = Resources.Load(filename) as AudioClip;
             if (temp != null)
             {

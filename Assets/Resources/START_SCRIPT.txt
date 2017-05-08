@@ -14,6 +14,8 @@ I roll over in my not-very-comfortable dorm-room bed, springs poking into my hip
 
 "4:20am" it reads.
 
+PlaySting time
+
 Damn.
 
 I was hoping- clearly in futility- that the time would at least be somewhat close to when I have to get out of bed anyway, putting an end to this ridiculous attempt to fall asleep, and I can go to my new classes. The classes for gifted students.
@@ -37,7 +39,6 @@ So, when I received the 'summons' to the headmaster's office, the only reason th
 But boy, was it more than that. 
 
 DrawBackground oldschool_principle_office
-DarkenScreen
 PlayMusic Fripperies
 
 NewPage

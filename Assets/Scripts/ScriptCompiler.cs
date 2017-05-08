@@ -216,6 +216,19 @@ namespace M22
                     break;
                 case M22.LINETYPE.NEW_PAGE:
                     break;
+                case M22.LINETYPE.PLAY_STING:
+                    if (_splitStr.Count > 1)
+                    {
+                        _lineC.m_parameters_txt = new List<string>();
+                        _splitStr[1] = _splitStr[1].Substring(0, _splitStr[1].Length - 2);
+                        _lineC.m_parameters_txt.Add(_splitStr[1]);
+
+                        if (!M22.AudioMaster.LoadSting(_lineC.m_parameters_txt[0]))
+                        {
+                            Console.WriteLine("Failed to load sting! - " + _lineC.m_parameters_txt[0]);
+                        };
+                    }
+                    break;
                 case M22.LINETYPE.PLAY_MUSIC:
                     if (_splitStr.Count > 1)
                     {
@@ -223,7 +236,7 @@ namespace M22
                         _splitStr[1] = _splitStr[1].Substring(0, _splitStr[1].Length - 2);
                         _lineC.m_parameters_txt.Add(_splitStr[1]);
 
-                        if (!M22.AudioMaster.LoadAudio(_lineC.m_parameters_txt[0]))
+                        if (!M22.AudioMaster.LoadMusic(_lineC.m_parameters_txt[0]))
                         {
                             Console.WriteLine("Failed to load music! - " + _lineC.m_parameters_txt[0]);
                         };
