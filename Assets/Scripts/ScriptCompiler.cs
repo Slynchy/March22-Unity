@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace M22
@@ -18,6 +19,9 @@ namespace M22
         CHECKPOINT,
         COMMENT,
         SET_ACTIVE_TRANSITION,
+        HIDE_WINDOW,
+        SHOW_WINDOW,
+        DIALOGUE,
         NUM_OF_LINETYPES
     }
 
@@ -27,23 +31,29 @@ namespace M22
         public List<int> m_parameters;
         public List<string> m_parameters_txt;
         public string m_lineContents;
-        public int m_speaker; // deprecated?
+        public script_character m_speaker; 
         public int m_ID;
     }
 
     public struct script_checkpoint
     {
-        int m_position;
-        string m_name;
+        public int m_position;
+        public string m_name;
         public script_checkpoint(int _a, string _b)
         {
             m_position = _a;
             m_name = _b;
         }
     }
+    public struct script_character
+    {
+        public string name;
+        public Color color;
+    }
 
     public class ScriptCompiler
     {
+        public static Dictionary<ulong, script_character> CharacterNames;
         public static Dictionary<ulong, M22.LINETYPE> FunctionHashes;
         public static List<M22.script_checkpoint> currentScript_checkpoints = new List<M22.script_checkpoint>();
         private static readonly string[] FunctionNames = {
@@ -54,12 +64,38 @@ namespace M22
                 "PlaySting",
                 "--",
                 "//", // Nor this, but is set up to handle it
-                "SetActiveTransition"
+                "SetActiveTransition",
+                "HideWindow",
+                "ShowWindow",
+                "DiAlOGUeHeRe" // NOR THIS
         };
+
+        private static void InitializeCharNames()
+        {
+            CharacterNames = new Dictionary<ulong, script_character>();
+            string tempStr = (Resources.Load("CHARACTER_NAMES") as TextAsset).text;
+
+            string[] lines = tempStr.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string line in lines)
+            {
+                string[] lineSplit = line.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                string shortName = lineSplit[0];
+                string longName = Regex.Match(line, "\"([^\"]*)\"").ToString();
+
+                script_character temp = new script_character();
+                temp.name = longName.Substring(1,longName.Length-2);
+                temp.color = new Color(Int32.Parse(lineSplit[lineSplit.Length-3]), Int32.Parse(lineSplit[lineSplit.Length - 2]), Int32.Parse(lineSplit[lineSplit.Length - 1]));
+
+                CharacterNames.Add(CalculateHash(shortName), temp);
+            }
+        }
 
         public static void Initialize()
         {
             FunctionHashes = new Dictionary<ulong, M22.LINETYPE>();
+
+            InitializeCharNames();
 
             if (FunctionNames.Length != (int)M22.LINETYPE.NUM_OF_LINETYPES)
                 Console.WriteLine("Number of LINETYPE entries do not match number of FunctionNames");
@@ -144,6 +180,12 @@ namespace M22
                 {
                     tempLine_c.m_lineContents = scriptLines[i];
                 }
+                else if(tempLine_c.m_lineType == M22.LINETYPE.DIALOGUE)
+                {
+                    tempLine_c.m_lineContents = scriptLines[i];
+                    tempLine_c.m_lineContents = tempLine_c.m_lineContents.Substring(CURRENT_LINE_SPLIT[0].Length+1);
+                    CharacterNames.TryGetValue(CalculateHash(CURRENT_LINE_SPLIT[0]), out tempLine_c.m_speaker);
+                }
                 else
                 {
                     CompileLine(ref tempLine_c, CURRENT_LINE_SPLIT, ref currentScript_checkpoints, scriptPos);
@@ -187,7 +229,12 @@ namespace M22
                         return M22.LINETYPE.COMMENT;
                     }
                     else
-                        return M22.LINETYPE.NARRATIVE;
+                    {
+                        if (!CharacterNames.ContainsKey(CalculateHash(temp)))
+                            return M22.LINETYPE.NARRATIVE;
+                        else
+                            return M22.LINETYPE.DIALOGUE;
+                    }
                 }
                 else
                     return M22.LINETYPE.NARRATIVE;

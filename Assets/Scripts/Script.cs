@@ -15,7 +15,12 @@ namespace M22
 
             public line_c GetLine(int index)
             {
-                if (compiledLines.Count == 0) return default(line_c);
+                if (compiledLines.Count == 0 || index >= compiledLines.Count)
+                {
+                    line_c temp = new line_c();
+                    temp.m_lineType = LINETYPE.NUM_OF_LINETYPES;
+                    return temp;
+                }
                 if (index < 0) return compiledLines[0];
                 return compiledLines[index];
             }

@@ -9,14 +9,24 @@ namespace M22
     class BackgroundMaster : MonoBehaviour
     {
         static Dictionary<string, Sprite> loadedBackgrounds;
+        static private Sprite black;
+        static private Sprite white;
 
         void Awake()
         {
+            black = Resources.Load("black") as Sprite;
+            white = Resources.Load("white") as Sprite;
             loadedBackgrounds = new Dictionary<string, Sprite>();
         }
 
         public static bool LoadBackground(string name)
         {
+            if (name == "black")
+                return true;
+            else if (name == "white")
+                return true;
+            if (loadedBackgrounds.ContainsKey(name) == true)
+                return true;
             string filename = "Backgrounds/" + name;
             Texture2D temp = Resources.Load(filename) as Texture2D;
             if (temp)
@@ -34,6 +44,10 @@ namespace M22
 
         static public Sprite GetBackground(string file)
         {
+            if (file == "black")
+                return black;
+            else if (file == "white")
+                return white;
             if (loadedBackgrounds.ContainsKey(file))
             {
                 Sprite returnVal;

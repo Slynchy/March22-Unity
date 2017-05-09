@@ -15,19 +15,10 @@ namespace M22
 
         public Image background;
 
-        private static readonly string[] FunctionNames = {
-                "NewPage",
-                "thIsIssNarraTIVE", // <- This should never be returned!
-                "DrawBackground",
-                "PlayMusic",
-                "PlaySting",
-                "--",
-                "//", // Nor this, but is set up to handle it
-                "SetActiveTransition"
-            };
-
         private M22.Script.Script currentScript_c = new M22.Script.Script();
         private int lineIndex = 0;
+
+        private VNHandler VNHandlerScript;
 
         public TypeWriterScript TEXT;
         void Awake()
@@ -37,6 +28,7 @@ namespace M22
 
         void Start()
         {
+            VNHandlerScript = this.gameObject.GetComponent<M22.VNHandler>();
             currentScript_c = M22.ScriptCompiler.CompileScript("START_SCRIPT");
             if (TEXT == null)
             {
@@ -62,6 +54,8 @@ namespace M22
         void NextLine()
         {
             ++lineIndex;
+            if(VNHandlerScript.VNMode == true)
+                TEXT.Reset(true);
             CURRENT_LINE = currentScript_c.GetLine(lineIndex);
             ExecuteFunction(CURRENT_LINE);
         }
@@ -72,6 +66,11 @@ namespace M22
             {
                 case LINETYPE.NARRATIVE:
                     TEXT.SetNewCurrentLine(CURRENT_LINE.m_lineContents);
+                    VNHandlerScript.ClearCharacterName();
+                    break;
+                case LINETYPE.DIALOGUE:
+                    TEXT.SetNewCurrentLine(CURRENT_LINE.m_lineContents);
+                    VNHandlerScript.UpdateCharacterName(CURRENT_LINE.m_speaker);
                     break;
                 case LINETYPE.NEW_PAGE:
                     TEXT.Reset(true, NextLine);
@@ -88,6 +87,16 @@ namespace M22
                     M22.AudioMaster.PlaySting(_line.m_parameters_txt[0]);
                     NextLine();
                     break;
+                case LINETYPE.HIDE_WINDOW:
+                    NextLine();
+                    break;
+                case LINETYPE.SHOW_WINDOW:
+                    NextLine();
+                    break;
+                case LINETYPE.NUM_OF_LINETYPES:
+                    // do nuzing.
+                    Debug.LogError("End of script!");
+                    break;
                 default:
                     NextLine();
                     break;
@@ -98,16 +107,7 @@ namespace M22
         {
             if (TEXT.IsLineComplete())
             {
-                try
-                {
-                    ++lineIndex;
-                    CURRENT_LINE = currentScript_c.GetLine(lineIndex);
-                    ExecuteFunction(CURRENT_LINE);
-                }
-                catch (Exception e)
-                {
-                    Debug.LogException(e, this);
-                }
+                NextLine();
             }
             else
             {
