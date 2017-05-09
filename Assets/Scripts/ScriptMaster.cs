@@ -79,6 +79,10 @@ namespace M22
                     background.sprite = M22.BackgroundMaster.GetBackground(_line.m_parameters_txt[0]);
                     NextLine();
                     break;
+                case LINETYPE.DRAW_CHARACTER:
+                    VNHandlerScript.CreateCharacter(_line.m_parameters_txt[0], _line.m_parameters_txt[1], _line.m_parameters[0]);
+                    NextLine();
+                    break;
                 case LINETYPE.PLAY_MUSIC:
                     M22.AudioMaster.ChangeTrack(_line.m_parameters_txt[0]);
                     NextLine();

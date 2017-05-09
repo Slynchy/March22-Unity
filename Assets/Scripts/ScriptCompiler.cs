@@ -22,6 +22,7 @@ namespace M22
         HIDE_WINDOW,
         SHOW_WINDOW,
         DIALOGUE,
+        DRAW_CHARACTER,
         NUM_OF_LINETYPES
     }
 
@@ -67,7 +68,8 @@ namespace M22
                 "SetActiveTransition",
                 "HideWindow",
                 "ShowWindow",
-                "DiAlOGUeHeRe" // NOR THIS
+                "DiAlOGUeHeRe", // NOR THIS
+                "DrawCharacter"
         };
 
         private static void InitializeCharNames()
@@ -262,6 +264,21 @@ namespace M22
                     }
                     break;
                 case M22.LINETYPE.NEW_PAGE:
+                    break;
+                case M22.LINETYPE.DRAW_CHARACTER:
+                    if (_splitStr.Count > 1)
+                    {
+                        _lineC.m_parameters_txt = new List<string>();
+                        _lineC.m_parameters_txt.Add(_splitStr[1]);
+                        _lineC.m_parameters_txt.Add(_splitStr[2]);
+                        _lineC.m_parameters = new List<int>();
+                        _lineC.m_parameters.Add(Int32.Parse(_splitStr[3]));
+
+                        if (!M22.VNHandler.LoadCharacter(_lineC.m_parameters_txt[0], _lineC.m_parameters_txt[1]))
+                        {
+                            Console.WriteLine("Failed to load character! - " + _lineC.m_parameters_txt[0] + " - " + _lineC.m_parameters_txt[1]);
+                        };
+                    }
                     break;
                 case M22.LINETYPE.PLAY_STING:
                     if (_splitStr.Count > 1)
