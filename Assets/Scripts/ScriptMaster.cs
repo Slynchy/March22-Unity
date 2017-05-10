@@ -24,6 +24,9 @@ namespace M22
         private Image TextboxIMG;
 
         public TypeWriterScript TEXT;
+
+        private bool waitUntilCharactersFadeIn = false;
+
         void Awake()
         {
             M22.ScriptCompiler.Initialize();
@@ -94,7 +97,9 @@ namespace M22
                     break;
                 case LINETYPE.DRAW_CHARACTER:
                     VNHandlerScript.CreateCharacter(_line.m_parameters_txt[0], _line.m_parameters_txt[1], _line.m_parameters[0]);
-                    NextLine();
+                    //NextLine();
+                    HideText();
+                    waitUntilCharactersFadeIn = true;
                     break;
                 case LINETYPE.PLAY_MUSIC:
                     M22.AudioMaster.ChangeTrack(_line.m_parameters_txt[0]);
@@ -105,11 +110,11 @@ namespace M22
                     NextLine();
                     break;
                 case LINETYPE.HIDE_WINDOW:
-                    TextboxIMG.color = new Color(255, 255, 255, 0);
+                    HideText();
                     NextLine();
                     break;
                 case LINETYPE.SHOW_WINDOW:
-                    TextboxIMG.color = new Color(255, 255, 255, 255);
+                    ShowText();
                     NextLine();
                     break;
                 case LINETYPE.NUM_OF_LINETYPES:
@@ -134,16 +139,35 @@ namespace M22
             }
         }
 
+        void HideText()
+        {
+            for (int i = 0; i < TextboxIMG.gameObject.transform.childCount; i++)
+            {
+                var obj = TextboxIMG.gameObject.transform.GetChild(i).gameObject.GetComponent<Text>();
+                obj.color = new Color(255, 255, 255, 0);
+            }
+            TextboxIMG.color = new Color(255, 255, 255, 0);
+        }
+
+        void ShowText()
+        {
+            for (int i = 0; i < TextboxIMG.gameObject.transform.childCount; i++)
+            {
+                var obj = TextboxIMG.gameObject.transform.GetChild(i).gameObject.GetComponent<Text>();
+                obj.color = new Color(255, 255, 255, 255);
+            }
+            TextboxIMG.color = new Color(255, 255, 255, 255);
+        }
+
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Return))
+            if (!waitUntilCharactersFadeIn && backgroundTrans.color.a == 0 && Input.GetKeyDown(KeyCode.Return))
             {
                 FireInput();
             }
 
             if (backgroundTrans.color.a != 0)
             {
-                Debug.Log(backgroundTrans.color.a);
                 backgroundTrans.color = new Color(
                     backgroundTrans.color.r,
                     backgroundTrans.color.g,
@@ -160,6 +184,26 @@ namespace M22
                         0
                     );
                     background.sprite = backgroundTrans.sprite;
+                    NextLine();
+                }
+            }
+
+            if(waitUntilCharactersFadeIn)
+            {
+                int size = GameObject.FindGameObjectsWithTag("Character").Length;
+                int count = 0;
+                foreach (var item in GameObject.FindGameObjectsWithTag("Character"))
+                {
+                    if(item.GetComponent<FadeInImage>().complete == true)
+                    {
+                        count++;
+                    }
+                }
+
+                if(size == count)
+                {
+                    waitUntilCharactersFadeIn = false;
+                    ShowText();
                     NextLine();
                 }
             }
