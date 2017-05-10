@@ -2,8 +2,6 @@
 
 HideWindow
 
-DrawBackground black
-
 DrawBackground op_snowywoods
 
 ShowWindow
@@ -49,5 +47,3 @@ I feel my heart skip a beat.
 It's a voice I've listened to hundreds of times, but never as more than an eavesdropper to a conversation.
 
 I turn to face this voice, the voice of my dreams, and my heart begins to race…
-
-HideWindow

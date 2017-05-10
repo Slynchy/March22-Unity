@@ -14,8 +14,11 @@ namespace M22
 
         void Awake()
         {
-            black = Resources.Load("black") as Sprite;
-            white = Resources.Load("white") as Sprite;
+            Texture2D tempTex = Resources.Load("black") as Texture2D;
+            black = Sprite.Create(tempTex, new Rect(0, 0, tempTex.width, tempTex.height), new Vector2(0, 0));
+            tempTex = Resources.Load("white") as Texture2D;
+            white = Sprite.Create(tempTex, new Rect(0, 0, tempTex.width, tempTex.height), new Vector2(0, 0));
+            if (black == null || white == null) Debug.LogError("Failed to load black or white texture from Resources!");
             loadedBackgrounds = new Dictionary<string, Sprite>();
         }
 

@@ -14,11 +14,14 @@ namespace M22
         public line_c CURRENT_LINE;
 
         public Image background;
+        public Image backgroundTrans;
 
         private M22.Script.Script currentScript_c = new M22.Script.Script();
         private int lineIndex = 0;
 
         private VNHandler VNHandlerScript;
+
+        private Image TextboxIMG;
 
         public TypeWriterScript TEXT;
         void Awake()
@@ -30,6 +33,7 @@ namespace M22
         {
             VNHandlerScript = this.gameObject.GetComponent<M22.VNHandler>();
             currentScript_c = M22.ScriptCompiler.CompileScript("START_SCRIPT");
+            TextboxIMG = GameObject.Find("Textbox").GetComponent<Image>();
             if (TEXT == null)
             {
                 Debug.Log("TEXT not found in ScriptMaster; falling back to searching...");
@@ -42,6 +46,13 @@ namespace M22
                 Debug.Log("background not found in ScriptMaster; falling back to searching...");
                 background = GameObject.Find("Background").GetComponent<Image>();
                 if (background == null)
+                    Debug.Log("This also failed! :(");
+            }
+            if (backgroundTrans == null)
+            {
+                Debug.Log("backgroundTrans not found in ScriptMaster; falling back to searching...");
+                backgroundTrans = GameObject.Find("BackgroundTransition").GetComponent<Image>();
+                if (backgroundTrans == null)
                     Debug.Log("This also failed! :(");
             }
 
@@ -76,8 +87,10 @@ namespace M22
                     TEXT.Reset(true, NextLine);
                     break;
                 case LINETYPE.DRAW_BACKGROUND:
-                    background.sprite = M22.BackgroundMaster.GetBackground(_line.m_parameters_txt[0]);
-                    NextLine();
+                    //background.sprite = M22.BackgroundMaster.GetBackground(_line.m_parameters_txt[0]);
+                    backgroundTrans.sprite = M22.BackgroundMaster.GetBackground(_line.m_parameters_txt[0]);
+                    backgroundTrans.color = new Color(255, 255, 255, 0.001f);
+                    //NextLine();
                     break;
                 case LINETYPE.DRAW_CHARACTER:
                     VNHandlerScript.CreateCharacter(_line.m_parameters_txt[0], _line.m_parameters_txt[1], _line.m_parameters[0]);
@@ -92,9 +105,11 @@ namespace M22
                     NextLine();
                     break;
                 case LINETYPE.HIDE_WINDOW:
+                    TextboxIMG.color = new Color(255, 255, 255, 0);
                     NextLine();
                     break;
                 case LINETYPE.SHOW_WINDOW:
+                    TextboxIMG.color = new Color(255, 255, 255, 255);
                     NextLine();
                     break;
                 case LINETYPE.NUM_OF_LINETYPES:
@@ -124,6 +139,29 @@ namespace M22
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 FireInput();
+            }
+
+            if (backgroundTrans.color.a != 0)
+            {
+                Debug.Log(backgroundTrans.color.a);
+                backgroundTrans.color = new Color(
+                    backgroundTrans.color.r,
+                    backgroundTrans.color.g,
+                    backgroundTrans.color.b,
+                    Mathf.Lerp(backgroundTrans.color.a, 1, Time.deltaTime)
+                );
+
+                if (backgroundTrans.color.a >= 0.97f)
+                {
+                    backgroundTrans.color = new Color(
+                        backgroundTrans.color.r,
+                        backgroundTrans.color.g,
+                        backgroundTrans.color.b,
+                        0
+                    );
+                    background.sprite = backgroundTrans.sprite;
+                    NextLine();
+                }
             }
         }
 

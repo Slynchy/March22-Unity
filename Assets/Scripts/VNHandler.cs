@@ -106,6 +106,7 @@ namespace M22
 
         public void CreateCharacter(string _charname, string _modifier, int _x)
         {
+            if (!VNMode) return;
             Character temp;
             loadedCharacters.TryGetValue(_charname, out temp);
             Sprite tempSpr;
