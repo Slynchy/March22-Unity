@@ -7,6 +7,13 @@ using System.Text.RegularExpressions;
 
 namespace M22
 {
+    
+    enum WAIT_STATE
+    {
+        NOT_WAITING,
+        CHARACTER_FADEIN,
+        CHARACTER_FADEOUT
+    }
 
     public class ScriptMaster : MonoBehaviour
     {
@@ -20,12 +27,13 @@ namespace M22
         private int lineIndex = 0;
 
         private VNHandler VNHandlerScript;
+        private AudioMaster AudioMasterScript;
 
         private Image TextboxIMG;
 
         public TypeWriterScript TEXT;
 
-        private bool waitUntilCharactersFadeIn = false;
+        private WAIT_STATE WaitState = 0;
 
         void Awake()
         {
@@ -35,6 +43,7 @@ namespace M22
         void Start()
         {
             VNHandlerScript = this.gameObject.GetComponent<M22.VNHandler>();
+            AudioMasterScript = this.gameObject.GetComponent<AudioMaster>();
             currentScript_c = M22.ScriptCompiler.CompileScript("START_SCRIPT");
             TextboxIMG = GameObject.Find("Textbox").GetComponent<Image>();
             if (TEXT == null)
@@ -87,7 +96,10 @@ namespace M22
                     VNHandlerScript.UpdateCharacterName(CURRENT_LINE.m_speaker);
                     break;
                 case LINETYPE.NEW_PAGE:
-                    TEXT.Reset(true, NextLine);
+                    if (VNHandlerScript == null || VNHandlerScript.VNMode == false)
+                        TEXT.Reset(true, NextLine);
+                    else
+                        NextLine();
                     break;
                 case LINETYPE.DRAW_BACKGROUND:
                     //background.sprite = M22.BackgroundMaster.GetBackground(_line.m_parameters_txt[0]);
@@ -99,10 +111,17 @@ namespace M22
                     VNHandlerScript.CreateCharacter(_line.m_parameters_txt[0], _line.m_parameters_txt[1], _line.m_parameters[0]);
                     //NextLine();
                     HideText();
-                    waitUntilCharactersFadeIn = true;
+                    WaitState = WAIT_STATE.CHARACTER_FADEIN;
                     break;
                 case LINETYPE.PLAY_MUSIC:
                     M22.AudioMaster.ChangeTrack(_line.m_parameters_txt[0]);
+                    NextLine();
+                    break;
+                case LINETYPE.STOP_MUSIC:
+                    if(_line.m_parameters_txt != null)
+                        AudioMasterScript.StopMusic(_line.m_parameters_txt[0]);
+                    else
+                        AudioMasterScript.StopMusic("1.0");
                     NextLine();
                     break;
                 case LINETYPE.PLAY_STING:
@@ -115,6 +134,15 @@ namespace M22
                     break;
                 case LINETYPE.SHOW_WINDOW:
                     ShowText();
+                    NextLine();
+                    break;
+                case LINETYPE.CLEAR_CHARACTERS:
+                    VNHandlerScript.ClearCharacters();
+                    HideText();
+                    WaitState = WAIT_STATE.CHARACTER_FADEOUT;
+                    break;
+                case LINETYPE.GO_FROM_BLACK:
+                case LINETYPE.GO_TO_BLACK:
                     NextLine();
                     break;
                 case LINETYPE.NUM_OF_LINETYPES:
@@ -161,7 +189,7 @@ namespace M22
 
         void Update()
         {
-            if (!waitUntilCharactersFadeIn && backgroundTrans.color.a == 0 && Input.GetKeyDown(KeyCode.Return))
+            if (WaitState == WAIT_STATE.NOT_WAITING && backgroundTrans.color.a == 0 && Input.GetKeyDown(KeyCode.Return))
             {
                 FireInput();
             }
@@ -188,7 +216,7 @@ namespace M22
                 }
             }
 
-            if(waitUntilCharactersFadeIn)
+            if(WaitState == WAIT_STATE.CHARACTER_FADEIN)
             {
                 int size = GameObject.FindGameObjectsWithTag("Character").Length;
                 int count = 0;
@@ -202,7 +230,17 @@ namespace M22
 
                 if(size == count)
                 {
-                    waitUntilCharactersFadeIn = false;
+                    WaitState = 0;
+                    ShowText();
+                    NextLine();
+                }
+            }
+            else if(WaitState == WAIT_STATE.CHARACTER_FADEOUT)
+            {
+                int size = GameObject.FindGameObjectsWithTag("Character").Length;
+                if (size == 0)
+                {
+                    WaitState = 0;
                     ShowText();
                     NextLine();
                 }

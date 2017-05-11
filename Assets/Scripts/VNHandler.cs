@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
+#if UNITY_EDITOR
+    using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -72,6 +74,16 @@ namespace M22
             Textbox.sprite = TextboxNarrative;
         }
 
+        public void ClearCharacters()
+        {
+            GameObject charParent = GameObject.Find("Characters");
+            for (int i = 0; i < charParent.transform.childCount; i++)
+            {
+                var obj = charParent.transform.GetChild(i).gameObject.GetComponent<FadeOutImage>();
+                obj.FadeOut();
+            }
+        }
+
         static public bool LoadCharacter(string _charname, string _modifier)
         {
             string path = "Characters/" + _charname + "/" + _modifier;
@@ -131,7 +143,7 @@ namespace M22
         }
     }
 }
-
+#if UNITY_EDITOR
 [CustomEditor(typeof(M22.VNHandler))]
 public class VNHandlerEditor : Editor
 {
@@ -151,3 +163,4 @@ public class VNHandlerEditor : Editor
 
     }
 }
+#endif

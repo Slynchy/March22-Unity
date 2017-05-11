@@ -12,13 +12,19 @@ A light breeze causes the naked branches overhead to rattle like wooden windchim
 
 This is a popular retreat for couples in the summer. The deciduous trees provide a beautiful green canopy, far out of sight of teachers and fellow students.
 
+GoToBlack default
+
 But now, in late winter, it feels like I'm standing under a pile of kindling.
+
+GoFromBlack default
 
 I breathe into my cupped hands and rub them together furiously to prevent them from numbing in this cold.
 
-DrawCharacter shizu adjust_happy 0
+//DrawCharacter shizu adjust_happy 0
 
 hi "Just how long am I expected to wait out here, anyway? I'm sure the note said 4:00 PM."
+
+//ClearCharacters
 
 Ah yes… the note… slipped between the pages of my math book while I wasn't looking.
 
@@ -47,3 +53,64 @@ I feel my heart skip a beat.
 It's a voice I've listened to hundreds of times, but never as more than an eavesdropper to a conversation.
 
 I turn to face this voice, the voice of my dreams, and my heart begins to race…
+
+HideWindow
+
+DrawBackground other_iwanako
+
+ShowWindow
+
+hi "Iwanako? I got a note telling me to wait here… it was yours?"
+
+Dammit. I spent all afternoon trying to come up with a good line and that was the result.
+
+Pathetic.
+
+iwanako "Ahmm… yes. I asked a friend to give you that note… I'm so glad you got it."
+
+A shy, joyous smile that makes me so tense I couldn't move a single muscle even if I tried.
+
+//stop music fadeout 10.0
+StopMusic
+
+HideWindow
+
+DrawBackground op_snowywoods
+
+//play sound sfx_heartslow
+//show heartattack alpha
+//with Dissolve (0.1)
+
+//hide heartattack alpha
+//with Dissolve (0.7)
+
+//with Pause(0.7)
+
+//play sound sfx_heartslow
+//show heartattack alpha
+//with Dissolve (0.1)
+
+//hide heartattack alpha
+//with Dissolve (0.7)
+
+ShowWindow
+
+My heart is pounding now, as if it were trying to burst out from my chest and claim this girl for itself.
+
+HideWindow
+
+DrawBackground other_iwanako_nosnow
+
+ShowWindow
+
+hi "So… ah… here we are. Out in the cold…"
+
+Once again, the wind stirs up the branches. The cacophonous noise is music to my ears.
+
+Iwanako flinches ever so softly against the gust of wind.
+
+As it passes, she rights herself, as if supported by some new confidence.
+
+Her eyes lock with mine and she lazily twirls her long, dark hair around her finger.
+
+All the while, the anxious beating of my heart grows louder.

@@ -2,6 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Courtesy: https://forum.unity3d.com/threads/fade-out-audio-source.335031/
+public static class AudioFadeOut
+{
+
+    public static IEnumerator FadeOut(AudioSource audioSource, float FadeTime)
+    {
+        float startVolume = audioSource.volume;
+
+        while (audioSource.volume > 0)
+        {
+            audioSource.volume -= startVolume * Time.deltaTime / FadeTime;
+
+            yield return null;
+        }
+
+        audioSource.Stop();
+        audioSource.volume = startVolume;
+    }
+
+}
+
 namespace M22
 {
 
@@ -19,11 +40,6 @@ namespace M22
                 Debug.Log("AudioSource for music not attached to camera!");
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-        }
-
         static public bool PlaySting(string name)
         {
             AudioClip sfx;
@@ -33,6 +49,17 @@ namespace M22
             musicSrc.PlayOneShot(sfx);
             return true;
         }
+
+        public void StopMusic(string _floatInput)
+        {
+            float speed = float.Parse(_floatInput);
+            StartCoroutine(AudioFadeOut.FadeOut(musicSrc, speed));
+        }
+
+        //public void StopMusic()
+        //{
+        //    StartCoroutine(AudioFadeOut.FadeOut(musicSrc, 1.0f));
+        //}
 
         static public bool LoadMusic(string name)
         {

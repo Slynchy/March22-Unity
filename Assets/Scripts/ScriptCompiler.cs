@@ -15,6 +15,7 @@ namespace M22
         NARRATIVE,
         DRAW_BACKGROUND,
         PLAY_MUSIC,
+        STOP_MUSIC,
         PLAY_STING,
         CHECKPOINT,
         COMMENT,
@@ -23,6 +24,10 @@ namespace M22
         SHOW_WINDOW,
         DIALOGUE,
         DRAW_CHARACTER,
+        GO_TO_BLACK,
+        GO_FROM_BLACK,
+        CLEAR_CHARACTERS,
+        EXECUTE_FUNCTION,
         NUM_OF_LINETYPES
     }
 
@@ -62,6 +67,7 @@ namespace M22
                 "thIsIssNarraTIVE", // <- This should never be returned!
                 "DrawBackground",
                 "PlayMusic",
+                "StopMusic",
                 "PlaySting",
                 "--",
                 "//", // Nor this, but is set up to handle it
@@ -69,7 +75,11 @@ namespace M22
                 "HideWindow",
                 "ShowWindow",
                 "DiAlOGUeHeRe", // NOR THIS
-                "DrawCharacter"
+                "DrawCharacter",
+                "GoToBlack",
+                "GoFromBlack",
+                "ClearCharacters",
+                "ExecuteFunction"
         };
 
         private static void InitializeCharNames()
@@ -106,12 +116,6 @@ namespace M22
             {
                 FunctionHashes.Add(CalculateHash(FunctionNames[i]), (M22.LINETYPE)i);
             }
-        }
-
-        private static void ThisIsABreakpoint()
-        {
-            bool lol;
-            return;
         }
 
         private static bool IsNewLine(string s)
@@ -255,6 +259,15 @@ namespace M22
                 case M22.LINETYPE.CHECKPOINT:
                     _chkpnt.Add(new M22.script_checkpoint(_scriptPos, _splitStr[0]));
                     break;
+                case M22.LINETYPE.GO_TO_BLACK:
+                case M22.LINETYPE.GO_FROM_BLACK:
+                    if (_splitStr.Count > 1)
+                    {
+                        _lineC.m_parameters_txt = new List<string>();
+                        _splitStr[1] = _splitStr[1].TrimEnd('\r', '\n');
+                        _lineC.m_parameters_txt.Add(_splitStr[1]);
+                    }
+                    break;
                 case M22.LINETYPE.SET_ACTIVE_TRANSITION:
                     if (_splitStr.Count > 1)
                     {
@@ -305,6 +318,24 @@ namespace M22
                             Console.WriteLine("Failed to load music! - " + _lineC.m_parameters_txt[0]);
                         };
                     }
+                    break;
+                case M22.LINETYPE.EXECUTE_FUNCTION:
+                    if (_splitStr.Count > 1)
+                    {
+                        _lineC.m_parameters_txt = new List<string>();
+                        _splitStr[1] = _splitStr[1].Substring(0, _splitStr[1].Length - 2);
+                        _lineC.m_parameters_txt.Add(_splitStr[1]);
+                    }
+                    break;
+                case M22.LINETYPE.STOP_MUSIC:
+                    if (_splitStr.Count > 1)
+                    {
+                        _lineC.m_parameters_txt = new List<string>();
+                        _splitStr[1] = _splitStr[1].Substring(0, _splitStr[1].Length - 2);
+                        _lineC.m_parameters_txt.Add(_splitStr[1]);
+                    }
+                    // we store the float value as a string for later use, if provided.
+                    // otherwise, just continue
                     break;
                 case M22.LINETYPE.DRAW_BACKGROUND:
                     if (_splitStr.Count > 1)

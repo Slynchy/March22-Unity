@@ -1,2 +1,3 @@
-hi "Hisao" 255 0 0
+hi "Hisao" 0 255 0
 mystery "???" 255 255 255
+iwanako "Iwanako" 255 255 255
