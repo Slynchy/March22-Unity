@@ -1,0 +1,6 @@
+Bug Tracker
+
+	- Transition flickers to image 2 before doing the transition
+		+ Current State: Unfixed
+		+ Priority: Low
+	- 

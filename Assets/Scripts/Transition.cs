@@ -31,6 +31,8 @@ public class Transition : MonoBehaviour {
         img.material.SetTexture("_TertiaryTex", effect.texture);
 
         img.material.SetColor("_AmbientLighting", RenderSettings.ambientLight);
+
+        img.material.SetFloat("_Progress", inc);
     }
 	
 	// Update is called once per frame

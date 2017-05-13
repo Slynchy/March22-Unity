@@ -10,7 +10,11 @@ PlayMusic Lullaby_of_Open_Eyes
 
 A light breeze causes the naked branches overhead to rattle like wooden windchimes.
 
+Goto testChkpnt
+
 This is a popular retreat for couples in the summer. The deciduous trees provide a beautiful green canopy, far out of sight of teachers and fellow students.
+
+//ExecuteFunction heart_throb
 
 Transition other_iwanako tr_eyes 0
 
@@ -27,6 +31,8 @@ hi "Just how long am I expected to wait out here, anyway? I'm sure the note said
 //ClearCharacters
 
 Ah yes… the note… slipped between the pages of my math book while I wasn't looking.
+
+--testChkpnt
 
 As far as clichés go, I'm more a fan of the letter-in-the-locker, but at least this way shows a bit of initiative.
 

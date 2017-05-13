@@ -27,6 +27,7 @@ namespace M22
         TRANSITION,
         CLEAR_CHARACTERS,
         EXECUTE_FUNCTION,
+        GOTO,
         NUM_OF_LINETYPES
     }
 
@@ -77,7 +78,8 @@ namespace M22
                 "DrawCharacter",
                 "Transition",
                 "ClearCharacters",
-                "ExecuteFunction"
+                "ExecuteFunction",
+                "Goto"
         };
 
         private static void InitializeCharNames()
@@ -255,6 +257,8 @@ namespace M22
             switch (_lineC.m_lineType)
             {
                 case M22.LINETYPE.CHECKPOINT:
+                    _splitStr[0] = _splitStr[0].Substring(2);
+                    _splitStr[0] = _splitStr[0].TrimEnd('\r', '\n');
                     _chkpnt.Add(new M22.script_checkpoint(_scriptPos, _splitStr[0]));
                     break;
                 case M22.LINETYPE.TRANSITION:
@@ -273,6 +277,14 @@ namespace M22
                     {
                         _lineC.m_parameters_txt = new List<string>();
                         _splitStr[1] = _splitStr[1].TrimEnd('\r', '\n');
+                        _lineC.m_parameters_txt.Add(_splitStr[1]);
+                    }
+                    break;
+                case M22.LINETYPE.GOTO:
+                    if (_splitStr.Count > 1)
+                    {
+                        _lineC.m_parameters_txt = new List<string>();
+                        _splitStr[1] = _splitStr[1].Substring(0, _splitStr[1].Length - 2);
                         _lineC.m_parameters_txt.Add(_splitStr[1]);
                     }
                     break;
@@ -323,8 +335,16 @@ namespace M22
                     if (_splitStr.Count > 1)
                     {
                         _lineC.m_parameters_txt = new List<string>();
-                        _splitStr[1] = _splitStr[1].Substring(0, _splitStr[1].Length - 2);
-                        _lineC.m_parameters_txt.Add(_splitStr[1]);
+                        for (int i = 1; i < _splitStr.Count-1; i++)
+                        {
+                            _lineC.m_parameters_txt.Add(_splitStr[i]);
+                        }
+                        _splitStr[_splitStr.Count - 1] = _splitStr[_splitStr.Count - 1].Substring(0, _splitStr[_splitStr.Count - 1].Length - 2);
+                        _lineC.m_parameters_txt.Add(_splitStr[_splitStr.Count - 1]);
+
+                        // should be 4
+                        while(_lineC.m_parameters_txt.Count < 4)
+                            _lineC.m_parameters_txt.Add("");
                     }
                     break;
                 case M22.LINETYPE.STOP_MUSIC:

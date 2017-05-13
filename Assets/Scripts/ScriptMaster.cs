@@ -84,12 +84,22 @@ namespace M22
         }
 
         public delegate void VoidDelegate();
-        void NextLine()
+        public void NextLine()
         {
             ++lineIndex;
             if(VNHandlerScript.VNMode == true)
                 TEXT.Reset(true);
             CURRENT_LINE = currentScript_c.GetLine(lineIndex);
+            TEXT.SetNewCurrentLine("");
+            ExecuteFunction(CURRENT_LINE);
+        }
+        public void GotoLine(int lineNum)
+        {
+            lineIndex = lineNum;
+            if (VNHandlerScript.VNMode == true)
+                TEXT.Reset(true);
+            CURRENT_LINE = currentScript_c.GetLine(lineIndex);
+            TEXT.SetNewCurrentLine("");
             ExecuteFunction(CURRENT_LINE);
         }
 
@@ -112,10 +122,22 @@ namespace M22
                         NextLine();
                     break;
                 case LINETYPE.DRAW_BACKGROUND:
-                    //background.sprite = M22.BackgroundMaster.GetBackground(_line.m_parameters_txt[0]);
                     backgroundTrans.sprite = M22.BackgroundMaster.GetBackground(_line.m_parameters_txt[0]);
                     backgroundTrans.color = new Color(255, 255, 255, 0.001f);
-                    //NextLine();
+                    break;
+                case LINETYPE.GOTO:
+                    bool success = false;
+                    foreach (var item in M22.ScriptCompiler.currentScript_checkpoints)
+                    {
+                        if (item.m_name == _line.m_parameters_txt[0])
+                        {
+                            success = true;
+                            GotoLine(item.m_position);
+                            break;
+                        }
+                    }
+                    if(!success)
+                        Debug.LogError("Failed to find checkpoint: " + _line.m_parameters_txt[0]);
                     break;
                 case LINETYPE.DRAW_CHARACTER:
                     VNHandlerScript.CreateCharacter(_line.m_parameters_txt[0], _line.m_parameters_txt[1], _line.m_parameters[0]);
@@ -151,8 +173,14 @@ namespace M22
                     HideText();
                     WaitState = WAIT_STATE.CHARACTER_FADEOUT;
                     break;
+                case LINETYPE.EXECUTE_FUNCTION:
+                    CustomFunctions.CustomFunctionDelegate temp = CustomFunctions.GetFunction(_line.m_parameters_txt[0]);
+                    if (temp != null)
+                        temp(_line.m_parameters_txt[1], _line.m_parameters_txt[2], _line.m_parameters_txt[3]);
+                    else
+                        Debug.LogError("Failed to find custom function: " + _line.m_parameters_txt[0]);
+                    break;
                 case LINETYPE.TRANSITION:
-                    HideText();
                     GameObject tempGO = GameObject.Instantiate<GameObject>(TransitionPrefab, GameObject.Find("Canvas").transform);
                     Transition TransitionObj = tempGO.GetComponent<Transition>();
                     TransitionObj.callback = FadeToBlackCallback;
@@ -176,7 +204,6 @@ namespace M22
             Transition temp = GameObject.FindGameObjectWithTag("Transition").GetComponent<Transition>();
             background.sprite = temp.destSprite;
             WaitState = WAIT_STATE.NOT_WAITING;
-            ShowText();
             NextLine();
         }
 
