@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.IO;
 using System.Text.RegularExpressions;
 
 namespace M22
@@ -12,7 +13,8 @@ namespace M22
     {
         NOT_WAITING,
         CHARACTER_FADEIN,
-        CHARACTER_FADEOUT
+        CHARACTER_FADEOUT,
+        TRANSITION
     }
 
     public class ScriptMaster : MonoBehaviour
@@ -34,6 +36,9 @@ namespace M22
         public TypeWriterScript TEXT;
 
         private WAIT_STATE WaitState = 0;
+
+        public GameObject TransitionPrefab;
+        private Dictionary<string, Sprite> TransitionEffects;
 
         void Awake()
         {
@@ -67,6 +72,11 @@ namespace M22
                 if (backgroundTrans == null)
                     Debug.Log("This also failed! :(");
             }
+
+            if (TransitionPrefab == null)
+                Debug.LogError("TransitionPrefab not attached to ScriptMaster! Check this under Main Camera!");
+            TransitionEffects = new Dictionary<string, Sprite>();
+            TransitionEffects.Add("tr_eyes", Resources.Load<Sprite>("Transitions/tr_eyes") as Sprite);
 
             CURRENT_LINE = currentScript_c.GetLine(lineIndex);
             TEXT.SetNewCurrentLine(CURRENT_LINE.m_lineContents);
@@ -141,9 +151,15 @@ namespace M22
                     HideText();
                     WaitState = WAIT_STATE.CHARACTER_FADEOUT;
                     break;
-                case LINETYPE.GO_FROM_BLACK:
-                case LINETYPE.GO_TO_BLACK:
-                    NextLine();
+                case LINETYPE.TRANSITION:
+                    HideText();
+                    GameObject tempGO = GameObject.Instantiate<GameObject>(TransitionPrefab, GameObject.Find("Canvas").transform);
+                    Transition TransitionObj = tempGO.GetComponent<Transition>();
+                    TransitionObj.callback = FadeToBlackCallback;
+                    TransitionObj.srcSprite = background.sprite;
+                    TransitionEffects.TryGetValue(_line.m_parameters_txt[1], out TransitionObj.effect);
+                    TransitionObj.destSprite = M22.BackgroundMaster.GetBackground(_line.m_parameters_txt[0]);
+                    WaitState = WAIT_STATE.TRANSITION;
                     break;
                 case LINETYPE.NUM_OF_LINETYPES:
                     // do nuzing.
@@ -153,6 +169,15 @@ namespace M22
                     NextLine();
                     break;
             }
+        }
+        
+        public void FadeToBlackCallback()
+        {
+            Transition temp = GameObject.FindGameObjectWithTag("Transition").GetComponent<Transition>();
+            background.sprite = temp.destSprite;
+            WaitState = WAIT_STATE.NOT_WAITING;
+            ShowText();
+            NextLine();
         }
 
         public void FireInput()
@@ -240,7 +265,7 @@ namespace M22
                 int size = GameObject.FindGameObjectsWithTag("Character").Length;
                 if (size == 0)
                 {
-                    WaitState = 0;
+                    WaitState = WAIT_STATE.NOT_WAITING;
                     ShowText();
                     NextLine();
                 }

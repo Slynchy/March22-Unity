@@ -24,8 +24,7 @@ namespace M22
         SHOW_WINDOW,
         DIALOGUE,
         DRAW_CHARACTER,
-        GO_TO_BLACK,
-        GO_FROM_BLACK,
+        TRANSITION,
         CLEAR_CHARACTERS,
         EXECUTE_FUNCTION,
         NUM_OF_LINETYPES
@@ -76,8 +75,7 @@ namespace M22
                 "ShowWindow",
                 "DiAlOGUeHeRe", // NOR THIS
                 "DrawCharacter",
-                "GoToBlack",
-                "GoFromBlack",
+                "Transition",
                 "ClearCharacters",
                 "ExecuteFunction"
         };
@@ -259,13 +257,15 @@ namespace M22
                 case M22.LINETYPE.CHECKPOINT:
                     _chkpnt.Add(new M22.script_checkpoint(_scriptPos, _splitStr[0]));
                     break;
-                case M22.LINETYPE.GO_TO_BLACK:
-                case M22.LINETYPE.GO_FROM_BLACK:
+                case M22.LINETYPE.TRANSITION:
                     if (_splitStr.Count > 1)
                     {
                         _lineC.m_parameters_txt = new List<string>();
-                        _splitStr[1] = _splitStr[1].TrimEnd('\r', '\n');
+                        _lineC.m_parameters = new List<int>();
+                        _splitStr[2] = _splitStr[2].TrimEnd('\r', '\n');
                         _lineC.m_parameters_txt.Add(_splitStr[1]);
+                        _lineC.m_parameters_txt.Add(_splitStr[2]);
+                        _lineC.m_parameters.Add(Int32.Parse(_splitStr[3]));
                     }
                     break;
                 case M22.LINETYPE.SET_ACTIVE_TRANSITION:
