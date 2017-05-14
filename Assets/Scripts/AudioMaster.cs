@@ -56,13 +56,9 @@ namespace M22
             StartCoroutine(AudioFadeOut.FadeOut(musicSrc, speed));
         }
 
-        //public void StopMusic()
-        //{
-        //    StartCoroutine(AudioFadeOut.FadeOut(musicSrc, 1.0f));
-        //}
-
         static public bool LoadMusic(string name)
         {
+            if (loadedAudio.ContainsKey(name)) return true;
             string filename = "Music/" + name;
             AudioClip temp = Resources.Load(filename) as AudioClip;
             if (temp != null)
@@ -79,6 +75,7 @@ namespace M22
 
         static public bool LoadSting(string name)
         {
+            if (loadedAudio.ContainsKey(name)) return true;
             string filename = "SFX/" + name;
             AudioClip temp = Resources.Load(filename) as AudioClip;
             if (temp != null)

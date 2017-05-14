@@ -82,16 +82,24 @@ StopMusic
 HideWindow
 
 //DrawBackground op_snowywoods
-Transition op_snowywoods tr_eyes 0
+Transition op_snowywoods default 0
 
-//play sound sfx_heartslow
-//show heartattack alpha
-//with Dissolve (0.1)
 
-//hide heartattack alpha
-//with Dissolve (0.7)
+PlaySting heart_single_slow
+ExecuteFunction heart_throb
+Wait 200
+PlaySting heart_single_slow
+ExecuteFunction heart_throb
 
-//with Pause(0.7)
+Wait 1000
+
+PlaySting heart_single_slow
+ExecuteFunction heart_throb
+Wait 200
+PlaySting heart_single_slow
+ExecuteFunction heart_throb
+
+Wait 1000
 
 //play sound sfx_heartslow
 //show heartattack alpha

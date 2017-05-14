@@ -14,7 +14,8 @@ namespace M22
         NOT_WAITING,
         CHARACTER_FADEIN,
         CHARACTER_FADEOUT,
-        TRANSITION
+        TRANSITION,
+        WAIT_COMMAND
     }
 
     public class ScriptMaster : MonoBehaviour
@@ -39,6 +40,8 @@ namespace M22
 
         public GameObject TransitionPrefab;
         private Dictionary<string, Sprite> TransitionEffects;
+
+        private float waitCommandTimer = -1.0f;
 
         void Awake()
         {
@@ -77,6 +80,7 @@ namespace M22
                 Debug.LogError("TransitionPrefab not attached to ScriptMaster! Check this under Main Camera!");
             TransitionEffects = new Dictionary<string, Sprite>();
             TransitionEffects.Add("tr_eyes", Resources.Load<Sprite>("Transitions/tr_eyes") as Sprite);
+            TransitionEffects.Add("default", Resources.Load<Sprite>("white") as Sprite);
 
             CURRENT_LINE = currentScript_c.GetLine(lineIndex);
             TEXT.SetNewCurrentLine(CURRENT_LINE.m_lineContents);
@@ -135,9 +139,12 @@ namespace M22
                     if(!success)
                         Debug.LogError("Failed to find checkpoint: " + _line.m_parameters_txt[0]);
                     break;
+                case LINETYPE.WAIT:
+                    WaitState = WAIT_STATE.WAIT_COMMAND;
+                    waitCommandTimer = 0;
+                    break;
                 case LINETYPE.DRAW_CHARACTER:
                     VNHandlerScript.CreateCharacter(_line.m_parameters_txt[0], _line.m_parameters_txt[1], _line.m_parameters[0]);
-                    //NextLine();
                     HideText();
                     WaitState = WAIT_STATE.CHARACTER_FADEIN;
                     break;
@@ -170,7 +177,7 @@ namespace M22
                     WaitState = WAIT_STATE.CHARACTER_FADEOUT;
                     break;
                 case LINETYPE.EXECUTE_FUNCTION:
-                    CustomFunctions.CustomFunctionDelegate temp = CustomFunctions.GetFunction(_line.m_parameters_txt[0]);
+                    CustomFunctionHandler.CustomFunctionDelegate temp = CustomFunctionHandler.GetFunction(_line.m_parameters_txt[0]);
                     if (temp != null)
                         temp(_line.m_parameters_txt[1], _line.m_parameters_txt[2], _line.m_parameters_txt[3]);
                     else
@@ -292,6 +299,16 @@ namespace M22
                     WaitState = WAIT_STATE.NOT_WAITING;
                     ShowText();
                     NextLine();
+                }
+            }
+            else if(WaitState == WAIT_STATE.WAIT_COMMAND)
+            {
+                waitCommandTimer += Time.deltaTime;
+                if(waitCommandTimer >= (CURRENT_LINE.m_parameters[0] * 0.001f))
+                {
+                    WaitState = WAIT_STATE.NOT_WAITING;
+                    NextLine();
+                    waitCommandTimer = -1;
                 }
             }
         }

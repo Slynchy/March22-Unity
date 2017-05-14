@@ -28,6 +28,7 @@ namespace M22
         CLEAR_CHARACTERS,
         EXECUTE_FUNCTION,
         GOTO,
+        WAIT,
         NUM_OF_LINETYPES
     }
 
@@ -79,7 +80,8 @@ namespace M22
                 "Transition",
                 "ClearCharacters",
                 "ExecuteFunction",
-                "Goto"
+                "Goto",
+                "Wait"
         };
 
         private static void InitializeCharNames()
@@ -308,6 +310,13 @@ namespace M22
                             Console.WriteLine("Failed to load character! - " + _lineC.m_parameters_txt[0] + " - " + _lineC.m_parameters_txt[1]);
                         };
                     }
+                    break;
+                case M22.LINETYPE.WAIT:
+                    _lineC.m_parameters = new List<int>();
+                    if (_splitStr.Count > 1)
+                        _lineC.m_parameters.Add(Int32.Parse(_splitStr[1]));
+                    else
+                        _lineC.m_parameters.Add(1000);
                     break;
                 case M22.LINETYPE.PLAY_STING:
                     if (_splitStr.Count > 1)
