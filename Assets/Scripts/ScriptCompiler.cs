@@ -254,6 +254,10 @@ namespace M22
 
         static void CompileLine(ref M22.line_c _lineC, List<string> _splitStr, ref List<M22.script_checkpoint> _chkpnt, int _scriptPos)
         {
+            for (int i = 0; i < _splitStr.Count; i++)
+            {
+                _splitStr[i] = _splitStr[i].TrimEnd('\r', '\n');
+            }
             switch (_lineC.m_lineType)
             {
                 case M22.LINETYPE.CHECKPOINT:
@@ -284,7 +288,7 @@ namespace M22
                     if (_splitStr.Count > 1)
                     {
                         _lineC.m_parameters_txt = new List<string>();
-                        _splitStr[1] = _splitStr[1].Substring(0, _splitStr[1].Length - 2);
+                        _splitStr[1] = _splitStr[1].TrimEnd('\r', '\n');
                         _lineC.m_parameters_txt.Add(_splitStr[1]);
                     }
                     break;
@@ -309,7 +313,7 @@ namespace M22
                     if (_splitStr.Count > 1)
                     {
                         _lineC.m_parameters_txt = new List<string>();
-                        _splitStr[1] = _splitStr[1].Substring(0, _splitStr[1].Length - 2);
+                        _splitStr[1] = _splitStr[1].TrimEnd('\r', '\n');
                         _lineC.m_parameters_txt.Add(_splitStr[1]);
 
                         if (!M22.AudioMaster.LoadSting(_lineC.m_parameters_txt[0]))
@@ -322,7 +326,7 @@ namespace M22
                     if (_splitStr.Count > 1)
                     {
                         _lineC.m_parameters_txt = new List<string>();
-                        _splitStr[1] = _splitStr[1].Substring(0, _splitStr[1].Length - 2);
+                        _splitStr[1] = _splitStr[1].TrimEnd('\r', '\n');
                         _lineC.m_parameters_txt.Add(_splitStr[1]);
 
                         if (!M22.AudioMaster.LoadMusic(_lineC.m_parameters_txt[0]))
@@ -339,7 +343,7 @@ namespace M22
                         {
                             _lineC.m_parameters_txt.Add(_splitStr[i]);
                         }
-                        _splitStr[_splitStr.Count - 1] = _splitStr[_splitStr.Count - 1].Substring(0, _splitStr[_splitStr.Count - 1].Length - 2);
+                        _splitStr[_splitStr.Count - 1] = _splitStr[_splitStr.Count - 1].TrimEnd('\r', '\n');
                         _lineC.m_parameters_txt.Add(_splitStr[_splitStr.Count - 1]);
 
                         // should be 4
@@ -351,7 +355,7 @@ namespace M22
                     if (_splitStr.Count > 1)
                     {
                         _lineC.m_parameters_txt = new List<string>();
-                        _splitStr[1] = _splitStr[1].Substring(0, _splitStr[1].Length - 2);
+                        _splitStr[1] = _splitStr[1].TrimEnd('\r', '\n');
                         _lineC.m_parameters_txt.Add(_splitStr[1]);
                     }
                     // we store the float value as a string for later use, if provided.
@@ -361,7 +365,7 @@ namespace M22
                     if (_splitStr.Count > 1)
                     {
                         _lineC.m_parameters_txt = new List<string>();
-                        _splitStr[1] = _splitStr[1].Substring(0, _splitStr[1].Length - 2);
+                        _splitStr[1] = _splitStr[1].TrimEnd('\r', '\n');
                         _lineC.m_parameters_txt.Add(_splitStr[1]);
 
                         if (!M22.BackgroundMaster.LoadBackground(_lineC.m_parameters_txt[0]))

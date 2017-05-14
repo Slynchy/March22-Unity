@@ -10,13 +10,13 @@ PlayMusic Lullaby_of_Open_Eyes
 
 A light breeze causes the naked branches overhead to rattle like wooden windchimes.
 
-Goto testChkpnt
+//Goto testChkpnt
 
 This is a popular retreat for couples in the summer. The deciduous trees provide a beautiful green canopy, far out of sight of teachers and fellow students.
 
 //ExecuteFunction heart_throb
 
-Transition other_iwanako tr_eyes 0
+//Transition other_iwanako tr_eyes 0
 
 But now, in late winter, it feels like I'm standing under a pile of kindling.
 
@@ -81,7 +81,8 @@ StopMusic
 
 HideWindow
 
-DrawBackground op_snowywoods
+//DrawBackground op_snowywoods
+Transition op_snowywoods tr_eyes 0
 
 //play sound sfx_heartslow
 //show heartattack alpha

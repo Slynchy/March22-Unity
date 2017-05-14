@@ -96,7 +96,7 @@ namespace M22
 
             if (currStrPos == currentLine.Length)
             {
-                page.text += "\n\n";
+                page.text += "\n";
                 LineComplete = true;
             }
         }

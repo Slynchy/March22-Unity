@@ -95,12 +95,8 @@ namespace M22
         }
         public void GotoLine(int lineNum)
         {
-            lineIndex = lineNum;
-            if (VNHandlerScript.VNMode == true)
-                TEXT.Reset(true);
-            CURRENT_LINE = currentScript_c.GetLine(lineIndex);
-            TEXT.SetNewCurrentLine("");
-            ExecuteFunction(CURRENT_LINE);
+            lineIndex = lineNum-1;
+            NextLine();
         }
 
         public void ExecuteFunction(line_c _line)
@@ -252,10 +248,11 @@ namespace M22
                     backgroundTrans.color.r,
                     backgroundTrans.color.g,
                     backgroundTrans.color.b,
-                    Mathf.Lerp(backgroundTrans.color.a, 1, Time.deltaTime)
+                    //Mathf.Lerp(backgroundTrans.color.a, 1, Time.deltaTime)
+                    backgroundTrans.color.a + (Time.deltaTime * 0.5f)
                 );
 
-                if (backgroundTrans.color.a >= 0.97f)
+                if (backgroundTrans.color.a >= 1.33f)
                 {
                     backgroundTrans.color = new Color(
                         backgroundTrans.color.r,
