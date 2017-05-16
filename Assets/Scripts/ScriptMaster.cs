@@ -81,6 +81,7 @@ namespace M22
             TransitionEffects = new Dictionary<string, Sprite>();
             TransitionEffects.Add("tr_eyes", Resources.Load<Sprite>("Transitions/tr_eyes") as Sprite);
             TransitionEffects.Add("default", Resources.Load<Sprite>("white") as Sprite);
+            TransitionEffects.Add("tr-pronoise", Resources.Load<Sprite>("Transitions/tr-pronoise") as Sprite);
 
             CURRENT_LINE = currentScript_c.GetLine(lineIndex);
             TEXT.SetNewCurrentLine(CURRENT_LINE.m_lineContents);

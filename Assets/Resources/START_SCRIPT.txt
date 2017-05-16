@@ -10,7 +10,7 @@ PlayMusic Lullaby_of_Open_Eyes
 
 A light breeze causes the naked branches overhead to rattle like wooden windchimes.
 
-//Goto testChkpnt
+Goto debuggoto
 
 This is a popular retreat for couples in the summer. The deciduous trees provide a beautiful green canopy, far out of sight of teachers and fellow students.
 
@@ -31,8 +31,6 @@ hi "Just how long am I expected to wait out here, anyway? I'm sure the note said
 //ClearCharacters
 
 Ah yes… the note… slipped between the pages of my math book while I wasn't looking.
-
---testChkpnt
 
 As far as clichés go, I'm more a fan of the letter-in-the-locker, but at least this way shows a bit of initiative.
 
@@ -129,3 +127,95 @@ As it passes, she rights herself, as if supported by some new confidence.
 Her eyes lock with mine and she lazily twirls her long, dark hair around her finger.
 
 All the while, the anxious beating of my heart grows louder.
+
+HideWindow
+
+//DrawBackground op_snowywoods
+Transition op_snowywoods default 0
+
+ShowWindow
+
+My throat is tight; I doubt I could even force a word out if I tried.
+
+iwanako "You see…"
+
+HideWindow
+
+PlaySting heart_single_slow
+ExecuteFunction heart_throb
+Wait 600
+
+ShowWindow
+
+iwanako "…I wanted to know…"
+
+HideWindow
+
+PlaySting heart_single_slow
+ExecuteFunction heart_throb
+Wait 200
+PlaySting heart_single_fast
+ExecuteFunction heart_throb
+Wait 600
+
+ShowWindow
+
+iwanako "… if you'd go out with me…"
+
+I stand there, motionless, save for my pounding heart.
+
+I want to say something in reply, but my vocal cords feel like they've been stretched beyond the breaking point.
+
+//play music music_tragic fadein 0.05
+--debuggoto
+PlayMusic Cold_Iron
+
+iwanako "… Hisao?"
+
+I reach up to try to massage my throat, but this only sends spikes of blinding pain along my arms.
+
+iwanako "Hisao?!"
+
+HideWindow
+PlaySting heart_single_slow
+ExecuteFunction heart_throb
+Wait 200
+PlaySting heart_single_slow
+ExecuteFunction heart_throb
+Wait 600
+ShowWindow
+
+My whole body freezes, save for my eyes, which shoot open in terror.
+
+HideWindow
+PlaySting heart_single_fast
+ExecuteFunction heart_throb
+Wait 200
+
+PlaySting heart_single_slow
+ExecuteFunction heart_throb
+
+PlaySting heart_single_fast
+ExecuteFunction heart_throb
+Wait 200
+
+// it's meant to persist here until the fade to black
+PlaySting heart_stop
+StopMusic
+ExecuteFunction heart_throb
+
+ShowWindow
+
+iwanako "HISAO!"
+
+The beating in my chest suddenly stops, and I go weak at the knees.
+
+Transition black tr-pronoise 0
+
+And I go.
+
+
+
+
+
+
