@@ -112,7 +112,7 @@ namespace M22
             InitializeCharNames();
 
             if (FunctionNames.Length != (int)M22.LINETYPE.NUM_OF_LINETYPES)
-                Console.WriteLine("Number of LINETYPE entries do not match number of FunctionNames");
+                Debug.LogError("Number of LINETYPE entries do not match number of FunctionNames");
 
             for (int i = 0; i < FunctionNames.Length; i++)
             {
@@ -152,11 +152,20 @@ namespace M22
             var result = new M22.Script.Script();
 
             //var file = File.ReadAllText(filename, Encoding.UTF8);
-            string file = M22.UnityWrapper.LoadTextFileToString(filename);
+            var txtAsset = Resources.Load(filename) as TextAsset;
+            string file;
+            if (txtAsset != null)
+            {
+                file = txtAsset.text;
+            }
+            else
+            {
+                file = "";
+            }
 
             if (file.Length == 0)
             {
-                Console.WriteLine("Failed to load script file!");
+                Debug.LogError("Failed to load script file: " + filename);
                 return result;
             }
             var scriptLines = new List<string>();
@@ -207,7 +216,7 @@ namespace M22
         }
 
         // from http://stackoverflow.com/questions/9545619/a-fast-hash-function-for-string-in-c-sharp
-        static ulong CalculateHash(string read)
+        static public ulong CalculateHash(string read)
         {
             ulong hashedValue = 3074457345618258791ul;
             for (int i = 0; i < read.Length; i++)
@@ -307,7 +316,7 @@ namespace M22
 
                         if (!M22.VNHandler.LoadCharacter(_lineC.m_parameters_txt[0], _lineC.m_parameters_txt[1]))
                         {
-                            Console.WriteLine("Failed to load character! - " + _lineC.m_parameters_txt[0] + " - " + _lineC.m_parameters_txt[1]);
+                            Debug.LogError("Failed to load character! - " + _lineC.m_parameters_txt[0] + " - " + _lineC.m_parameters_txt[1]);
                         };
                     }
                     break;
@@ -327,7 +336,7 @@ namespace M22
 
                         if (!M22.AudioMaster.LoadSting(_lineC.m_parameters_txt[0]))
                         {
-                            Console.WriteLine("Failed to load sting! - " + _lineC.m_parameters_txt[0]);
+                            Debug.LogError("Failed to load sting! - " + _lineC.m_parameters_txt[0]);
                         };
                     }
                     break;
@@ -340,7 +349,7 @@ namespace M22
 
                         if (!M22.AudioMaster.LoadMusic(_lineC.m_parameters_txt[0]))
                         {
-                            Console.WriteLine("Failed to load music! - " + _lineC.m_parameters_txt[0]);
+                            Debug.LogError("Failed to load music! - " + _lineC.m_parameters_txt[0]);
                         };
                     }
                     break;
@@ -379,7 +388,7 @@ namespace M22
 
                         if (!M22.BackgroundMaster.LoadBackground(_lineC.m_parameters_txt[0]))
                         {
-                            Console.WriteLine("Failed to load background! - " + _lineC.m_parameters_txt[0]);
+                            Debug.LogError("Failed to load background! - " + _lineC.m_parameters_txt[0]);
                         };
                     }
                     break;

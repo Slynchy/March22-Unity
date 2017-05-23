@@ -273,64 +273,53 @@ namespace M22
                 }
             }
 
-            if(WaitState == WAIT_STATE.CHARACTER_FADEIN)
+            switch (WaitState)
             {
-                int size = GameObject.FindGameObjectsWithTag("Character").Length;
-                int count = 0;
-                foreach (var item in GameObject.FindGameObjectsWithTag("Character"))
-                {
-                    if(item.GetComponent<FadeInImage>().complete == true)
+                case WAIT_STATE.CHARACTER_FADEIN:
+                    int size = GameObject.FindGameObjectsWithTag("Character").Length;
+                    int count = 0;
+                    foreach (var item in GameObject.FindGameObjectsWithTag("Character"))
                     {
-                        count++;
+                        if (item.GetComponent<FadeInImage>().complete == true)
+                        {
+                            count++;
+                        }
                     }
-                }
 
-                if(size == count)
-                {
-                    WaitState = 0;
-                    ShowText();
-                    NextLine();
-                }
+                    if (size == count)
+                    {
+                        WaitState = 0;
+                        ShowText();
+                        NextLine();
+                    }
+                    break;
+                case WAIT_STATE.CHARACTER_FADEOUT:
+                    size = GameObject.FindGameObjectsWithTag("Character").Length;
+                    if (size == 0)
+                    {
+                        WaitState = WAIT_STATE.NOT_WAITING;
+                        ShowText();
+                        NextLine();
+                    }
+                    break;
+                case WAIT_STATE.WAIT_COMMAND:
+                    waitCommandTimer += Time.deltaTime;
+                    if(waitCommandTimer >= (CURRENT_LINE.m_parameters[0] * 0.001f))
+                    {
+                        WaitState = WAIT_STATE.NOT_WAITING;
+                        NextLine();
+                        waitCommandTimer = -1;
+                    }
+                    break;
             }
-            else if(WaitState == WAIT_STATE.CHARACTER_FADEOUT)
-            {
-                int size = GameObject.FindGameObjectsWithTag("Character").Length;
-                if (size == 0)
-                {
-                    WaitState = WAIT_STATE.NOT_WAITING;
-                    ShowText();
-                    NextLine();
-                }
-            }
-            else if(WaitState == WAIT_STATE.WAIT_COMMAND)
-            {
-                waitCommandTimer += Time.deltaTime;
-                if(waitCommandTimer >= (CURRENT_LINE.m_parameters[0] * 0.001f))
-                {
-                    WaitState = WAIT_STATE.NOT_WAITING;
-                    NextLine();
-                    waitCommandTimer = -1;
-                }
-            }
-        }
-
-        // from http://stackoverflow.com/questions/9545619/a-fast-hash-function-for-string-in-c-sharp
-        static UInt64 CalculateHash(string read)
-        {
-            UInt64 hashedValue = 3074457345618258791ul;
-            for (int i = 0; i < read.Length; i++)
-            {
-                hashedValue += read[i];
-                hashedValue *= 3074457345618258799ul;
-            }
-            return hashedValue;
+            
         }
 
         static public M22.LINETYPE CheckLineType(string _input)
         {
             string temp = _input.TrimEnd('\r', '\n');
             LINETYPE TYPE;
-            if (!M22.ScriptCompiler.FunctionHashes.TryGetValue(CalculateHash(temp), out TYPE))
+            if (!M22.ScriptCompiler.FunctionHashes.TryGetValue(M22.ScriptCompiler.CalculateHash(temp), out TYPE))
             {
                 // could be narrative, need to check if comment
                 if (temp.Length > 1)

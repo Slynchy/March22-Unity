@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -56,7 +55,7 @@ namespace M22
         void FinishLine()
         {
             page.text += currentLine.Substring(currStrPos);
-            page.text += "\n";
+            page.text += '\n';
             strPos = currentLine.Length;
             currStrPos = currentLine.Length;
             LineComplete = true;
@@ -78,9 +77,8 @@ namespace M22
         // Update is called once per frame
         void Update()
         {
-
             if (LineComplete == true) return;
-            if (currentLine == null || currentLine == "") return;
+            if (currentLine == null || String.Equals(currentLine, "")) return;
 
             if (strPos < currentLine.Length)
                 strPos += TextSpeed * Time.deltaTime;
@@ -96,7 +94,7 @@ namespace M22
 
             if (currStrPos == currentLine.Length)
             {
-                page.text += "\n";
+                page.text += '\n';
                 LineComplete = true;
             }
         }

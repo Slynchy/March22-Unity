@@ -18,20 +18,22 @@ namespace M22
             black = Sprite.Create(tempTex, new Rect(0, 0, tempTex.width, tempTex.height), new Vector2(0, 0));
             tempTex = Resources.Load("white") as Texture2D;
             white = Sprite.Create(tempTex, new Rect(0, 0, tempTex.width, tempTex.height), new Vector2(0, 0));
-            if (black == null || white == null) Debug.LogError("Failed to load black or white texture from Resources!");
+
+            if (black == null || white == null)
+                Debug.LogError("Failed to load black or white texture from Resources!");
+
             loadedBackgrounds = new Dictionary<string, Sprite>();
         }
 
         public static bool LoadBackground(string name)
         {
-            if (name == "black")
+            if (String.Equals(name, "black"))
                 return true;
-            else if (name == "white")
+            else if (String.Equals(name,"white"))
                 return true;
-            if (loadedBackgrounds.ContainsKey(name) == true)
+            if (loadedBackgrounds.ContainsKey(name))
                 return true;
-            string filename = "Backgrounds/" + name;
-            Texture2D temp = Resources.Load(filename) as Texture2D;
+            Texture2D temp = Resources.Load("Backgrounds/" + name) as Texture2D;
             if (temp)
             {
                 Sprite tempSpr = Sprite.Create(temp, new Rect(0, 0, temp.width, temp.height), new Vector2(0, 0));
@@ -40,16 +42,16 @@ namespace M22
             }
             else
             {
-                Debug.LogError("Failed to load background: " + filename);
+                Debug.LogError("Failed to load background: Backgrounds/" + name);
                 return false;
             }
         }
 
         static public Sprite GetBackground(string file)
         {
-            if (file == "black")
+            if (String.Equals(file, "black"))
                 return black;
-            else if (file == "white")
+            else if (String.Equals(file, "white"))
                 return white;
             if (loadedBackgrounds.ContainsKey(file))
             {

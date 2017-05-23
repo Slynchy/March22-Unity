@@ -37,7 +37,7 @@ namespace M22
         {
             musicSrc = this.GetComponent<AudioSource>();
             if (musicSrc == null)
-                Debug.Log("AudioSource for music not attached to camera!");
+                Debug.LogError("AudioSource for music not attached to camera!");
         }
 
         static public bool PlaySting(string name)
@@ -59,8 +59,7 @@ namespace M22
         static public bool LoadMusic(string name)
         {
             if (loadedAudio.ContainsKey(name)) return true;
-            string filename = "Music/" + name;
-            AudioClip temp = Resources.Load(filename) as AudioClip;
+            AudioClip temp = Resources.Load("Music/" + name) as AudioClip;
             if (temp != null)
             {
                 loadedAudio.Add(name, temp);
@@ -68,7 +67,7 @@ namespace M22
             }
             else
             {
-                Debug.LogError("Failed to load audio: " + filename);
+                Debug.LogError("Failed to load audio: Music/" + name);
                 return false;
             }
         }
@@ -76,8 +75,7 @@ namespace M22
         static public bool LoadSting(string name)
         {
             if (loadedAudio.ContainsKey(name)) return true;
-            string filename = "SFX/" + name;
-            AudioClip temp = Resources.Load(filename) as AudioClip;
+            AudioClip temp = Resources.Load("SFX/" + name) as AudioClip;
             if (temp != null)
             {
                 loadedAudio.Add(name, temp);
@@ -85,7 +83,7 @@ namespace M22
             }
             else
             {
-                Debug.LogError("Failed to load audio: " + filename);
+                Debug.LogError("Failed to load audio: SFX/" + name);
                 return false;
             }
         }
