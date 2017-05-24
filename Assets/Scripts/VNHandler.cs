@@ -23,8 +23,11 @@ namespace M22
     {
         public bool VNMode = false;
         public int VNFontSize = 16;
-        public Sprite TextboxNarrative;
-        public Sprite TextboxDialogue;
+        public int NovelFontSize = 34;
+
+        private Sprite TextboxNarrative;
+        private Sprite TextboxDialogue;
+        private Sprite TextboxNovel;
         public GameObject CharacterPrefab;
 
         private Text Text;
@@ -32,11 +35,25 @@ namespace M22
 
         private Image Textbox;
 
+        private TextboxSettings VN;
         private TextboxSettings VNSay;
+
+        private TextboxSettings Novel;
+        private TextboxSettings NovelTxt;
 
         private Text CharacterName;
 
         static private Dictionary<string, Character> loadedCharacters;
+
+        private void Awake()
+        {
+            TextboxNarrative = Resources.Load<Sprite>("TextBoxes/bg-narration");
+            TextboxDialogue = Resources.Load<Sprite>("TextBoxes/bg-say");
+            TextboxNovel = Resources.Load<Sprite>("TextBoxes/textbox_big");
+
+            if (TextboxDialogue == null || TextboxNarrative == null || TextboxNovel == null)
+                Debug.LogError("Failed to load a textbox! Check your \"Resources/Textboxes\" folder!");
+        }
         
         void Start()
         {
@@ -44,23 +61,94 @@ namespace M22
             Text = GameObject.Find("Text").GetComponent<Text>();
             Textrect = GameObject.Find("Text").GetComponent<RectTransform>();
             Textbox = GameObject.Find("Textbox").GetComponent<Image>();
-            if (VNMode)
-                CharacterName = (GameObject.Find("CharName") != null ? GameObject.Find("CharName").GetComponent<Text>() : null);
-            
-            VNSay = new TextboxSettings(67.5f, 49.5f, 154.5f, 80.0f);
+            CharacterName = (GameObject.Find("CharName") != null ? GameObject.Find("CharName").GetComponent<Text>() : null);
 
+            VN = new TextboxSettings(
+                0, 
+                0, 
+                200, 
+                400, 
+                0, 0, 1, 0);
+            VNSay = new TextboxSettings(67.5f, 49.5f, 134, 64);
+
+            Novel = new TextboxSettings(
+                0,
+                0,
+                0,
+                0,
+                0, 0, 1, 1);
+            NovelTxt = new TextboxSettings(50, 50, 80, 80);
+
+            if (VNMode == true)
+            {
+                SetTextBoxToVN();
+            }
+            else
+            {
+                SetTextBoxToIN();
+            }
+        }
+
+        private void SetTextBoxToVN()
+        {
+            if (System.String.Equals(CharacterName.text, ""))
+                Textbox.sprite = TextboxNarrative;
+            else
+                Textbox.sprite = TextboxDialogue;
+
+            RectTransform temp = Textbox.GetComponent<RectTransform>();
+            temp.anchorMin = new Vector2(VN.AnchMinX, VN.AnchMinY);
+            temp.anchorMax = new Vector2(VN.AnchMaxX, VN.AnchMaxY);
+            temp.anchoredPosition = new Vector2(0, VN.T);
+            temp.sizeDelta = new Vector2(0, VN.B);
+            Text.fontSize = VNFontSize;
+            Text.resizeTextMaxSize = VNFontSize;
+            Textrect.offsetMin = new Vector2(VNSay.L, VNSay.B);
+            Textrect.offsetMax = new Vector2(-VNSay.R, -VNSay.T);
+            CharacterName.color = new Color(CharacterName.color.r, CharacterName.color.g, CharacterName.color.b, 1);
+        }
+
+        private void SetTextBoxToIN()
+        {
+            Textbox.sprite = TextboxNovel;
+            RectTransform temp = Textbox.GetComponent<RectTransform>();
+            temp.anchorMin = new Vector2(Novel.AnchMinX, Novel.AnchMinY);
+            temp.anchorMax = new Vector2(Novel.AnchMaxX, Novel.AnchMaxY);
+            temp.anchoredPosition = new Vector2(0, Novel.T);
+            temp.sizeDelta = new Vector2(0, Novel.B);
+
+            Text.fontSize = NovelFontSize;
+            Text.resizeTextMaxSize = NovelFontSize;
+            Textrect.anchorMax = new Vector2(1, 1);
+            Textrect.offsetMin = new Vector2(NovelTxt.L, NovelTxt.B);
+            Textrect.offsetMax = new Vector2(-NovelTxt.R, -NovelTxt.T);
+            CharacterName.color = new Color(CharacterName.color.r, CharacterName.color.g, CharacterName.color.b, 0);
+        }
+
+        private void Update()
+        {
+            if(Input.GetKeyDown(KeyCode.F1))
+            {
+                ToggleVNMode();
+            }
+        }
+
+        public void ToggleVNMode()
+        {
+            VNMode = !VNMode;
             if(VNMode == true)
             {
-                Text.fontSize = VNFontSize;
-                Text.resizeTextMaxSize = VNFontSize;
-                Textrect.offsetMin = new Vector2(VNSay.L, VNSay.B);
-                Textrect.offsetMax = new Vector2(-VNSay.R, -VNSay.T);
+                SetTextBoxToVN();
+            }
+            else
+            {
+                SetTextBoxToIN();
             }
         }
 
         public void UpdateCharacterName(M22.script_character _input)
         {
-            if (CharacterName == null) return;
+            if (CharacterName == null || VNMode == false) return;
             CharacterName.text = _input.name;
             CharacterName.color = _input.color;
             Textbox.sprite = TextboxDialogue;
@@ -69,7 +157,7 @@ namespace M22
 
         public void ClearCharacterName()
         {
-            if (CharacterName == null) return;
+            if (CharacterName == null || VNMode == false) return;
             CharacterName.text = "";
             Textbox.sprite = TextboxNarrative;
         }
@@ -134,15 +222,32 @@ namespace M22
     public struct TextboxSettings
     {
         public float L, R, T, B;
+        public float AnchMinX, AnchMinY, AnchMaxX, AnchMaxY;
         public TextboxSettings(float _L, float _R, float _T, float _B)
         {
             L = _L;
             R = _R;
             T = _T;
             B = _B;
+            AnchMinX = 0;
+            AnchMinY = 0;
+            AnchMaxX = 0;
+            AnchMaxY = 0;
+        }
+        public TextboxSettings(float _L, float _R, float _T, float _B, float _AnchMinX, float _AnchMinY, float _AnchMaxX, float _AnchMaxY)
+        {
+            L = _L;
+            R = _R;
+            T = _T;
+            B = _B;
+            AnchMinX = _AnchMinX;
+            AnchMinY = _AnchMinY;
+            AnchMaxX = _AnchMaxX;
+            AnchMaxY = _AnchMaxY;
         }
     }
 }
+
 #if UNITY_EDITOR
 [CustomEditor(typeof(M22.VNHandler))]
 public class VNHandlerEditor : Editor
@@ -156,9 +261,11 @@ public class VNHandlerEditor : Editor
         if (myScript.VNMode)
         {
             myScript.VNFontSize = EditorGUILayout.IntSlider("Font size:", myScript.VNFontSize, 8, 64);
-            myScript.TextboxDialogue = (Sprite)EditorGUILayout.ObjectField("Dialogue textbox", myScript.TextboxDialogue, typeof(Sprite), false);
-            myScript.TextboxNarrative = (Sprite)EditorGUILayout.ObjectField("Narrative textbox", myScript.TextboxNarrative, typeof(Sprite), false);
             myScript.CharacterPrefab = (GameObject)EditorGUILayout.ObjectField("Character Prefab", myScript.CharacterPrefab, typeof(GameObject), false);
+        }
+        else
+        {
+            myScript.NovelFontSize = EditorGUILayout.IntSlider("Font size:", myScript.NovelFontSize, 8, 64);
         }
 
     }

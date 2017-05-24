@@ -195,7 +195,7 @@ namespace M22
                     break;
                 case LINETYPE.NUM_OF_LINETYPES:
                     // do nuzing.
-                    Debug.LogError("End of script!");
+                    Debug.LogError("End of script! This shouldn't happen; make sure your script ends properly!");
                     break;
                 default:
                     NextLine();
@@ -256,7 +256,6 @@ namespace M22
                     backgroundTrans.color.r,
                     backgroundTrans.color.g,
                     backgroundTrans.color.b,
-                    //Mathf.Lerp(backgroundTrans.color.a, 1, Time.deltaTime)
                     backgroundTrans.color.a + (Time.deltaTime * 0.5f)
                 );
 

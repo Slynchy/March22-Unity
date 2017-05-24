@@ -55,7 +55,7 @@ namespace M22
             {
                 foreach (var item in loadedBackgrounds)
                 {
-                    if (item.name == _input) return item;
+                    if (String.Equals(item.name, _input)) return item;
                 }
                 return default(Texture2D);
             }

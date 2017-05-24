@@ -10,11 +10,11 @@ PlayMusic Lullaby_of_Open_Eyes
 
 A light breeze causes the naked branches overhead to rattle like wooden windchimes.
 
-//Goto debuggoto
+Goto debuggoto
 
 This is a popular retreat for couples in the summer. The deciduous trees provide a beautiful green canopy, far out of sight of teachers and fellow students.
 
-//ExecuteFunction heart_throb
+//ExecuteFunction heart_throb 4.0 2.0
 
 //Transition other_iwanako tr_eyes 0
 
@@ -74,6 +74,8 @@ iwanako "Ahmm… yes. I asked a friend to give you that note… I'm so glad you 
 
 A shy, joyous smile that makes me so tense I couldn't move a single muscle even if I tried.
 
+--debuggoto
+
 //stop music fadeout 10.0
 StopMusic
 
@@ -84,18 +86,18 @@ Transition op_snowywoods default 0
 
 
 PlaySting heart_single_slow
-ExecuteFunction heart_throb
+ExecuteFunction heart_throb 4.0 2.0
 Wait 200
 PlaySting heart_single_slow
-ExecuteFunction heart_throb
+ExecuteFunction heart_throb 4.0 2.0
 
 Wait 1000
 
 PlaySting heart_single_slow
-ExecuteFunction heart_throb
+ExecuteFunction heart_throb 4.0 2.0
 Wait 200
 PlaySting heart_single_slow
-ExecuteFunction heart_throb
+ExecuteFunction heart_throb 4.0 2.0
 
 Wait 1000
 
@@ -142,7 +144,7 @@ iwanako "You see…"
 HideWindow
 
 PlaySting heart_single_slow
-ExecuteFunction heart_throb
+ExecuteFunction heart_throb 4.0 2.0
 Wait 600
 
 ShowWindow
@@ -152,10 +154,10 @@ iwanako "…I wanted to know…"
 HideWindow
 
 PlaySting heart_single_slow
-ExecuteFunction heart_throb
+ExecuteFunction heart_throb 4.0 2.0
 Wait 200
 PlaySting heart_single_fast
-ExecuteFunction heart_throb
+ExecuteFunction heart_throb 4.0 2.0
 Wait 600
 
 ShowWindow
@@ -167,7 +169,6 @@ I stand there, motionless, save for my pounding heart.
 I want to say something in reply, but my vocal cords feel like they've been stretched beyond the breaking point.
 
 //play music music_tragic fadein 0.05
---debuggoto
 PlayMusic Cold_Iron
 
 iwanako "… Hisao?"
@@ -178,10 +179,10 @@ iwanako "Hisao?!"
 
 HideWindow
 PlaySting heart_single_slow
-ExecuteFunction heart_throb
+ExecuteFunction heart_throb 4.0 2.0
 Wait 200
 PlaySting heart_single_slow
-ExecuteFunction heart_throb
+ExecuteFunction heart_throb 4.0 2.0
 Wait 600
 ShowWindow
 
@@ -189,20 +190,20 @@ My whole body freezes, save for my eyes, which shoot open in terror.
 
 HideWindow
 PlaySting heart_single_fast
-ExecuteFunction heart_throb
+ExecuteFunction heart_throb 4.0 2.0
 Wait 200
 
 PlaySting heart_single_slow
-ExecuteFunction heart_throb
+ExecuteFunction heart_throb 4.0 2.0
 
 PlaySting heart_single_fast
-ExecuteFunction heart_throb
+ExecuteFunction heart_throb 4.0 2.0
 Wait 200
 
 // it's meant to persist here until the fade to black
 PlaySting heart_stop
 StopMusic
-ExecuteFunction heart_throb
+ExecuteFunction heart_throb 4.0 1.0
 
 ShowWindow
 

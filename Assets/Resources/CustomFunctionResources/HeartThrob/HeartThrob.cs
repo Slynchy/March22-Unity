@@ -20,6 +20,8 @@ namespace CustomFunctions
         {
             HeartThrobInstance = GameObject.Instantiate<GameObject>(HeartThrobPrefab, GameObject.Find("Canvas").transform);
             HeartThrobScript = HeartThrobInstance.GetComponent<HeartThrobObjectScript>();
+            HeartThrobScript.fadeInSpeed = float.Parse(param1);
+            HeartThrobScript.fadeOutSpeed = float.Parse(param2);
             HeartThrobScript.callback = Camera.main.GetComponent<M22.ScriptMaster>().NextLine;
         }
     }
