@@ -172,6 +172,16 @@ namespace M22
                     ShowText();
                     NextLine();
                     break;
+                case LINETYPE.ENABLE_NOVEL_MODE:
+                    if (VNHandlerScript.VNMode == true)
+                        VNHandlerScript.ToggleVNMode();
+                    NextLine();
+                    break;
+                case LINETYPE.DISABLE_NOVEL_MODE:
+                    if (VNHandlerScript.VNMode == false)
+                        VNHandlerScript.ToggleVNMode();
+                    NextLine();
+                    break;
                 case LINETYPE.CLEAR_CHARACTERS:
                     VNHandlerScript.ClearCharacters();
                     HideText();

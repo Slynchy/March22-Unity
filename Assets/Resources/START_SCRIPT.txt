@@ -10,7 +10,7 @@ PlayMusic Lullaby_of_Open_Eyes
 
 A light breeze causes the naked branches overhead to rattle like wooden windchimes.
 
-Goto debuggoto
+Goto OP_2
 
 This is a popular retreat for couples in the summer. The deciduous trees provide a beautiful green canopy, far out of sight of teachers and fellow students.
 
@@ -211,9 +211,85 @@ iwanako "HISAO!"
 
 The beating in my chest suddenly stops, and I go weak at the knees.
 
+HideWindow
+
+--OP_2
+
+StopMusic
 Transition black tr-pronoise 0
 
-And I go.
+EnableNovelMode
+ShowWindow
+
+\n\n\n\n\n\n\nThe world around me - the canopy of bare branches, the dull winter sky, Iwanako running towards me - all these fade to black.
+
+The last things I remember before slipping away are the sounds of Iwanako screaming for help and the incessant clatter of the branches above…
+
+// This is where video would play!
+//Transition black tr_eyes 0
+
+NewPage
+
+\n\n\n\n\n\n\n\nIt's been four months since my heart attack.
+
+HideWindow
+NewPage
+
+Transition hosp_room tr_eyes 0
+
+PlayMusic Raindrops_and_Puddles
+
+ShowWindow
+
+In that whole time, I can probably count the times I've left this hospital room unsupervised on one hand.
+
+Four months is a pretty long time when you're left alone with your thoughts. So, I've had plenty of time to come to terms with my situation.
+
+Arrhythmia.
+
+A strange word. A foreign, alien one. One that you don't want to be in the same room with.
+
+A rare condition. It causes the heart to act erratically and occasionally beat way too fast. It can be fatal.
+
+Apparently, I've had it for a long time. They said it was a miracle that I was able to go on so long without anything happening.
+
+Is that really a miracle? I guess it was supposed to make me feel better, more appreciative of my life.
+
+It really didn't do anything to cheer me up.
+
+NewPage
+
+My parents, I think, were hit harder by the news than I was. They practically had two hemorrhages apiece.
+
+I had already had a full day by then to digest everything. To them, it was all fresh. They were even willing to sell our house in order to pay for a cure.
+
+Of course there isn't a cure.
+
+NewPage
+
+Because of the late discovery of this… condition, I've had to stay at the hospital, to recuperate from the treatments.
+
+When I was first admitted, it felt as if I was missed…
+
+For about a week, my room in the ward was full of flowers, balloons and cards.
+
+But, the visitors soon dwindled and all the get-well gifts began trickling down to nothing shortly after.
+
+I realized that the only reason I had gotten so many cards and flowers was because sending me their sympathy had been turned into a class project.
+
+Maybe some people were genuinely concerned, but I doubt it. Even in the beginning, I barely had visitors. By the end of the first month, only my parents came by on a regular basis.
+
+Iwanako was the last to stop visiting.
+
+After six weeks, I never saw her again. We never had that much to talk about when she visited, anyway.
+
+We didn't touch the subject that was between us on that snowy day ever again.
+
+NewPage
+
+
+
+
 
 
 

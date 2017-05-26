@@ -7,7 +7,7 @@ Simply clone the repo for the latest version (UNSTABLE), open in Unity (as of wr
 **To develop Visual Novel games, ensure "VN Mode" is enabled under the Main Camera. If you wish to develop Interactive Narrative, simply disable this.**
 
 ## Documentation
-Documentation on code/usage is not yet provided, as the engine is still pre-release. 
+Documentation is in progress, as the engine is still pre-release, and can be accessed from the Wiki. 
 
 ## License
 The March22-Unity engine and its codebase is covered by the MIT license; refer to the LICENSE file for more information.

@@ -29,6 +29,8 @@ namespace M22
         EXECUTE_FUNCTION,
         GOTO,
         WAIT,
+        ENABLE_NOVEL_MODE,
+        DISABLE_NOVEL_MODE,
         NUM_OF_LINETYPES
     }
 
@@ -81,7 +83,9 @@ namespace M22
                 "ClearCharacters",
                 "ExecuteFunction",
                 "Goto",
-                "Wait"
+                "Wait",
+                "EnableNovelMode",
+                "DisableNovelMode"
         };
 
         private static void InitializeCharNames()
@@ -285,6 +289,11 @@ namespace M22
                         _lineC.m_parameters_txt.Add(_splitStr[1]);
                         _lineC.m_parameters_txt.Add(_splitStr[2]);
                         _lineC.m_parameters.Add(Int32.Parse(_splitStr[3]));
+
+                        if (!M22.BackgroundMaster.LoadBackground(_lineC.m_parameters_txt[0]))
+                        {
+                            Debug.LogError("Failed to load background! - " + _lineC.m_parameters_txt[0]);
+                        };
                     }
                     break;
                 case M22.LINETYPE.SET_ACTIVE_TRANSITION:
@@ -391,6 +400,10 @@ namespace M22
                             Debug.LogError("Failed to load background! - " + _lineC.m_parameters_txt[0]);
                         };
                     }
+                    break;
+                case M22.LINETYPE.ENABLE_NOVEL_MODE:
+                    break;
+                case M22.LINETYPE.DISABLE_NOVEL_MODE:
                     break;
             }
             return;
