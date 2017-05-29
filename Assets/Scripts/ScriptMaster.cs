@@ -199,15 +199,31 @@ namespace M22
                     NextLine();
                     break;
                 case LINETYPE.IF_STATEMENT:
+                    // m22IF _flag_to_check_if_true Command [params]
                     if (SCRIPT_FLAGS.Contains(_line.m_parameters_txt[0]))
                     {
-                        Debug.Log("True!");
+                        //Debug.Log("True!");
+                        line_c tempCompiledLine = new line_c();
+                        tempCompiledLine.m_lineType = _line.m_lineTypeSecondary;
+                        tempCompiledLine.m_parameters_txt = new List<string>();
+                        if(_line.m_parameters_txt != null && _line.m_parameters_txt.Count > 1)
+                        {
+                            for (int i = 1; i < _line.m_parameters_txt.Count; i++)
+                            {
+                                tempCompiledLine.m_parameters_txt.Add(_line.m_parameters_txt[i]);
+                            }
+                        }
+                        else
+                            tempCompiledLine.m_parameters_txt = _line.m_parameters_txt;
+                        tempCompiledLine.m_parameters = _line.m_parameters;
+                        tempCompiledLine.m_lineContents = _line.m_lineContents;
+                        ExecuteFunction(tempCompiledLine);
                     }
                     else
                     {
-                        Debug.Log("False!");
+                        //Debug.Log("False!");
+                        NextLine();
                     }
-                    NextLine();
                     break;
                 case LINETYPE.MAKE_DECISION:
                     GameObject tempObj = GameObject.Instantiate<GameObject>(DecisionsPrefab, CANVAS.transform);

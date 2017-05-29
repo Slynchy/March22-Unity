@@ -40,6 +40,7 @@ namespace M22
     public struct line_c
     {
         public M22.LINETYPE m_lineType;
+        public M22.LINETYPE m_lineTypeSecondary; // used for IF statements
         public List<int> m_parameters;
         public List<string> m_parameters_txt;
         public string m_lineContents;
@@ -68,7 +69,7 @@ namespace M22
         public static Dictionary<ulong, script_character> CharacterNames;
         public static Dictionary<ulong, M22.LINETYPE> FunctionHashes;
         public static List<M22.script_checkpoint> currentScript_checkpoints = new List<M22.script_checkpoint>();
-        private static readonly string[] FunctionNames = {
+        public static readonly string[] FunctionNames = {
                 "NewPage",
                 "thIsIssNarraTIVE", // <- This should never be returned!
                 "DrawBackground",
@@ -438,6 +439,43 @@ namespace M22
                     {
                         _lineC.m_parameters_txt = new List<string>();
                         _lineC.m_parameters_txt.Add(_splitStr[1]);
+
+                        line_c tempCompiledLine = new line_c();
+                        List<string> functionSplit = new List<string>();
+                        for (int i = 2; i < _splitStr.Count; i++)
+                        {
+                            functionSplit.Add(_splitStr[i]);
+                        }
+                        tempCompiledLine.m_lineType = CheckLineType(_splitStr[2]);
+                        CompileLine(ref tempCompiledLine, functionSplit, ref _chkpnt, _scriptPos);
+                        if(tempCompiledLine.m_lineContents == null)
+                        {
+                            tempCompiledLine.m_lineContents = "";
+                            for (int i = 2; i < _splitStr.Count; i++)
+                            {
+                                tempCompiledLine.m_lineContents += _splitStr[i] + " ";
+                            }
+                        }
+                        tempCompiledLine.m_lineContents = tempCompiledLine.m_lineContents.Replace("\\n", "\n");
+                        _lineC.m_lineContents = tempCompiledLine.m_lineContents;
+                        _lineC.m_lineTypeSecondary = tempCompiledLine.m_lineType;
+
+                        if(tempCompiledLine.m_parameters_txt != null)
+                        {
+                            for (int i = 0; i < tempCompiledLine.m_parameters_txt.Count; i++)
+                            {
+                                _lineC.m_parameters_txt.Add(tempCompiledLine.m_parameters_txt[i]);
+                            }
+                        }
+
+                        if(tempCompiledLine.m_parameters != null)
+                        {
+                            _lineC.m_parameters = new List<int>();
+                            for (int i = 0; i < tempCompiledLine.m_parameters.Count; i++)
+                            {
+                                _lineC.m_parameters.Add(tempCompiledLine.m_parameters[i]);
+                            }
+                        }
                     }
                     break;
                 case M22.LINETYPE.MAKE_DECISION:
