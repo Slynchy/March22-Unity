@@ -225,6 +225,13 @@ ShowWindow
 
 The last things I remember before slipping away are the sounds of Iwanako screaming for help and the incessant clatter of the branches above…
 
+MakeDecision "Choice 1" choice_1 "Choice 2" choice_2 "Choice 3" choice_3
+
+SetFlag testFlag1
+
+// m22IF testFlag1 This line of dialogue only shows if testFlag1 is true. Yaaay.
+// m22IF choice_1 PlaySting heart_stop
+
 // This is where video would play!
 //Transition black tr_eyes 0
 

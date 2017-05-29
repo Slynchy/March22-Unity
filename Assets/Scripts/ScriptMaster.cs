@@ -41,11 +41,24 @@ namespace M22
         public GameObject TransitionPrefab;
         private Dictionary<string, Sprite> TransitionEffects;
 
+        public GameObject DecisionsPrefab;
+
+        private Canvas CANVAS;
+
+        public List<string> SCRIPT_FLAGS;
+
         private float waitCommandTimer = -1.0f;
 
         void Awake()
         {
+            SCRIPT_FLAGS = new List<string>();
             M22.ScriptCompiler.Initialize();
+
+            if (DecisionsPrefab == null)
+            {
+                Debug.Log("Decisions prefab not specified under ScriptMaster! Attempting to load from Resources/Prefabs...");
+                DecisionsPrefab = Resources.Load<GameObject>("Prefabs/Decisions");
+            }
         }
 
         void Start()
@@ -75,6 +88,8 @@ namespace M22
                 if (backgroundTrans == null)
                     Debug.Log("This also failed! :(");
             }
+
+            CANVAS = Camera.main.GetComponentInChildren<Canvas>();
 
             if (TransitionPrefab == null)
                 Debug.LogError("TransitionPrefab not attached to ScriptMaster! Check this under Main Camera!");
@@ -171,6 +186,35 @@ namespace M22
                 case LINETYPE.SHOW_WINDOW:
                     ShowText();
                     NextLine();
+                    break;
+                case LINETYPE.SET_FLAG:
+                    if (SCRIPT_FLAGS.Contains(_line.m_parameters_txt[0]))
+                    {
+                        // Flag already set, ignore
+                    }
+                    else
+                    {
+                        SCRIPT_FLAGS.Add(_line.m_parameters_txt[0]);
+                    }
+                    NextLine();
+                    break;
+                case LINETYPE.IF_STATEMENT:
+                    if (SCRIPT_FLAGS.Contains(_line.m_parameters_txt[0]))
+                    {
+                        Debug.Log("True!");
+                    }
+                    else
+                    {
+                        Debug.Log("False!");
+                    }
+                    NextLine();
+                    break;
+                case LINETYPE.MAKE_DECISION:
+                    GameObject tempObj = GameObject.Instantiate<GameObject>(DecisionsPrefab, CANVAS.transform);
+                    if(_line.m_parameters_txt.Count == 6)
+                        tempObj.GetComponent<Decision>().Initialize(_line.m_parameters_txt[0], _line.m_parameters_txt[1], _line.m_parameters_txt[2], _line.m_parameters_txt[3], _line.m_parameters_txt[4], _line.m_parameters_txt[5]);
+                    else
+                        tempObj.GetComponent<Decision>().Initialize(_line.m_parameters_txt[0], _line.m_parameters_txt[1], _line.m_parameters_txt[2], _line.m_parameters_txt[3]);
                     break;
                 case LINETYPE.ENABLE_NOVEL_MODE:
                     if (VNHandlerScript.VNMode == true)

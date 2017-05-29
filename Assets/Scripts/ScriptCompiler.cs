@@ -31,6 +31,9 @@ namespace M22
         WAIT,
         ENABLE_NOVEL_MODE,
         DISABLE_NOVEL_MODE,
+        MAKE_DECISION,
+        IF_STATEMENT,
+        SET_FLAG,
         NUM_OF_LINETYPES
     }
 
@@ -85,7 +88,10 @@ namespace M22
                 "Goto",
                 "Wait",
                 "EnableNovelMode",
-                "DisableNovelMode"
+                "DisableNovelMode",
+                "MakeDecision",
+                "m22IF",
+                "SetFlag"
         };
 
         private static void InitializeCharNames()
@@ -151,6 +157,17 @@ namespace M22
             return result.Count;
         }
 
+        static private int SplitString(ref string txt, ref List<string> result, char ch)
+        {
+            result.Clear();
+            string[] temp = txt.Split(ch);
+            for (int i = 0; i < temp.Length; i++)
+            {
+                result.Add(temp[i]);
+            }
+            return result.Count;
+        }
+
         static public M22.Script.Script CompileScript(string filename)
         {
             var result = new M22.Script.Script();
@@ -199,6 +216,7 @@ namespace M22
 
                 if (tempLine_c.m_lineType == M22.LINETYPE.NARRATIVE)
                 {
+                    scriptLines[i] = scriptLines[i].Replace("\\n", "\n");
                     tempLine_c.m_lineContents = scriptLines[i];
                 }
                 else if(tempLine_c.m_lineType == M22.LINETYPE.DIALOGUE)
@@ -404,6 +422,60 @@ namespace M22
                 case M22.LINETYPE.ENABLE_NOVEL_MODE:
                     break;
                 case M22.LINETYPE.DISABLE_NOVEL_MODE:
+                    break;
+                case M22.LINETYPE.SET_FLAG:
+                    if (_splitStr.Count > 1)
+                    {
+                        _lineC.m_parameters_txt = new List<string>();
+                        _splitStr[1] = _splitStr[1].TrimEnd('\r', '\n');
+                        _lineC.m_parameters_txt.Add(_splitStr[1]);
+                    }
+                    break;
+                case M22.LINETYPE.IF_STATEMENT:
+                    // m22IF _flag_to_check_if_true Command [params]
+                    // 
+                    if (_splitStr.Count > 1)
+                    {
+                        _lineC.m_parameters_txt = new List<string>();
+                        _lineC.m_parameters_txt.Add(_splitStr[1]);
+                    }
+                    break;
+                case M22.LINETYPE.MAKE_DECISION:
+                    if (_splitStr.Count > 1)
+                    {
+                        _lineC.m_parameters_txt = new List<string>();
+                        string reconstructed = "";
+                        for (int i = 0; i < _splitStr.Count; i++)
+                        {
+                            reconstructed += _splitStr[i] + " ";
+                        }
+                        List<string> splitByQuote = new List<string>();
+                        SplitString(ref reconstructed, ref splitByQuote, '\"');
+
+                        // Should be 5 or 7
+                        if(splitByQuote.Count != 5 && splitByQuote.Count != 7)
+                        {
+                            Debug.LogError("MakeDecision error; mismatched number of quotemarks!");
+                        }
+
+                        for (int i = 1; i < splitByQuote.Count; i++)
+                        {
+                            //splitByQuote[i] = _splitStr[i].TrimEnd(' ');
+                            //splitByQuote[i] = _splitStr[i].TrimStart(' ');
+                            splitByQuote[i] = splitByQuote[i].Trim(' ', '\"');
+                            _lineC.m_parameters_txt.Add(splitByQuote[i]);
+                        }
+
+                        // up to 6 parameters
+                        // flags do not use "" but the text string does
+                        // i.e. MakeDecision "Choice 1" choice_1 "Choice 2" choice_2 "Choice 3" choice_3
+                        // if(num of quotemarks != 6) mismatch error
+                        // 
+                        // This means splitStr is useless cus of spaces, and will need to be re-split in terms of " marks
+                        // i.e. splitStr[0] == "MakeDecision ";
+                        // splitStr[1] == "Choice 1";
+                        // splitStr[2] == " choice_1 ";
+                    }
                     break;
             }
             return;
