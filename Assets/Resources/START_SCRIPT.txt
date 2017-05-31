@@ -10,7 +10,7 @@ PlayMusic Lullaby_of_Open_Eyes
 
 A light breeze causes the naked branches overhead to rattle like wooden windchimes.
 
-//Goto OP_2
+Goto OP_2
 
 This is a popular retreat for couples in the summer. The deciduous trees provide a beautiful green canopy, far out of sight of teachers and fellow students.
 
@@ -216,6 +216,7 @@ HideWindow
 
 --OP_2
 
+ExecuteFunction snow_effect stop
 StopMusic
 Transition black tr-pronoise 0
 
@@ -245,7 +246,7 @@ NewPage
 HideWindow
 NewPage
 
-Transition hosp_room tr_eyes 0
+Transition hosp_room tr_eyes out
 
 PlayMusic Raindrops_and_Puddles
 
@@ -254,6 +255,8 @@ ShowWindow
 In that whole time, I can probably count the times I've left this hospital room unsupervised on one hand.
 
 Four months is a pretty long time when you're left alone with your thoughts. So, I've had plenty of time to come to terms with my situation.
+
+//Transition hosp_room tr_eyes out
 
 Arrhythmia.
 
@@ -297,7 +300,7 @@ We didn't touch the subject that was between us on that snowy day ever again.
 
 NewPage
 
-
+LoadScript TestScript_1
 
 
 

@@ -4,6 +4,7 @@
 		_SecondaryTex("Texture", 2D) = "white" {}
 		_TertiaryTex("Texture", 2D) = "white" {}
 		_Progress("Progress", Range(-1, 1)) = -1
+		_InOrOut("InOrOut", Range(0, 1)) = 0
 		_AmbientLighting("AmbientLighting", COLOR) = (1,1,1,1)
 	}
 		SubShader{
@@ -23,6 +24,7 @@
 		sampler2D _TertiaryTex;
 		float _Progress;
 		float3 _AmbientLighting;
+		float _InOrOut; // 0 == in, 1 == out
 
 		struct Input {
 			float2 uv_MainTex;
@@ -35,7 +37,20 @@
 			float4 destCol = tex2D(_SecondaryTex, IN.uv_SecondaryTex);
 			float4 trCol = tex2D(_TertiaryTex, IN.uv_TertiaryTex);
 
-			float temp = clamp(1 - (trCol.r - _Progress), 0, 1);
+			float temp;
+			if(_InOrOut == 0)
+				temp = clamp(1 - (trCol.r - _Progress), 0, 1);
+			else
+				temp = clamp(1 - ( ( 1 + (trCol.r * -1 ) ) - _Progress), 0, 1);
+
+			// 1 - (0.33f - 0.5f) == 1 - (-0.17f) == 1.17f
+			// 1 - (0.33f - 0.2f) == 1 - (0.13f)  == 0.87f
+			// 1 - ( ( 1 + ( 0.33f * -1 ) ) - 0.2f ) 
+			// 1 - ( ( 1 + -0.33f ) - 0.2f )
+			// 1 - ( (   0.66f    ) - 0.2f )
+			// 1 - ( 0.46f )
+			// 0.54f
+
 			float3 dest = lerp(col.rgb, destCol.rgb, temp);
 			dest.r = clamp(dest.r, 0, 1);
 			dest.g = clamp(dest.g, 0, 1);

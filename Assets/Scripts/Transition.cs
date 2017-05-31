@@ -5,6 +5,13 @@ using UnityEngine.UI;
 
 public class Transition : MonoBehaviour {
 
+    public enum IN_OR_OUT
+    {
+        IN,
+        OUT
+    }
+    public IN_OR_OUT inOrOut = IN_OR_OUT.IN;
+
     public float Speed = 1.0f;
     public float Delay = 1.0f;
     [HideInInspector]
@@ -33,6 +40,10 @@ public class Transition : MonoBehaviour {
         img.material.SetColor("_AmbientLighting", RenderSettings.ambientLight);
 
         img.material.SetFloat("_Progress", inc);
+        if(inOrOut == IN_OR_OUT.IN)
+            img.material.SetFloat("_InOrOut", 0);
+        else
+            img.material.SetFloat("_InOrOut", 1);
     }
 	
 	// Update is called once per frame
