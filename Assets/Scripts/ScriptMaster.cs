@@ -242,6 +242,13 @@ namespace M22
                         VNHandlerScript.ToggleVNMode();
                     NextLine();
                     break;
+                case LINETYPE.LOAD_SCRIPT:
+                    currentScript_c = M22.ScriptCompiler.CompileScript(_line.m_parameters_txt[0]);
+                    lineIndex = 0;
+                    CURRENT_LINE = currentScript_c.GetLine(lineIndex);
+                    TEXT.SetNewCurrentLine(CURRENT_LINE.m_lineContents);
+                    ExecuteFunction(CURRENT_LINE);
+                    break;
                 case LINETYPE.CLEAR_CHARACTERS:
                     VNHandlerScript.ClearCharacters();
                     HideText();
@@ -261,6 +268,7 @@ namespace M22
                     TransitionObj.srcSprite = background.sprite;
                     TransitionEffects.TryGetValue(_line.m_parameters_txt[1], out TransitionObj.effect);
                     TransitionObj.destSprite = M22.BackgroundMaster.GetBackground(_line.m_parameters_txt[0]);
+                    TransitionObj.inOrOut = ( String.Equals(_line.m_parameters_txt[2],"in") ? Transition.IN_OR_OUT.IN : Transition.IN_OR_OUT.OUT );
                     WaitState = WAIT_STATE.TRANSITION;
                     break;
                 case LINETYPE.NUM_OF_LINETYPES:

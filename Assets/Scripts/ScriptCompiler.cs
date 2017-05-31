@@ -34,6 +34,7 @@ namespace M22
         MAKE_DECISION,
         IF_STATEMENT,
         SET_FLAG,
+        LOAD_SCRIPT,
         NUM_OF_LINETYPES
     }
 
@@ -92,7 +93,8 @@ namespace M22
                 "DisableNovelMode",
                 "MakeDecision",
                 "m22IF",
-                "SetFlag"
+                "SetFlag",
+                "LoadScript"
         };
 
         private static void InitializeCharNames()
@@ -301,13 +303,11 @@ namespace M22
                     break;
                 case M22.LINETYPE.TRANSITION:
                     if (_splitStr.Count > 1)
-                    {
+                    {   //Transition other_iwanako tr_eyes 0
                         _lineC.m_parameters_txt = new List<string>();
-                        _lineC.m_parameters = new List<int>();
-                        _splitStr[2] = _splitStr[2].TrimEnd('\r', '\n');
                         _lineC.m_parameters_txt.Add(_splitStr[1]);
                         _lineC.m_parameters_txt.Add(_splitStr[2]);
-                        _lineC.m_parameters.Add(Int32.Parse(_splitStr[3]));
+                        _lineC.m_parameters_txt.Add(_splitStr[3]);
 
                         if (!M22.BackgroundMaster.LoadBackground(_lineC.m_parameters_txt[0]))
                         {
@@ -423,6 +423,13 @@ namespace M22
                 case M22.LINETYPE.ENABLE_NOVEL_MODE:
                     break;
                 case M22.LINETYPE.DISABLE_NOVEL_MODE:
+                    break;
+                case M22.LINETYPE.LOAD_SCRIPT:
+                    if (_splitStr.Count > 1)
+                    {
+                        _lineC.m_parameters_txt = new List<string>();
+                        _lineC.m_parameters_txt.Add(_splitStr[1]);
+                    }
                     break;
                 case M22.LINETYPE.SET_FLAG:
                     if (_splitStr.Count > 1)

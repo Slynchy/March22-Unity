@@ -1,0 +1,11 @@
+﻿//TestScript_1.txt
+
+--en_NOP2
+
+//ExecuteFunction snow_effect start
+DisableNovelMode
+HideWindow
+DrawBackground black
+ShowWindow
+
+Test Script 1! Wooooo!
