@@ -31,6 +31,7 @@ public class CustomFunctionHandler : MonoBehaviour {
         // ADD YOUR CUSTOM FUNCTIONS DOWN HERE
         CustomFuncs.Add("heart_throb", new CustomFunctionContainer("heart_throb", new CustomFunctions.HeartThrob()));
         CustomFuncs.Add("snow_effect", new CustomFunctionContainer("snow_effect", new CustomFunctions.SnowEffect()));
+        CustomFuncs.Add("HospitalMask", new CustomFunctionContainer("HospitalMask", new CustomFunctions.HospitalMask()));
 
         foreach (var item in CustomFuncs)
         {

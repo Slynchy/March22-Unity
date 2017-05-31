@@ -1,8 +1,0 @@
-Bug Tracker
-
-	- Transition flickers to image 2 before doing the transition
-		+ Current State: FIXED
-		+ Priority: Low
-	- Text sometimes has an extra newline 
-		+ Current State: FIXED
-		+ Priority: Low

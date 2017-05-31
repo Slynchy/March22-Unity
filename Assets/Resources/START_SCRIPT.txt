@@ -237,7 +237,7 @@ The last things I remember before slipping away are the sounds of Iwanako scream
 //m22IF testFlag1 PlayMusic Lullaby_of_Open_Eyes
 
 // This is where video would play!
-PlayVideo op_1
+//PlayVideo op_1
 //Transition black tr_eyes 0
 
 NewPage
@@ -248,6 +248,12 @@ HideWindow
 NewPage
 
 Transition hosp_room tr_eyes out
+
+//scene bg hosp_room
+//show sakura
+//show hospitalmask
+ExecuteFunction snow_effect start
+ExecuteFunction HospitalMask show
 
 PlayMusic Raindrops_and_Puddles
 
@@ -301,7 +307,87 @@ We didn't touch the subject that was between us on that snowy day ever again.
 
 NewPage
 
-LoadScript TestScript_1
+\nThe hospital?
+
+It's not really a place I'd like to live in.
+
+The doctors and nurses feel so impersonal and faceless.
+
+I guess it's because they are in a hurry and they have a million other patients waiting for them, but it makes me feel uncomfortable.
+
+For the first month or so, I asked the head cardiologist every time I saw him for a rough estimate of when I'd be able to leave.
+
+He never answered anything in a straightforward way, but told me to wait and see if the treatment and surgeries worked.
+
+\nSo, I idly observed the scar that those surgeries had left on my chest slowly change its appearance over time, thinking of it as some kind of an omen.
+
+I still ask the head cardiologist about leaving, but my expectations are low enough now that I'm not disappointed any more when I don't get a reply. The way he shuffles around the answer shows that there is at least some hope.
+
+NewPage
+
+\n\n\n\nAt some point I stopped watching TV. I don't know why, I just did.
+
+Maybe it was the wrong kind of escapism for my situation.
+
+\nI started reading instead. There was a small “library” at the hospital, although it was more like a storeroom for books. I began working my way through it, one small stack at a time. After consuming them, I would go back for more.
+
+I found that I liked reading and I think I even became a bit addicted. I started feeling naked without a book in my hands.
+
+\nBut I loved the stories.
+
+NewPage
+
+\nThat was what my life was like.
+
+\nThe days became increasingly harder to distinguish from each other, differing only by the book I was reading and the weather outside. It felt like time blurred into some kind of gooey mass I was trapped inside, instead of moving within.
+
+A week could go by without me really noticing it.
+
+Sometimes, I'd pause in realization that I didn't know what day of the week it was.
+
+But other times, all the things that surrounded me would painfully crash into my consciousness, through the barrier of nonchalance I had set up for myself.
+
+The pages of my book would start to feel sharp and burning hot and the heaviness in my chest would become so hard to bear that I had to put the book aside and just lay down for a while, looking at the ceiling as if I was going to cry.
+
+But that happened only rarely.
+
+\nAnd I couldn't even cry.
+
+NewPage
+
+DisableNovelMode
+
+Today, the doctor comes in and gives me a smile. He seems excited, but not very. It's like he is trying to make an effort to be happy on my behalf.
+
+My parents are here. It's been a few days since I've last seen them. Both of them are even sort of dressed up. Is this supposed to be some kind of special occasion? It's not a party.
+
+There is this ritual the head cardiologist has. He takes his time, sorting his papers, then setting them aside as if to make a point of the pointlessness of what he just did.
+
+Then he casually sits down on the edge of the bed next to mine. He looks me in the eyes for a moment.
+
+op_doctor Hello, Hisao. How are you today?
+
+I don't answer him but I smile a little, back at him.
+
+op_doctor I believe that you can go home; your heart is stronger now, and with some precautions, you should be fine.
+
+op_doctor We have all your medication sorted out. I'll give your father the prescription.
+
+The doctor hands a sheet of paper to my dad, whose expression turns wooden as he reads it quickly.
+
+op_dad So many…
+
+I take it from his hand and take a look myself, feeling numb. How am I supposed to react to this?
+
+
+
+
+
+
+
+
+
+
 
 
 
