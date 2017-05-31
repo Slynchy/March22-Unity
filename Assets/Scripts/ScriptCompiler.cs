@@ -35,6 +35,7 @@ namespace M22
         IF_STATEMENT,
         SET_FLAG,
         LOAD_SCRIPT,
+        PLAY_VIDEO,
         NUM_OF_LINETYPES
     }
 
@@ -94,7 +95,8 @@ namespace M22
                 "MakeDecision",
                 "m22IF",
                 "SetFlag",
-                "LoadScript"
+                "LoadScript",
+                "PlayVideo"
         };
 
         private static void InitializeCharNames()
@@ -423,6 +425,18 @@ namespace M22
                 case M22.LINETYPE.ENABLE_NOVEL_MODE:
                     break;
                 case M22.LINETYPE.DISABLE_NOVEL_MODE:
+                    break;
+                case M22.LINETYPE.PLAY_VIDEO:
+                    if (_splitStr.Count > 1)
+                    {
+                        _lineC.m_parameters_txt = new List<string>();
+                        _lineC.m_parameters_txt.Add(_splitStr[1]);
+
+                        if(M22.ScriptMaster.LoadVideoFile(_splitStr[1]) == false)
+                        {
+                            Debug.LogError("Failed to load video file: " + _splitStr[1]);
+                        }
+                    }
                     break;
                 case M22.LINETYPE.LOAD_SCRIPT:
                     if (_splitStr.Count > 1)

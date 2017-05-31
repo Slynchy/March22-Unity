@@ -237,6 +237,7 @@ The last things I remember before slipping away are the sounds of Iwanako scream
 //m22IF testFlag1 PlayMusic Lullaby_of_Open_Eyes
 
 // This is where video would play!
+PlayVideo op_1
 //Transition black tr_eyes 0
 
 NewPage

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -15,7 +16,8 @@ namespace M22
         CHARACTER_FADEIN,
         CHARACTER_FADEOUT,
         TRANSITION,
-        WAIT_COMMAND
+        WAIT_COMMAND,
+        VIDEO_PLAYING
     }
 
     public class ScriptMaster : MonoBehaviour
@@ -43,14 +45,35 @@ namespace M22
 
         public GameObject DecisionsPrefab;
 
+        public GameObject VideoPlayerPrefab;
+        private VideoPlayer VideoPlayerInstance;
+
         private Canvas CANVAS;
 
         public List<string> SCRIPT_FLAGS;
 
+        static public Dictionary<string,VideoClip> loadedVideoClips;
+
         private float waitCommandTimer = -1.0f;
+
+        static public bool LoadVideoFile(string _file)
+        {
+            if (loadedVideoClips.ContainsKey(_file))
+                return true;
+
+            VideoClip temp = Resources.Load<VideoClip>("Video/" + _file) as VideoClip;
+            if (temp == null)
+                return false;
+            else
+            {
+                loadedVideoClips.Add(_file,temp);
+                return true;
+            }
+        }
 
         void Awake()
         {
+            loadedVideoClips = new Dictionary<string, VideoClip>();
             SCRIPT_FLAGS = new List<string>();
             M22.ScriptCompiler.Initialize();
 
@@ -97,6 +120,9 @@ namespace M22
             TransitionEffects.Add("tr_eyes", Resources.Load<Sprite>("Transitions/tr_eyes") as Sprite);
             TransitionEffects.Add("default", Resources.Load<Sprite>("white") as Sprite);
             TransitionEffects.Add("tr-pronoise", Resources.Load<Sprite>("Transitions/tr-pronoise") as Sprite);
+
+            if (VideoPlayerPrefab == null)
+                Debug.LogError("VideoPlayerPrefab not attached to ScriptMaster! Check this under Main Camera!");
 
             CURRENT_LINE = currentScript_c.GetLine(lineIndex);
             TEXT.SetNewCurrentLine(CURRENT_LINE.m_lineContents);
@@ -242,6 +268,16 @@ namespace M22
                         VNHandlerScript.ToggleVNMode();
                     NextLine();
                     break;
+                case LINETYPE.PLAY_VIDEO:
+                    VideoPlayerInstance = GameObject.Instantiate<GameObject>(VideoPlayerPrefab,CANVAS.transform).GetComponent<VideoPlayer>();
+                    VideoPlayerInstance.targetCamera = Camera.main;
+                    VideoClip tempVid;
+                    loadedVideoClips.TryGetValue(_line.m_parameters_txt[0], out tempVid);
+                    VideoPlayerInstance.clip = tempVid;
+                    VideoPlayerInstance.SetTargetAudioSource(0, Camera.main.GetComponent<AudioSource>());
+                    VideoPlayerInstance.Play();
+                    WaitState = WAIT_STATE.VIDEO_PLAYING;
+                    break;
                 case LINETYPE.LOAD_SCRIPT:
                     currentScript_c = M22.ScriptCompiler.CompileScript(_line.m_parameters_txt[0]);
                     lineIndex = 0;
@@ -352,6 +388,14 @@ namespace M22
 
             switch (WaitState)
             {
+                case WAIT_STATE.VIDEO_PLAYING:
+                    if(VideoPlayerInstance.isPlaying == false)
+                    {
+                        WaitState = WAIT_STATE.NOT_WAITING;
+                        Destroy(VideoPlayerInstance.gameObject);
+                        NextLine();
+                    }
+                    break;
                 case WAIT_STATE.CHARACTER_FADEIN:
                     int size = GameObject.FindGameObjectsWithTag("Character").Length;
                     int count = 0;
