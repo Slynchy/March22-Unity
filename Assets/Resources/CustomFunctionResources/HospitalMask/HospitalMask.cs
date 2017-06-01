@@ -34,6 +34,7 @@ namespace CustomFunctions
                 HospitalMaskInstance = GameObject.Find("HospitalMaskInstance");
                 if (HospitalMaskInstance != null) GameObject.Destroy(HospitalMaskInstance);
             }
+            Camera.main.GetComponent<M22.ScriptMaster>().NextLine();
         }
     }
 }
