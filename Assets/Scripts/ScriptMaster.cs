@@ -47,8 +47,18 @@ namespace M22
 
         public GameObject VideoPlayerPrefab;
         private VideoPlayer VideoPlayerInstance;
-
-        private Canvas CANVAS;
+        
+        private List<Canvas> Canvases;
+        public enum CANVAS_TYPES
+        {
+            BACKGROUND,
+            PRECHARACTER,
+            CHARACTER,
+            POSTCHARACTER,
+            TEXTBOX,
+            EFFECTS,
+            NUM_OF_CANVASES
+        }
 
         public List<string> SCRIPT_FLAGS;
 
@@ -73,6 +83,7 @@ namespace M22
 
         void Awake()
         {
+            Canvases = new List<Canvas>((int)CANVAS_TYPES.NUM_OF_CANVASES);
             loadedVideoClips = new Dictionary<string, VideoClip>();
             SCRIPT_FLAGS = new List<string>();
             M22.ScriptCompiler.Initialize();
@@ -111,8 +122,13 @@ namespace M22
                 if (backgroundTrans == null)
                     Debug.Log("This also failed! :(");
             }
-
-            CANVAS = Camera.main.GetComponentInChildren<Canvas>();
+            
+            Canvases.Add(GameObject.Find("BackgroundCanvas").GetComponent<Canvas>());
+            Canvases.Add(GameObject.Find("PreCharacterEffectCanvas").GetComponent<Canvas>());
+            Canvases.Add(GameObject.Find("CharacterCanvas").GetComponent<Canvas>());
+            Canvases.Add(GameObject.Find("PostCharacterEffectCanvas").GetComponent<Canvas>());
+            Canvases.Add(GameObject.Find("TextboxCanvas").GetComponent<Canvas>());
+            Canvases.Add(GameObject.Find("EffectCanvas").GetComponent<Canvas>());
 
             if (TransitionPrefab == null)
                 Debug.LogError("TransitionPrefab not attached to ScriptMaster! Check this under Main Camera!");
@@ -252,7 +268,7 @@ namespace M22
                     }
                     break;
                 case LINETYPE.MAKE_DECISION:
-                    GameObject tempObj = GameObject.Instantiate<GameObject>(DecisionsPrefab, CANVAS.transform);
+                    GameObject tempObj = GameObject.Instantiate<GameObject>(DecisionsPrefab, Canvases[(int)CANVAS_TYPES.EFFECTS].transform);
                     if(_line.m_parameters_txt.Count == 6)
                         tempObj.GetComponent<Decision>().Initialize(_line.m_parameters_txt[0], _line.m_parameters_txt[1], _line.m_parameters_txt[2], _line.m_parameters_txt[3], _line.m_parameters_txt[4], _line.m_parameters_txt[5]);
                     else
@@ -269,7 +285,7 @@ namespace M22
                     NextLine();
                     break;
                 case LINETYPE.PLAY_VIDEO:
-                    VideoPlayerInstance = GameObject.Instantiate<GameObject>(VideoPlayerPrefab,CANVAS.transform).GetComponent<VideoPlayer>();
+                    VideoPlayerInstance = GameObject.Instantiate<GameObject>(VideoPlayerPrefab, Canvases[(int)CANVAS_TYPES.EFFECTS].transform).GetComponent<VideoPlayer>();
                     VideoPlayerInstance.targetCamera = Camera.main;
                     VideoClip tempVid;
                     loadedVideoClips.TryGetValue(_line.m_parameters_txt[0], out tempVid);
@@ -298,7 +314,7 @@ namespace M22
                         Debug.LogError("Failed to find custom function: " + _line.m_parameters_txt[0]);
                     break;
                 case LINETYPE.TRANSITION:
-                    GameObject tempGO = GameObject.Instantiate<GameObject>(TransitionPrefab, GameObject.Find("Canvas").transform);
+                    GameObject tempGO = GameObject.Instantiate<GameObject>(TransitionPrefab, Canvases[(int)CANVAS_TYPES.EFFECTS].transform);
                     Transition TransitionObj = tempGO.GetComponent<Transition>();
                     TransitionObj.callback = FadeToBlackCallback;
                     TransitionObj.srcSprite = background.sprite;
@@ -317,6 +333,12 @@ namespace M22
             }
         }
         
+        public Canvas GetCanvas(CANVAS_TYPES _type)
+        {
+            if (_type == CANVAS_TYPES.NUM_OF_CANVASES) return null;
+            return Canvases[(int)_type];
+        }
+
         public void FadeToBlackCallback()
         {
             Transition temp = GameObject.FindGameObjectWithTag("Transition").GetComponent<Transition>();

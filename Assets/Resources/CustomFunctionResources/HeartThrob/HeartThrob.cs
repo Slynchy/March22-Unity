@@ -18,7 +18,7 @@ namespace CustomFunctions
 
         public override void Func(string param1, string param2, string param3)
         {
-            HeartThrobInstance = GameObject.Instantiate<GameObject>(HeartThrobPrefab, GameObject.Find("Canvas").transform);
+            HeartThrobInstance = GameObject.Instantiate<GameObject>(HeartThrobPrefab, GameObject.Find("EffectCanvas").transform);
             HeartThrobScript = HeartThrobInstance.GetComponent<HeartThrobObjectScript>();
             HeartThrobScript.fadeInSpeed = float.Parse(param1);
             HeartThrobScript.fadeOutSpeed = float.Parse(param2);

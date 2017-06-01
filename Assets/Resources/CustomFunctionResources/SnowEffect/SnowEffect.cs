@@ -33,7 +33,7 @@ namespace CustomFunctions
             // starting
             if(stopOrStart == true)
             {
-                SnowEffectInstance = GameObject.Instantiate<GameObject>(SnowEffectPrefab, Camera.main.GetComponentInChildren<Canvas>().transform);
+                SnowEffectInstance = GameObject.Instantiate<GameObject>(SnowEffectPrefab, GameObject.Find("PostCharacterEffectCanvas").transform);
                 SnowEffectScript = SnowEffectInstance.GetComponent<SnowEffectObjectScript>();
             }
             else // stopping
