@@ -26,7 +26,7 @@ namespace CustomFunctions
         {
             if(param1.Equals("show"))
             {
-                HospitalMaskInstance = GameObject.Instantiate<GameObject>(HospitalMaskPrefab, ScriptMaster.GetCanvas(M22.ScriptMaster.CANVAS_TYPES.PRECHARACTER).transform);
+                HospitalMaskInstance = GameObject.Instantiate<GameObject>(HospitalMaskPrefab, ScriptMaster.GetCanvas(M22.ScriptMaster.CANVAS_TYPES.POSTCHARACTER).transform);
                 HospitalMaskScript = HospitalMaskInstance.GetComponent<HospitalMaskObjectScript>();
             }
             else
