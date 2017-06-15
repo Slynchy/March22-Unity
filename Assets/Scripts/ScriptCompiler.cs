@@ -103,6 +103,7 @@ namespace M22
         {
             CharacterNames = new Dictionary<ulong, script_character>();
             string tempStr = (Resources.Load("CHARACTER_NAMES") as TextAsset).text;
+            tempStr += "\n\n"; // <- hack to fix last line being cut off
 
             string[] lines = tempStr.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
