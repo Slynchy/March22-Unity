@@ -99,36 +99,43 @@ namespace M22
         {
             VNHandlerScript = this.gameObject.GetComponent<M22.VNHandler>();
             AudioMasterScript = this.gameObject.GetComponent<AudioMaster>();
-            currentScript_c = M22.ScriptCompiler.CompileScript("START_SCRIPT");
             TextboxIMG = GameObject.Find("Textbox").GetComponent<Image>();
             if (TEXT == null)
             {
                 Debug.Log("TEXT not found in ScriptMaster; falling back to searching...");
-                TEXT = GameObject.Find("Text").GetComponent<TypeWriterScript>();
+                TEXT = TextboxIMG.gameObject.GetComponentInChildren<TypeWriterScript>();
                 if (TEXT == null)
                     Debug.Log("This also failed! :(");
             }
             if (background == null)
             {
                 Debug.Log("background not found in ScriptMaster; falling back to searching...");
-                background = GameObject.Find("Background").GetComponent<Image>();
+                if(GameObject.Find("Background") != null)
+                    background = GameObject.Find("Background").GetComponent<Image>();
                 if (background == null)
                     Debug.Log("This also failed! :(");
             }
             if (backgroundTrans == null)
             {
                 Debug.Log("backgroundTrans not found in ScriptMaster; falling back to searching...");
-                backgroundTrans = GameObject.Find("BackgroundTransition").GetComponent<Image>();
+                if (GameObject.Find("BackgroundTransition") != null)
+                    backgroundTrans = GameObject.Find("BackgroundTransition").GetComponent<Image>();
                 if (backgroundTrans == null)
                     Debug.Log("This also failed! :(");
             }
-            
-            Canvases.Add(GameObject.Find("BackgroundCanvas").GetComponent<Canvas>());
-            Canvases.Add(GameObject.Find("PreCharacterEffectCanvas").GetComponent<Canvas>());
-            Canvases.Add(GameObject.Find("CharacterCanvas").GetComponent<Canvas>());
-            Canvases.Add(GameObject.Find("PostCharacterEffectCanvas").GetComponent<Canvas>());
-            Canvases.Add(GameObject.Find("TextboxCanvas").GetComponent<Canvas>());
-            Canvases.Add(GameObject.Find("EffectCanvas").GetComponent<Canvas>());
+
+            if (GameObject.Find("BackgroundCanvas") != null)
+                Canvases.Add(GameObject.Find("BackgroundCanvas").GetComponent<Canvas>());
+            if (GameObject.Find("PreCharacterEffectCanvas") != null)
+                Canvases.Add(GameObject.Find("PreCharacterEffectCanvas").GetComponent<Canvas>());
+            if (GameObject.Find("CharacterCanvas") != null)
+                Canvases.Add(GameObject.Find("CharacterCanvas").GetComponent<Canvas>());
+            if (GameObject.Find("PostCharacterEffectCanvas") != null)
+                Canvases.Add(GameObject.Find("PostCharacterEffectCanvas").GetComponent<Canvas>());
+            if (GameObject.Find("TextboxCanvas") != null)
+                Canvases.Add(GameObject.Find("TextboxCanvas").GetComponent<Canvas>());
+            if (GameObject.Find("EffectCanvas") != null)
+                Canvases.Add(GameObject.Find("EffectCanvas").GetComponent<Canvas>());
 
             if (TransitionPrefab == null)
                 Debug.LogError("TransitionPrefab not attached to ScriptMaster! Check this under Main Camera!");
@@ -140,9 +147,8 @@ namespace M22
             if (VideoPlayerPrefab == null)
                 Debug.LogError("VideoPlayerPrefab not attached to ScriptMaster! Check this under Main Camera!");
 
-            CURRENT_LINE = currentScript_c.GetLine(lineIndex);
-            TEXT.SetNewCurrentLine(CURRENT_LINE.m_lineContents);
-            ExecuteFunction(CURRENT_LINE);
+            if (TextboxIMG != null)
+                HideText();
         }
 
         public delegate void VoidDelegate();
@@ -295,11 +301,7 @@ namespace M22
                     WaitState = WAIT_STATE.VIDEO_PLAYING;
                     break;
                 case LINETYPE.LOAD_SCRIPT:
-                    currentScript_c = M22.ScriptCompiler.CompileScript(_line.m_parameters_txt[0]);
-                    lineIndex = 0;
-                    CURRENT_LINE = currentScript_c.GetLine(lineIndex);
-                    TEXT.SetNewCurrentLine(CURRENT_LINE.m_lineContents);
-                    ExecuteFunction(CURRENT_LINE);
+                    LoadScript(_line.m_parameters_txt[0]);
                     break;
                 case LINETYPE.CLEAR_CHARACTERS:
                     VNHandlerScript.ClearCharacters();
@@ -325,7 +327,8 @@ namespace M22
                     break;
                 case LINETYPE.NUM_OF_LINETYPES:
                     // do nuzing.
-                    Debug.LogError("End of script! This shouldn't happen; make sure your script ends properly!");
+                    Debug.Log("End of script! This shouldn't really happen; make sure your script ends properly!");
+                    HideText();
                     break;
                 default:
                     NextLine();
@@ -381,12 +384,17 @@ namespace M22
 
         void Update()
         {
-            if (WaitState == WAIT_STATE.NOT_WAITING && backgroundTrans.color.a == 0 && Input.GetKeyDown(KeyCode.Return))
+            if (WaitState == WAIT_STATE.NOT_WAITING && Input.GetKeyDown(KeyCode.Return))
             {
-                FireInput();
+                if(backgroundTrans != null && backgroundTrans.color.a != 0)
+                {
+                    //nullop
+                }
+                else
+                    FireInput();
             }
 
-            if (backgroundTrans.color.a != 0)
+            if (backgroundTrans != null && backgroundTrans.color.a != 0)
             {
                 backgroundTrans.color = new Color(
                     backgroundTrans.color.r,
@@ -456,6 +464,22 @@ namespace M22
                     break;
             }
             
+        }
+
+        public void LoadScript(string _fname)
+        {
+            currentScript_c = M22.ScriptCompiler.CompileScript(_fname);
+            lineIndex = 0;
+            TEXT.Reset(true);
+            CURRENT_LINE = currentScript_c.GetLine(lineIndex);
+            TEXT.SetNewCurrentLine(CURRENT_LINE.m_lineContents);
+            ExecuteFunction(CURRENT_LINE);
+        }
+
+        public void DialogueExampleFunction()
+        {
+            LoadScript("DialogueExample");
+            ShowText();
         }
 
         static public M22.LINETYPE CheckLineType(string _input)

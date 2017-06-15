@@ -58,8 +58,8 @@ namespace M22
         void Start()
         {
             loadedCharacters = new Dictionary<string, Character>();
-            Text = GameObject.Find("Text").GetComponent<Text>();
-            Textrect = GameObject.Find("Text").GetComponent<RectTransform>();
+            Text = GameObject.Find("M22ScriptText").GetComponent<Text>();
+            Textrect = GameObject.Find("M22ScriptText").GetComponent<RectTransform>();
             Textbox = GameObject.Find("Textbox").GetComponent<Image>();
             CharacterName = (GameObject.Find("CharName") != null ? GameObject.Find("CharName").GetComponent<Text>() : null);
 
