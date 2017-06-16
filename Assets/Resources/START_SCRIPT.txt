@@ -1,7 +1,7 @@
 ﻿--en_NOP1
 
+HideWindow 100.0
 ExecuteFunction snow_effect start
-HideWindow
 DrawBackground op_snowywoods
 
 ShowWindow
@@ -10,7 +10,7 @@ PlayMusic Lullaby_of_Open_Eyes
 
 A light breeze causes the naked branches overhead to rattle like wooden windchimes.
 
-Goto OP_2
+//Goto debugGotoDest
 
 This is a popular retreat for couples in the summer. The deciduous trees provide a beautiful green canopy, far out of sight of teachers and fellow students.
 
@@ -23,8 +23,6 @@ But now, in late winter, it feels like I'm standing under a pile of kindling.
 //GoFromBlack default
 
 I breathe into my cupped hands and rub them together furiously to prevent them from numbing in this cold.
-
-//DrawCharacter shizu adjust_happy 0
 
 hi "Just how long am I expected to wait out here, anyway? I'm sure the note said 4:00 PM."
 
@@ -81,9 +79,8 @@ StopMusic
 
 HideWindow
 
-//DrawBackground op_snowywoods
-ExecuteFunction snow_effect stop
-Transition op_snowywoods default 0
+DrawBackground op_snowywoods
+//Transition op_snowywoods default 0
 
 
 PlaySting heart_single_slow
@@ -133,8 +130,8 @@ All the while, the anxious beating of my heart grows louder.
 
 HideWindow
 
-//DrawBackground op_snowywoods
-Transition op_snowywoods default 0
+DrawBackground op_snowywoods
+//Transition op_snowywoods default 0
 
 ShowWindow
 
@@ -237,8 +234,8 @@ The last things I remember before slipping away are the sounds of Iwanako scream
 //m22IF testFlag1 PlayMusic Lullaby_of_Open_Eyes
 
 // This is where video would play!
-//PlayVideo op_1
-//Transition black tr_eyes 0
+PlayVideo op_1
+Transition black tr_eyes 0
 
 NewPage
 
@@ -355,7 +352,10 @@ But that happened only rarely.
 
 NewPage
 
+HideWindow
+Wait 500
 DisableNovelMode
+ShowWindow
 
 Today, the doctor comes in and gives me a smile. He seems excited, but not very. It's like he is trying to make an effort to be happy on my behalf.
 
@@ -365,30 +365,211 @@ There is this ritual the head cardiologist has. He takes his time, sorting his p
 
 Then he casually sits down on the edge of the bed next to mine. He looks me in the eyes for a moment.
 
-op_doctor Hello, Hisao. How are you today?
+op_doctor "Hello, Hisao. How are you today?"
 
 I don't answer him but I smile a little, back at him.
 
-op_doctor I believe that you can go home; your heart is stronger now, and with some precautions, you should be fine.
+op_doctor "I believe that you can go home; your heart is stronger now, and with some precautions, you should be fine."
 
-op_doctor We have all your medication sorted out. I'll give your father the prescription.
+op_doctor "We have all your medication sorted out. I'll give your father the prescription."
 
 The doctor hands a sheet of paper to my dad, whose expression turns wooden as he reads it quickly.
 
-op_dad So many…
+op_dad "So many…"
 
 I take it from his hand and take a look myself, feeling numb. How am I supposed to react to this?
 
+// wallodrugs scene
 
+The absurdly long list of medications staring back at me from the paper seems insurmountable. They all blend together in a sea of letters.
 
+This is insane.
 
+Side effects, adverse effects, contraindications and dosages are listed line after line with cold precision.
 
+I try to read them, but it's so futile.
 
+I can't understand any of it. Attempting to only makes me feel sicker.
 
+All this… for the rest of my life, every day?
 
+op_doctor "I'm afraid that is the best we can do at this point."
 
+op_doctor "However, new medications are always being developed, so I wouldn't be surprised to see that list fade over the years."
 
+Years… What kind of confidence booster is that? I'd have felt better if he hadn't said anything at all…
 
+op_doctor "Also, I've spoken with your parents and we believe that it would be best if you don't return to your old school."
+
+What!?
+
+op_dad "Please, calm down, Hisao. Listen to what the doctor has to say…"
+
+Calm down? The way he says it tells me he knew full well that I wouldn't like it. Am I going to be home schooled?
+
+Whatever of my concern shows, it's ignored.
+
+op_doctor "We all understand that your education is paramount; however, I don't think that it's wise for you to be without supervision."
+
+op_doctor "At least not until we're sure that your medication is suitable."
+
+op_doctor "So, I've spoken to your parents about a transfer."
+
+op_doctor "It's a school called Yamaku Academy that specializes in dealing with disabled students."
+
+Disabled? What? Am I…
+
+op_doctor "It has a 24-hour nursing staff and it's only a few minutes from a highly regarded general hospital. The majority of students live on the campus."
+
+op_doctor "Think of it as a boarding school of sorts. It's designed to give students a degree of independence, while keeping help nearby."
+
+Independence? It's a school for disabled kids. Don't try to disguise that fact.
+
+If it was really that “free,” there wouldn't be a 24-hour nursing staff, and you wouldn't make a hospital being nearby a selling point.
+
+op_dad "Of course, that's only if you want to go. But… your mother and I aren't really able to home school you."
+
+op_dad "We went out there and had a look a couple of weeks back; I think you'd like it."
+
+It looks like I really don't have a choice.
+
+op_doctor "Compared to other heart problems, people with your condition usually tend to live long lives. You'll need a job one day and this is a good opportunity to continue your education."
+
+This isn't an opportunity, don't call it an opportunity. Don't call it a goddamned opportunity.
+
+op_doctor "Well, you should be excited at the chance to go back to school. I remember you wanted to return to school, and while it's not the same one…"
+
+A special school. That's…
+
+An insult. That is what I want to say. It's a step down.
+
+op_dad "It's not what you think. All of the students there are pretty active, in their own sort of way."
+
+op_dad "It's geared towards students that can still get around and learn, but just need a little help… in one way or another."
+
+op_doctor "Your father's right. And many of the graduates of the school have gone on to do amazing things. A person doesn't have to be held back by their disability."
+
+op_doctor "One of my colleagues in another hospital is a graduate."
+
+I don't care. A person doesn't have to be held back by their disability? That's what a disability is.
+
+I really hate that something so important was decided for me. But what can I do about it? A “normal” life is out of the question now.
+
+StopMusic 0.11
+
+It's funny, I had always thought my life was actually kind of boring, but now I miss it.
+
+I want to protest. I want to blame this lack of reaction on shock, or fatigue. I could easily yell out something now - something about how I can go back to school anyway. But, no.
+
+I don't say anything. The fact is that I know now it's futile.
+
+I look around the room, feeling very tired of all this. The hospital, doctors, my condition, everything. I don't see anything that would make me feel any different.
+
+There really isn't a choice. I know this, but the thought of going to a disabled school… what are those even like? As much as I try to put a positive spin on this, it's very difficult.
+
+But let me try.
+
+A clean slate isn't a bad thing.
+
+That is all I can think of to get me through this. At least I still have something; even if it's a “special school,” it's something. It's a fresh start, and my life isn't over. It would be a mistake to just resign myself to thinking that.
+
+At the very least, I'll try to see what my new life will look like.
+
+HideWindow
+ExecuteFunction snow_effect stop
+Transition white default 0
+ExecuteFunction HospitalMask hide
+//PlayVideo tc_act1
+
+--en_A1
+
+	DrawBackground school_gate
+	PlayMusic Fripperies
+	ShowWindow
+
+	The gate looked far too pompous for what it was.
+
+	In fact, gates in general seem to do that, but this one especially so.
+
+	Red bricks, black wrought iron and gray plaster, assembled into a whole that didn't feel welcoming at all.
+
+	I wondered if it looked like what a gate for a school should look like, but couldn't really decide. Probably no.
+
+	Of course I didn't want to get stuck on thinking about the gate for too long, so I entered through it with a brisk pace that felt surprisingly good.
+
+	Moving forward feels good.
+
+	//scene bg school_courtyard
+	//with locationchange
+	HideWindow
+	Transition school_courtyard tr-softwipe 0
+	ShowWindow
+
+	So I walk towards the main building of Yamaku Academy with this brisk pace. I'm alone, as my parents are taking my stuff to the dorms, and there's supposed to be someone waiting for me.
+
+	The grounds are incredibly lush, filled with green.
+
+	It doesn't feel like the kind of grounds a school would have, more like a park, with a clean walkway going past trees and the smell of fresh-cut grass and all other park-like things.
+
+	Words like “clean” and “hygienic” pop into my mind. It makes me shudder.
+
+	I shake them off. Stay open-minded now. It's your new life. You have to take it as it comes.
+
+	That's what I tell myself.
+
+	A few big buildings loom behind the leafy canopies, too big and too many for just a school.
+
+	Everything seems off; it's different from what I thought I knew about schools.
+
+	It's an uncanny valley. Even though I was told this is my new school, in the back of my head it doesn't feel like one.
+
+	I wonder if the feeling is real or caused by my expectations of a school for the disabled.
+
+	Speaking of that, I don't see anyone else here. It's kinda eerie.
+
+	It makes me wish there was somebody here so I could anchor myself to something tangible instead of having this feeling that I stepped into another dimension.
+
+	The trees hum with the wind and the green hues flashing all around me catch my attention.
+
+	It makes me think about hospitals again, how they say that the operating rooms are painted green because green is a calming color.
+
+	So why am I feeling so anxious, despite all this greenery?
+
+	…
+
+	Only after I stand in front of the haughty main building, I surprise myself by realizing why the gate bothered me:
+
+	It was the last chance I had to turn back, even if I had no life I could return to.
+
+	But still, after entering, there was absolutely no way I could go back any more.
+
+	Feeling nervous and with this realization set in my head, I open the front door.
+	
+	--debugGotoDest
+	
+	HideWindow
+	//StopMusic 1.0
+	ExecuteFunction snow_effect stop
+	Transition school_lobby tr-softwipe 0
+	ShowWindow
+
+	A tall man with bad posture notices me as I enter. We're the only people in the lobby, so it's only logical.
+
+	//show muto normal at center
+	//with charaenter
+	DrawCharacter muto normal 0
+
+	mystery "You must be… Ni… Na… Niki?"
+
+	hi "Nakai."
+
+	//show muto smile
+	//with charachange
+	DrawCharacter muto smile 0
+
+	mystery "So you are. Excellent. I'm your homeroom and science teacher. My name is Mutou."
+
+	mu "Welcome."
 
 
 

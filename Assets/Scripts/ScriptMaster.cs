@@ -7,6 +7,51 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 
+public static class FadeEffectClass
+{
+
+    public static IEnumerator FadeOutIMG(Image img, float FadeTime)
+    {
+        while (img.color.a > 0)
+        {
+            img.color = new Color(img.color.r, img.color.g, img.color.b, img.color.a - (Time.deltaTime * FadeTime));
+
+            yield return null;
+        }
+    }
+
+    public static IEnumerator FadeInIMG(Image img, float FadeTime)
+    {
+        while (img.color.a < 1)
+        {
+            img.color = new Color(img.color.r, img.color.g, img.color.b, img.color.a + (Time.deltaTime * FadeTime));
+
+            yield return null;
+        }
+    }
+
+    public static IEnumerator FadeInTXT(Text img, float FadeTime)
+    {
+        while (img.color.a < 1)
+        {
+            img.color = new Color(img.color.r, img.color.g, img.color.b, img.color.a + (Time.deltaTime * FadeTime));
+
+            yield return null;
+        }
+    }
+
+    public static IEnumerator FadeOutTXT(Text img, float FadeTime)
+    {
+        while (img.color.a > 0)
+        {
+            img.color = new Color(img.color.r, img.color.g, img.color.b, img.color.a - (Time.deltaTime * FadeTime));
+
+            yield return null;
+        }
+    }
+
+}
+
 namespace M22
 {
     
@@ -141,8 +186,10 @@ namespace M22
                 Debug.LogError("TransitionPrefab not attached to ScriptMaster! Check this under Main Camera!");
             TransitionEffects = new Dictionary<string, Sprite>();
             TransitionEffects.Add("tr_eyes", Resources.Load<Sprite>("Transitions/tr_eyes") as Sprite);
-            TransitionEffects.Add("default", Resources.Load<Sprite>("white") as Sprite);
+            TransitionEffects.Add("default", Resources.Load<Sprite>("Images/white") as Sprite);
             TransitionEffects.Add("tr-pronoise", Resources.Load<Sprite>("Transitions/tr-pronoise") as Sprite);
+            TransitionEffects.Add("tr-clockwipe", Resources.Load<Sprite>("Transitions/tr-clockwipe") as Sprite);
+            TransitionEffects.Add("tr-softwipe", Resources.Load<Sprite>("Transitions/tr-softwipe") as Sprite);
 
             if (VideoPlayerPrefab == null)
                 Debug.LogError("VideoPlayerPrefab not attached to ScriptMaster! Check this under Main Camera!");
@@ -228,11 +275,17 @@ namespace M22
                     NextLine();
                     break;
                 case LINETYPE.HIDE_WINDOW:
-                    HideText();
+                    if (_line.m_parameters_txt != null && _line.m_parameters_txt.Count >= 1)
+                        HideText(true,float.Parse(_line.m_parameters_txt[0]));
+                    else
+                        HideText();
                     NextLine();
                     break;
                 case LINETYPE.SHOW_WINDOW:
-                    ShowText();
+                    if (_line.m_parameters_txt != null && _line.m_parameters_txt.Count >= 1)
+                        ShowText(true, float.Parse(_line.m_parameters_txt[0]));
+                    else
+                        ShowText();
                     NextLine();
                     break;
                 case LINETYPE.SET_FLAG:
@@ -293,6 +346,7 @@ namespace M22
                 case LINETYPE.PLAY_VIDEO:
                     VideoPlayerInstance = GameObject.Instantiate<GameObject>(VideoPlayerPrefab, Canvases[(int)CANVAS_TYPES.EFFECTS].transform).GetComponent<VideoPlayer>();
                     VideoPlayerInstance.targetCamera = Camera.main;
+                    AudioMasterScript.StopMusic("100.0");
                     VideoClip tempVid;
                     loadedVideoClips.TryGetValue(_line.m_parameters_txt[0], out tempVid);
                     VideoPlayerInstance.clip = tempVid;
@@ -362,29 +416,43 @@ namespace M22
             }
         }
 
-        void HideText()
+        void HideText(bool _fade = true, float _speed = 6.0f)
         {
             for (int i = 0; i < TextboxIMG.gameObject.transform.childCount; i++)
             {
                 var obj = TextboxIMG.gameObject.transform.GetChild(i).gameObject.GetComponent<Text>();
-                obj.color = new Color(255, 255, 255, 0);
+                if (_fade == true)
+                    StartCoroutine(FadeEffectClass.FadeOutTXT(obj, _speed));
+                else
+                    obj.color = new Color(255, 255, 255, 0);
             }
-            TextboxIMG.color = new Color(255, 255, 255, 0);
+
+            if (_fade == true)
+                StartCoroutine(FadeEffectClass.FadeOutIMG(TextboxIMG, _speed));
+            else
+                TextboxIMG.color = new Color(255, 255, 255, 0);
         }
 
-        void ShowText()
+        void ShowText(bool _fade = true, float _speed = 6.0f)
         {
             for (int i = 0; i < TextboxIMG.gameObject.transform.childCount; i++)
             {
                 var obj = TextboxIMG.gameObject.transform.GetChild(i).gameObject.GetComponent<Text>();
-                obj.color = new Color(255, 255, 255, 255);
+                if (_fade == true)
+                    StartCoroutine(FadeEffectClass.FadeInTXT(obj, _speed));
+                else
+                    obj.color = new Color(255, 255, 255, 255);
             }
-            TextboxIMG.color = new Color(255, 255, 255, 255);
+
+            if (_fade == true)
+                StartCoroutine(FadeEffectClass.FadeInIMG(TextboxIMG, _speed));
+            else
+                TextboxIMG.color = new Color(255, 255, 255, 255);
         }
 
         void Update()
         {
-            if (WaitState == WAIT_STATE.NOT_WAITING && Input.GetKeyDown(KeyCode.Return))
+            if ((WaitState == WAIT_STATE.NOT_WAITING && Input.GetKeyDown(KeyCode.Return)) || (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
             {
                 if(backgroundTrans != null && backgroundTrans.color.a != 0)
                 {

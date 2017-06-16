@@ -3,3 +3,4 @@ mystery "???" 255 255 255
 iwanako "Iwanako" 255 255 255
 op_dad "Dad" 255 255 255
 op_doctor "Doctor" 255 255 255
+mu "Mutou" 255 255 255

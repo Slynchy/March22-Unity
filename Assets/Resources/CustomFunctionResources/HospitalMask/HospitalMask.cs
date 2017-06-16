@@ -31,8 +31,10 @@ namespace CustomFunctions
             }
             else
             {
-                HospitalMaskInstance = GameObject.Find("HospitalMaskInstance");
-                if (HospitalMaskInstance != null) GameObject.Destroy(HospitalMaskInstance);
+                if (HospitalMaskInstance == null)
+                    Debug.Log("Can't delete mask, there is no mask!");
+                else
+                    GameObject.Destroy(HospitalMaskInstance);
             }
             Camera.main.GetComponent<M22.ScriptMaster>().NextLine();
         }

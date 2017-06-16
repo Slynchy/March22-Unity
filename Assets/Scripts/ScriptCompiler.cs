@@ -48,6 +48,7 @@ namespace M22
         public string m_lineContents;
         public script_character m_speaker; 
         public int m_ID;
+        public int m_origScriptPos; // used to tell where it is in the original script
     }
 
     public struct script_checkpoint
@@ -141,10 +142,12 @@ namespace M22
             if (s == "\r\n" || s == "\n") return true;
             else return false;
         }
+
         private static bool IsComment(string s)
         {
             if (s.Length == 0) return true;
             if (s.Length == 1) return false;
+            s = s.Trim('\t');
 
             if (s[0] == '/' && s[1] == '/')
                 return true;
@@ -208,13 +211,19 @@ namespace M22
                 }
             }
 
-            scriptLines.RemoveAll(IsNewLine);
-            scriptLines.RemoveAll(IsComment);
-
             List<string> CURRENT_LINE_SPLIT = new List<string>();
             int scriptPos = 0;
             for (int i = 0; i < scriptLines.Count; i++)
             {
+                scriptLines[i] = scriptLines[i].Trim('\t');
+                if (scriptLines[i] == "\r\n" || scriptLines[i] == "\n")
+                {
+                    continue;
+                }
+                else if(scriptLines[i].Length == 0 || (scriptLines[i][0] == '/' && scriptLines[i][1] == '/'))
+                {
+                    continue;
+                }
                 SplitString(scriptLines[i], CURRENT_LINE_SPLIT, ' ');
                 if (CURRENT_LINE_SPLIT.Count == 0) continue;
                 M22.line_c tempLine_c = new M22.line_c();
@@ -236,6 +245,7 @@ namespace M22
                     CompileLine(ref tempLine_c, CURRENT_LINE_SPLIT, ref currentScript_checkpoints, scriptPos);
                 }
 
+                tempLine_c.m_origScriptPos = i + 1;
                 result.AddLine(tempLine_c);
                 scriptPos++;
             }
@@ -257,7 +267,7 @@ namespace M22
 
         static public M22.LINETYPE CheckLineType(string _input)
         {
-            string temp = _input.TrimEnd('\r', '\n');
+            string temp = _input.Trim('\r', '\n', '\t');
             temp = temp.TrimEnd('\n');
             M22.LINETYPE TYPE;
             if (!FunctionHashes.TryGetValue(CalculateHash(temp), out TYPE))
@@ -278,7 +288,13 @@ namespace M22
                         if (!CharacterNames.ContainsKey(CalculateHash(temp)))
                             return M22.LINETYPE.NARRATIVE;
                         else
+                        {
+                            if(temp == "muto" || _input == "\tmystery")
+                            {
+                                Debug.Log("rbeakboot!");
+                            }
                             return M22.LINETYPE.DIALOGUE;
+                        }
                     }
                 }
                 else
@@ -295,7 +311,7 @@ namespace M22
         {
             for (int i = 0; i < _splitStr.Count; i++)
             {
-                _splitStr[i] = _splitStr[i].TrimEnd('\r', '\n');
+                _splitStr[i] = _splitStr[i].Trim('\r', '\n', '\t');
             }
             switch (_lineC.m_lineType)
             {
@@ -314,7 +330,8 @@ namespace M22
 
                         if (!M22.BackgroundMaster.LoadBackground(_lineC.m_parameters_txt[0]))
                         {
-                            Debug.LogError("Failed to load background! - " + _lineC.m_parameters_txt[0]);
+                            //Debug.LogError("Failed to load background! - " + _lineC.m_parameters_txt[0]);
+                            // failed to load bg!
                         };
                     }
                     break;
@@ -440,6 +457,8 @@ namespace M22
                     }
                     break;
                 case M22.LINETYPE.LOAD_SCRIPT:
+                case M22.LINETYPE.HIDE_WINDOW:
+                case M22.LINETYPE.SHOW_WINDOW:
                     if (_splitStr.Count > 1)
                     {
                         _lineC.m_parameters_txt = new List<string>();

@@ -212,8 +212,12 @@ namespace M22
             Sprite tempSpr;
             temp.sprites.TryGetValue(_modifier, out tempSpr);
 
-            GameObject tempGO = GameObject.Instantiate<GameObject>(CharacterPrefab, GameObject.Find("Characters").transform);
-            tempGO.name = _charname + "-" + _modifier;
+            GameObject tempGO = GameObject.Find(_charname);
+            if(tempGO == null)
+            {
+                tempGO = GameObject.Instantiate<GameObject>(CharacterPrefab, GameObject.Find("Characters").transform);
+                tempGO.name = _charname; //+ "-" + _modifier;
+            }
             tempGO.GetComponent<Image>().sprite = tempSpr;
             tempGO.GetComponent<RectTransform>().offsetMin = new Vector2(tempGO.GetComponent<RectTransform>().offsetMin.x + _x, tempGO.GetComponent<RectTransform>().offsetMin.y);
         }
