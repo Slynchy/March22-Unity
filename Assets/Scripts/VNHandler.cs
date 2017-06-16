@@ -167,8 +167,8 @@ namespace M22
             GameObject charParent = GameObject.Find("Characters");
             for (int i = 0; i < charParent.transform.childCount; i++)
             {
-                var obj = charParent.transform.GetChild(i).gameObject.GetComponent<FadeOutImage>();
-                obj.FadeOut();
+                var obj = charParent.transform.GetChild(i).gameObject.GetComponent<CharacterScript>();
+                obj.DestroyCharacter(false);
             }
         }
 
@@ -217,9 +217,14 @@ namespace M22
             {
                 tempGO = GameObject.Instantiate<GameObject>(CharacterPrefab, GameObject.Find("Characters").transform);
                 tempGO.name = _charname; //+ "-" + _modifier;
+                tempGO.GetComponent<Image>().sprite = tempSpr;
+                tempGO.GetComponent<RectTransform>().offsetMin = new Vector2(tempGO.GetComponent<RectTransform>().offsetMin.x + _x, tempGO.GetComponent<RectTransform>().offsetMin.y);
             }
-            tempGO.GetComponent<Image>().sprite = tempSpr;
-            tempGO.GetComponent<RectTransform>().offsetMin = new Vector2(tempGO.GetComponent<RectTransform>().offsetMin.x + _x, tempGO.GetComponent<RectTransform>().offsetMin.y);
+            else
+            {
+                var tempCS = tempGO.GetComponent<CharacterScript>();
+                tempCS.UpdateSprite(CharacterPrefab,tempSpr);
+            }
         }
     }
 

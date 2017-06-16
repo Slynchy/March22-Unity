@@ -202,10 +202,11 @@ namespace M22
         public void NextLine()
         {
             ++lineIndex;
-            if(VNHandlerScript.VNMode == true)
-                TEXT.Reset(true);
             CURRENT_LINE = currentScript_c.GetLine(lineIndex);
-            TEXT.SetNewCurrentLine("");
+            if (VNHandlerScript.VNMode == true && CURRENT_LINE.m_lineType != LINETYPE.MAKE_DECISION)
+                TEXT.Reset(true);
+            if(CURRENT_LINE.m_lineType != LINETYPE.MAKE_DECISION)
+                TEXT.SetNewCurrentLine("");
             ExecuteFunction(CURRENT_LINE);
         }
         public void GotoLine(int lineNum)
@@ -256,8 +257,13 @@ namespace M22
                     break;
                 case LINETYPE.DRAW_CHARACTER:
                     VNHandlerScript.CreateCharacter(_line.m_parameters_txt[0], _line.m_parameters_txt[1], _line.m_parameters[0]);
-                    HideText();
-                    WaitState = WAIT_STATE.CHARACTER_FADEIN;
+                    if (_line.m_parameters[1] != 1)
+                    {
+                        HideText();
+                        WaitState = WAIT_STATE.CHARACTER_FADEIN;
+                    }
+                    else
+                        NextLine();
                     break;
                 case LINETYPE.PLAY_MUSIC:
                     M22.AudioMaster.ChangeTrack(_line.m_parameters_txt[0]);
@@ -499,7 +505,7 @@ namespace M22
                     int count = 0;
                     foreach (var item in GameObject.FindGameObjectsWithTag("Character"))
                     {
-                        if (item.GetComponent<FadeInImage>().complete == true)
+                        if (item.GetComponent<CharacterScript>().GetState() == CharacterScript.STATES.IDLE)
                         {
                             count++;
                         }

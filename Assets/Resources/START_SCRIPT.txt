@@ -10,7 +10,7 @@ PlayMusic Lullaby_of_Open_Eyes
 
 A light breeze causes the naked branches overhead to rattle like wooden windchimes.
 
-//Goto debugGotoDest
+Goto en_A1
 
 This is a popular retreat for couples in the summer. The deciduous trees provide a beautiful green canopy, far out of sight of teachers and fellow students.
 
@@ -483,6 +483,8 @@ ExecuteFunction HospitalMask hide
 
 --en_A1
 
+	HideWindow
+	ExecuteFunction snow_effect stop
 	DrawBackground school_gate
 	PlayMusic Fripperies
 	ShowWindow
@@ -545,11 +547,8 @@ ExecuteFunction HospitalMask hide
 
 	Feeling nervous and with this realization set in my head, I open the front door.
 	
-	--debugGotoDest
-	
 	HideWindow
 	//StopMusic 1.0
-	ExecuteFunction snow_effect stop
 	Transition school_lobby tr-softwipe 0
 	ShowWindow
 
@@ -571,9 +570,124 @@ ExecuteFunction HospitalMask hide
 
 	mu "Welcome."
 
+	We exchange a handshake that is neither firm nor sloppy, and he looks at his watch.
 
+	//show muto irritated
+	//with charachange
+	DrawCharacter muto irritated 0
 
+	mu "The head nurse asked you for a brief check-in visit, but there's no time for that now."
 
+	hi "Oh. Should I go later?"
 
+	DrawCharacter muto normal 0
 
+	mu "Yes, afternoon is probably fine. We should get going and introduce you to the rest of the class. They're waiting already.
 
+	Waiting for me? I don't really like being the center of attention, but I guess it's inevitable in a situation like this.
+
+	Somehow, not knowing what is waiting for me makes me feel really nervous.
+
+	Thinking of this, I almost miss what the teacher is saying.
+
+	--en_choiceA1
+	
+		mu "Do you want to introduce yourself to the class?"
+
+		MakeDecision "Why?" choiceA1_1 "Yeah, of course." choiceA1_2
+		m22IF choiceA1_1 Goto en_A1a
+		m22IF choiceA1_2 Goto en_A1b
+		
+	--en_A1a
+		
+		hi "Why? Do I have to?"
+
+		mu "Of course not. That's why I asked."
+
+		hi "Right."
+
+		mu "Let's go then."
+		
+	--en_A1b
+
+		hi "Yeah, sure. I mean, isn't that normal?"
+
+		mu "Of course. But not everyone likes to be at the center of attention."
+
+		I'm probably one of those people, but I guess I should be the one to give the first impression of myself.
+
+		hi "Right, but it's no problem."
+
+		mu "Let's go then."
+		
+	--en_A1c
+		
+		HideWindow
+		Transition school_staircase2 tr-softwipe 0
+		ShowWindow
+
+		My heart is pounding in my chest and it keeps me thinking about my condition as I follow the teacher up the stairs.
+
+		//scene bg school_hallway3
+		//show muto normal at center
+		//with locationchange
+		HideWindow
+		Transition school_hallway3 tr-softwipe 0
+		ShowWindow
+
+		The third door down the third floor corridor is marked as the classroom for class 3-3.
+
+		play sound sfx_dooropen
+
+		Mutou opens the door and enters.
+
+		ClearCharacters
+		// need to just clear mutou? He also goes to the right
+			//show muto normal at Alphaout(0.5), Slide(0.5,0.5,0.4,0.5,0.5,_ease_out_time_warp)
+			//with Pause (0.5)
+			//hide muto
+			//with None
+
+		mu "Good morning everyone, sorry I'm late again."
+
+		StopMusic 0.75
+
+		I hesitate for a split second at the door, freezing on the spot.
+		
+	--en_A2
+
+		//scene bg school_hallway3
+		//with None
+
+		Ah, get a grip! This is a big step, I know that… But there isn't any point to worrying so much about it, at least not this soon.
+
+		//scene ev hisao_class_start
+		//with fade
+
+		//play music music_normal fadein 0.5
+
+		I follow the teacher into the classroom and look around, partially so I won't have to meet the curious gazes of my new classmates.
+
+		It's pretty spacious; the ceiling is unusually high and there's lots of space left over around and inbetween the desks.
+
+		An entire wall taken up by blackboards and the high, old fashioned windows only make it seem larger.
+
+		The students' desks are just standard wooden desks with a shelf underneath for books and wooden chairs with metal frames. Simple and efficient.
+
+		I stop walking in front of the classroom and face the other students. They all look normal, like students in any other school. But then, why would they be here?
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

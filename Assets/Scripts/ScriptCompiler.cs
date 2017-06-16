@@ -289,10 +289,10 @@ namespace M22
                             return M22.LINETYPE.NARRATIVE;
                         else
                         {
-                            if(temp == "muto" || _input == "\tmystery")
-                            {
-                                Debug.Log("rbeakboot!");
-                            }
+                            //if(temp == "muto" || _input == "\tmystery")
+                            //{
+                                //Debug.Log("rbeakboot!");
+                            //}
                             return M22.LINETYPE.DIALOGUE;
                         }
                     }
@@ -356,11 +356,21 @@ namespace M22
                 case M22.LINETYPE.DRAW_CHARACTER:
                     if (_splitStr.Count > 1)
                     {
+                        if (_splitStr.Count < 4) Debug.LogError("Not enough parameters for DrawCharacter @ Line " + _lineC.m_origScriptPos.ToString());
                         _lineC.m_parameters_txt = new List<string>();
                         _lineC.m_parameters_txt.Add(_splitStr[1]);
                         _lineC.m_parameters_txt.Add(_splitStr[2]);
                         _lineC.m_parameters = new List<int>();
                         _lineC.m_parameters.Add(Int32.Parse(_splitStr[3]));
+                        if(_splitStr.Count >= 5)
+                        {
+                            if(_splitStr[4].Equals("true"))
+                                _lineC.m_parameters.Add(1);
+                            else
+                                _lineC.m_parameters.Add(0);
+                        }
+                        else
+                            _lineC.m_parameters.Add(0);
 
                         if (!M22.VNHandler.LoadCharacter(_lineC.m_parameters_txt[0], _lineC.m_parameters_txt[1]))
                         {
