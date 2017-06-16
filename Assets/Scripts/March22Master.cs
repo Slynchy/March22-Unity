@@ -14,7 +14,7 @@ namespace M22
 
     public class March22Master : MonoBehaviour
     {
-
+        public bool DebugMode = false;
         ScriptMaster SMPtr;
 
         // Use this for initialization
@@ -22,6 +22,15 @@ namespace M22
         {
             SMPtr = Camera.main.GetComponent<ScriptMaster>();
             SMPtr.LoadScript("START_SCRIPT");
+
+            if(DebugMode == true)
+            {
+                GameObject debugPrefab = Resources.Load<GameObject>("Prefabs/DebugDisplay") as GameObject;
+                if(debugPrefab != null)
+                {
+                    GameObject.Instantiate<GameObject>(debugPrefab, Camera.main.transform);
+                }
+            }
         }
 
         // Update is called once per frame
