@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 #if UNITY_EDITOR
-    using UnityEditor;
+using UnityEditor;
 #endif
 using UnityEngine;
 using UnityEngine.UI;
@@ -54,7 +54,7 @@ namespace M22
             if (TextboxDialogue == null || TextboxNarrative == null || TextboxNovel == null)
                 Debug.LogError("Failed to load a textbox! Check your \"Resources/Textboxes\" folder!");
         }
-        
+
         void Start()
         {
             loadedCharacters = new Dictionary<string, Character>();
@@ -64,10 +64,10 @@ namespace M22
             CharacterName = (GameObject.Find("CharName") != null ? GameObject.Find("CharName").GetComponent<Text>() : null);
 
             VN = new TextboxSettings(
-                0, 
-                0, 
-                200, 
-                400, 
+                0,
+                0,
+                200,
+                400,
                 0, 0, 1, 0);
             VNSay = new TextboxSettings(67.5f, 49.5f, 134, 64);
 
@@ -127,7 +127,7 @@ namespace M22
 
         private void Update()
         {
-            if(Input.GetKeyDown(KeyCode.F1))
+            if (Input.GetKeyDown(KeyCode.F1))
             {
                 ToggleVNMode();
             }
@@ -136,7 +136,7 @@ namespace M22
         public void ToggleVNMode()
         {
             VNMode = !VNMode;
-            if(VNMode == true)
+            if (VNMode == true)
             {
                 SetTextBoxToVN();
             }
@@ -193,8 +193,6 @@ namespace M22
             {
                 Character temp = new Character();
                 Texture2D tempTex = Resources.Load(path) as Texture2D;
-                if (tempTex == null)
-                    Debug.LogError("Failed to load sprite: " + path);
                 Sprite tempSpr = Sprite.Create(tempTex, new Rect(0, 0, tempTex.width, tempTex.height), new Vector2(0, 0));
                 if (tempSpr != null)
                 {
@@ -215,17 +213,19 @@ namespace M22
             temp.sprites.TryGetValue(_modifier, out tempSpr);
 
             GameObject tempGO = GameObject.Find(_charname);
-            if(tempGO == null)
+            if (tempGO == null)
             {
                 tempGO = GameObject.Instantiate<GameObject>(CharacterPrefab, GameObject.Find("Characters").transform);
                 tempGO.name = _charname; //+ "-" + _modifier;
-                tempGO.GetComponent<Image>().sprite = tempSpr;
+                var tempCS = tempGO.GetComponent<CharacterScript>();
+                tempCS.destSpr = tempSpr;
+                //tempGO.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/empty") as Sprite;
                 tempGO.GetComponent<RectTransform>().offsetMin = new Vector2(tempGO.GetComponent<RectTransform>().offsetMin.x + _x, tempGO.GetComponent<RectTransform>().offsetMin.y);
             }
             else
             {
                 var tempCS = tempGO.GetComponent<CharacterScript>();
-                tempCS.UpdateSprite(CharacterPrefab,tempSpr);
+                tempCS.UpdateSprite(CharacterPrefab, tempSpr);
             }
         }
     }

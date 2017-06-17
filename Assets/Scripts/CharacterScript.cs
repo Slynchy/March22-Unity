@@ -18,19 +18,44 @@ namespace M22
         public bool complete = false;
         public float speed = 0.025f;
         public float delay = 1.0f;
+        public Sprite effect;
+        public Sprite destSpr;
+        private Sprite tempSpr;
         private Image img;
         private STATES state;
+        private float inc = -0.1f;
+        private RectTransform rect;
 
         void Awake()
         {
             img = this.GetComponent<Image>();
-            img.color = new Color(255, 255, 255, 0);
+            rect = this.GetComponent<RectTransform>();
+            img.material.SetFloat("_Alpha", 0);
+
             state = STATES.FADEIN;
+        }
+
+        void Start()
+        {
+            tempSpr = destSpr;
+            img.material.SetTexture("_SecondaryTex", destSpr.texture);
+            img.material.SetTexture("_MainTex", tempSpr.texture);
+
+            if (effect == null)
+            {
+                effect = Resources.Load<Sprite>("Images/white") as Sprite;
+            }
+            img.material.SetTexture("_TertiaryTex", effect.texture);
+            img.material.SetColor("_AmbientLighting", RenderSettings.ambientLight);
+            img.material.SetFloat("_Progress", inc);
+            img.material.SetFloat("_InOrOut", 0);
+
+            rect.sizeDelta = destSpr.rect.size;
         }
 
         public void DestroyCharacter(bool _immediately)
         {
-            if(_immediately == true)
+            if (_immediately == true)
             {
                 Destroy(this.gameObject);
                 return;
@@ -45,50 +70,43 @@ namespace M22
 
         public void UpdateSprite(GameObject _prefab, Sprite _new)
         {
-            state = STATES.FADEOUT;
-            GameObject tempGO = GameObject.Instantiate<GameObject>(_prefab, GameObject.Find("Characters").transform);
-            tempGO.name = this.gameObject.name; //+ "-" + _modifier;
-            tempGO.GetComponent<Image>().sprite = _new;
-            tempGO.GetComponent<RectTransform>().offsetMin = this.GetComponent<RectTransform>().offsetMin;
+            state = STATES.CHANGING_SPRITE;
+            img.sprite = null;
+            tempSpr = destSpr;
+            destSpr = _new;
+            img.material.SetTexture("_MainTex", tempSpr.texture);
+            img.material.SetTexture("_SecondaryTex", destSpr.texture);
+            inc = -0.1f;
+            img.material.SetFloat("_Progress", inc);
+            rect.sizeDelta = destSpr.rect.size;
+            //img.material.SetTexture("_SecondaryTex", destSpr.texture);
+            //img.sprite = destSpr;
         }
-	
-	    // Update is called once per frame
-	    void Update ()
+
+        // Update is called once per frame
+        void Update()
         {
-            switch(state)
+            switch (state)
             {
                 case STATES.IDLE:
                     return;
                 case STATES.FADEIN:
-                    if (img.color.a < 1.0f)
+                    float currAlphaIn = img.material.GetFloat("_Alpha");
+                    if (currAlphaIn < 1.0f)
                     {
-                        img.color = new Color(
-                            1,
-                            1,
-                            1,
-                            img.color.a + (speed * 2.0f)
-                        );
+                        img.material.SetFloat("_Alpha", currAlphaIn + (speed * Time.deltaTime));
                     }
                     else
                     {
-                        img.color = new Color(
-                            1,
-                            1,
-                            1,
-                            1
-                        );
+                        img.material.SetFloat("_Alpha", 1);
                         state = STATES.IDLE;
                     }
                     break;
                 case STATES.FADEOUT:
-                    if (img.color.a > 0.0f)
+                    float currAlphaOut = img.material.GetFloat("_Alpha");
+                    if (currAlphaOut > 0.0f)
                     {
-                        img.color = new Color(
-                            1,
-                            1,
-                            1,
-                            img.color.a - (speed * 1.0f)
-                        );
+                        img.material.SetFloat("_Alpha", currAlphaOut - (speed * Time.deltaTime));
                     }
                     else
                     {
@@ -96,7 +114,23 @@ namespace M22
                     }
                     break;
                 case STATES.CHANGING_SPRITE:
+                    if (inc >= 1f)
+                    {
+                        //inc = -0.1f;
+                        state = STATES.IDLE;
+                        img.material.SetTexture("_MainTex", tempSpr.texture);
+                        img.material.SetTexture("_SecondaryTex", destSpr.texture);
+                        img.sprite = destSpr;
+                        // tempSpr = destSpr;
+                        // img.material.SetTexture("_MainTex", tempSpr.texture);
+                        //img.material.SetTexture("_SecondaryTex", destSpr.texture);
+                        //img.material.SetTexture("_MainTex", tempSpr.texture);
+                        //img.sprite = destSpr;
+                    }
+                    else
+                        inc += (speed * Time.deltaTime);
 
+                    img.material.SetFloat("_Progress", inc);
                     break;
             }
         }

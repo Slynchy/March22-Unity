@@ -54,7 +54,7 @@ public static class FadeEffectClass
 
 namespace M22
 {
-    
+
     enum WAIT_STATE
     {
         NOT_WAITING,
@@ -92,7 +92,7 @@ namespace M22
 
         public GameObject VideoPlayerPrefab;
         private VideoPlayer VideoPlayerInstance;
-        
+
         private List<Canvas> Canvases;
         public enum CANVAS_TYPES
         {
@@ -107,7 +107,7 @@ namespace M22
 
         public List<string> SCRIPT_FLAGS;
 
-        static public Dictionary<string,VideoClip> loadedVideoClips;
+        static public Dictionary<string, VideoClip> loadedVideoClips;
 
         private float waitCommandTimer = -1.0f;
 
@@ -121,7 +121,7 @@ namespace M22
                 return false;
             else
             {
-                loadedVideoClips.Add(_file,temp);
+                loadedVideoClips.Add(_file, temp);
                 return true;
             }
         }
@@ -155,7 +155,7 @@ namespace M22
             if (background == null)
             {
                 Debug.Log("background not found in ScriptMaster; falling back to searching...");
-                if(GameObject.Find("Background") != null)
+                if (GameObject.Find("Background") != null)
                     background = GameObject.Find("Background").GetComponent<Image>();
                 if (background == null)
                     Debug.Log("This also failed! :(");
@@ -205,13 +205,13 @@ namespace M22
             CURRENT_LINE = currentScript_c.GetLine(lineIndex);
             if (VNHandlerScript.VNMode == true && CURRENT_LINE.m_lineType != LINETYPE.MAKE_DECISION)
                 TEXT.Reset(true);
-            if(CURRENT_LINE.m_lineType != LINETYPE.MAKE_DECISION)
+            if (CURRENT_LINE.m_lineType != LINETYPE.MAKE_DECISION)
                 TEXT.SetNewCurrentLine("");
             ExecuteFunction(CURRENT_LINE);
         }
         public void GotoLine(int lineNum)
         {
-            lineIndex = lineNum-1;
+            lineIndex = lineNum - 1;
             NextLine();
         }
 
@@ -248,7 +248,7 @@ namespace M22
                             break;
                         }
                     }
-                    if(!success)
+                    if (!success)
                         Debug.LogError("Failed to find checkpoint: " + _line.m_parameters_txt[0]);
                     break;
                 case LINETYPE.WAIT:
@@ -270,7 +270,7 @@ namespace M22
                     NextLine();
                     break;
                 case LINETYPE.STOP_MUSIC:
-                    if(_line.m_parameters_txt != null)
+                    if (_line.m_parameters_txt != null)
                         AudioMasterScript.StopMusic(_line.m_parameters_txt[0]);
                     else
                         AudioMasterScript.StopMusic("1.0");
@@ -282,7 +282,7 @@ namespace M22
                     break;
                 case LINETYPE.HIDE_WINDOW:
                     if (_line.m_parameters_txt != null && _line.m_parameters_txt.Count >= 1)
-                        HideText(true,float.Parse(_line.m_parameters_txt[0]));
+                        HideText(true, float.Parse(_line.m_parameters_txt[0]));
                     else
                         HideText();
                     NextLine();
@@ -313,7 +313,7 @@ namespace M22
                         line_c tempCompiledLine = new line_c();
                         tempCompiledLine.m_lineType = _line.m_lineTypeSecondary;
                         tempCompiledLine.m_parameters_txt = new List<string>();
-                        if(_line.m_parameters_txt != null && _line.m_parameters_txt.Count > 1)
+                        if (_line.m_parameters_txt != null && _line.m_parameters_txt.Count > 1)
                         {
                             for (int i = 1; i < _line.m_parameters_txt.Count; i++)
                             {
@@ -334,7 +334,7 @@ namespace M22
                     break;
                 case LINETYPE.MAKE_DECISION:
                     GameObject tempObj = GameObject.Instantiate<GameObject>(DecisionsPrefab, Canvases[(int)CANVAS_TYPES.EFFECTS].transform);
-                    if(_line.m_parameters_txt.Count == 6)
+                    if (_line.m_parameters_txt.Count == 6)
                         tempObj.GetComponent<Decision>().Initialize(_line.m_parameters_txt[0], _line.m_parameters_txt[1], _line.m_parameters_txt[2], _line.m_parameters_txt[3], _line.m_parameters_txt[4], _line.m_parameters_txt[5]);
                     else
                         tempObj.GetComponent<Decision>().Initialize(_line.m_parameters_txt[0], _line.m_parameters_txt[1], _line.m_parameters_txt[2], _line.m_parameters_txt[3]);
@@ -382,7 +382,7 @@ namespace M22
                     TransitionObj.srcSprite = background.sprite;
                     TransitionEffects.TryGetValue(_line.m_parameters_txt[1], out TransitionObj.effect);
                     TransitionObj.destSprite = M22.BackgroundMaster.GetBackground(_line.m_parameters_txt[0]);
-                    TransitionObj.inOrOut = ( String.Equals(_line.m_parameters_txt[2],"in") ? Transition.IN_OR_OUT.IN : Transition.IN_OR_OUT.OUT );
+                    TransitionObj.inOrOut = (String.Equals(_line.m_parameters_txt[2], "in") ? Transition.IN_OR_OUT.IN : Transition.IN_OR_OUT.OUT);
                     WaitState = WAIT_STATE.TRANSITION;
                     break;
                 case LINETYPE.NUM_OF_LINETYPES:
@@ -395,7 +395,7 @@ namespace M22
                     break;
             }
         }
-        
+
         public Canvas GetCanvas(CANVAS_TYPES _type)
         {
             if (_type == CANVAS_TYPES.NUM_OF_CANVASES) return null;
@@ -460,7 +460,7 @@ namespace M22
         {
             if ((WaitState == WAIT_STATE.NOT_WAITING && Input.GetKeyDown(KeyCode.Return)) || (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
             {
-                if(backgroundTrans != null && backgroundTrans.color.a != 0)
+                if (backgroundTrans != null && backgroundTrans.color.a != 0)
                 {
                     //nullop
                 }
@@ -493,7 +493,7 @@ namespace M22
             switch (WaitState)
             {
                 case WAIT_STATE.VIDEO_PLAYING:
-                    if(VideoPlayerInstance.isPlaying == false)
+                    if (VideoPlayerInstance.isPlaying == false)
                     {
                         WaitState = WAIT_STATE.NOT_WAITING;
                         Destroy(VideoPlayerInstance.gameObject);
@@ -529,7 +529,7 @@ namespace M22
                     break;
                 case WAIT_STATE.WAIT_COMMAND:
                     waitCommandTimer += Time.deltaTime;
-                    if(waitCommandTimer >= (CURRENT_LINE.m_parameters[0] * 0.001f))
+                    if (waitCommandTimer >= (CURRENT_LINE.m_parameters[0] * 0.001f))
                     {
                         WaitState = WAIT_STATE.NOT_WAITING;
                         NextLine();
@@ -537,7 +537,7 @@ namespace M22
                     }
                     break;
             }
-            
+
         }
 
         public void LoadScript(string _fname)
