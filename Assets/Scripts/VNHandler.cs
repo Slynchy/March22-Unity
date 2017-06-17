@@ -193,6 +193,8 @@ namespace M22
             {
                 Character temp = new Character();
                 Texture2D tempTex = Resources.Load(path) as Texture2D;
+                if (tempTex == null)
+                    Debug.LogError("Failed to load sprite: " + path);
                 Sprite tempSpr = Sprite.Create(tempTex, new Rect(0, 0, tempTex.width, tempTex.height), new Vector2(0, 0));
                 if (tempSpr != null)
                 {

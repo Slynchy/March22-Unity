@@ -14,6 +14,31 @@ Goto en_A1
 
 This is a popular retreat for couples in the summer. The deciduous trees provide a beautiful green canopy, far out of sight of teachers and fellow students.
 
+						asdafsdfggrgerg
+						//DrawCharacter shizu basic_normal 0
+						DrawCharacter muto irritated 0
+						asfgreghtrthrth
+						//DrawCharacter shizu adjust_happy 0
+						DrawCharacter muto normal 0
+						asdafsdfggrgerg
+						//DrawCharacter shizu basic_normal 0
+						DrawCharacter muto irritated 0
+						asfgreghtrthrth
+						//DrawCharacter shizu adjust_happy 0
+						DrawCharacter muto normal 0
+						asdafsdfggrgerg
+						//DrawCharacter shizu basic_normal 0
+						DrawCharacter muto irritated 0
+						asfgreghtrthrth
+						//DrawCharacter shizu adjust_happy 0
+						DrawCharacter muto normal 0
+						asdafsdfggrgerg
+						//DrawCharacter shizu basic_normal 0
+						DrawCharacter muto irritated 0
+						asfgreghtrthrth
+						//DrawCharacter shizu adjust_happy 0
+						DrawCharacter muto normal 0
+
 //ExecuteFunction heart_throb 4.0 2.0
 
 //Transition other_iwanako tr_eyes 0
