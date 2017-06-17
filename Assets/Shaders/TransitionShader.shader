@@ -51,11 +51,13 @@
 			// 1 - ( 0.46f )
 			// 0.54f
 
-			float3 dest = lerp(col.rgb, destCol.rgb, temp);
+			float4 dest = lerp(col.rgba, destCol.rgba, temp);
 			dest.r = clamp(dest.r, 0, 1);
 			dest.g = clamp(dest.g, 0, 1);
 			dest.b = clamp(dest.b, 0, 1);
+			dest.a = clamp(dest.a, 0, 1);
 			o.Albedo = dest;
+			o.Alpha = dest.a;
 		}
 
 		fixed4 LightingNoLighting(SurfaceOutput s, fixed3 lightDir, fixed atten)
