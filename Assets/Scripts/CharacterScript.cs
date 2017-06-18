@@ -25,11 +25,14 @@ namespace M22
         private STATES state;
         private float inc = -0.1f;
         private RectTransform rect;
+        private Material mat;
 
         void Awake()
         {
             img = this.GetComponent<Image>();
             rect = this.GetComponent<RectTransform>();
+            mat = Instantiate<Material>(img.material) as Material;
+            img.material = mat;
             img.material.SetFloat("_Alpha", 0);
 
             state = STATES.FADEIN;

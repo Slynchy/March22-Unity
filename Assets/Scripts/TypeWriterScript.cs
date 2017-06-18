@@ -14,6 +14,9 @@ namespace M22
         private int currStrPos = 0;
         private Text page;
         private bool LineComplete = false;
+        private ScriptMaster scriptMaster;
+
+        private bool inLineFuncComplete = true;
 
         public void SetNewCurrentLine(string _newStr)
         {
@@ -30,7 +33,7 @@ namespace M22
             LineComplete = false;
         }
 
-        public void Reset(bool _clearPage, M22.ScriptMaster.VoidDelegate callbackFunc)
+        public void Reset(bool _clearPage, M22.ScriptMaster.VoidDelegateWithBool callbackFunc)
         {
             if (page != null && _clearPage == true)
                 page.text = "";
@@ -40,12 +43,19 @@ namespace M22
             callbackFunc();
         }
 
+        public void SetParent(ScriptMaster _scriptMaster) { scriptMaster = _scriptMaster; }
+
         private void Awake()
         {
             Reset(true);
         }
 
         public bool IsLineComplete() { return LineComplete; }
+
+        public void FinishedInlineFunction()
+        {
+            inLineFuncComplete = true;
+        }
 
         void Start()
         {
@@ -77,6 +87,7 @@ namespace M22
         // Update is called once per frame
         void Update()
         {
+            if (inLineFuncComplete == false) return;
             if (LineComplete == true) return;
             if (currentLine == null || String.Equals(currentLine, "")) return;
 
@@ -87,7 +98,28 @@ namespace M22
             {
                 if (currStrPos < currentLine.Length)
                 {
-                    page.text += currentLine.Substring(currStrPos, 1);
+                    string substr = currentLine.Substring(currStrPos, 1);
+
+                    if (substr.Equals("{"))
+                    {
+                        substr = currentLine.Substring(currStrPos, 2);
+                        if (substr.Equals("{{"))
+                        {
+                            //inline function!
+                            string function;
+                            int pos = currentLine.IndexOf("}}");
+                            function = currentLine.Substring(currStrPos + 2, pos - currStrPos - 2);
+                            M22.line_c tempLineC = M22.ScriptCompiler.CompileLine(ref function, -1);
+                            currStrPos += pos - currStrPos + 2;
+                            substr = currentLine.Substring(currStrPos, 1);
+                            scriptMaster.SetCurrentInlineFunction(tempLineC);
+                            scriptMaster.ExecuteFunction(tempLineC, true);
+                            inLineFuncComplete = false;
+                            return;
+                        }
+                    }
+
+                    page.text += substr;
                     currStrPos++;
                 }
             }

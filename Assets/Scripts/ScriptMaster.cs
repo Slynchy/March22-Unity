@@ -93,6 +93,9 @@ namespace M22
         public GameObject VideoPlayerPrefab;
         private VideoPlayer VideoPlayerInstance;
 
+        private bool inLineFunctionMode = false;
+        private line_c CurrentInlineFunction;
+
         private List<Canvas> Canvases;
         public enum CANVAS_TYPES
         {
@@ -126,6 +129,8 @@ namespace M22
             }
         }
 
+        public void SetCurrentInlineFunction(line_c _lineC) { CurrentInlineFunction = _lineC; }
+
         void Awake()
         {
             Canvases = new List<Canvas>((int)CANVAS_TYPES.NUM_OF_CANVASES);
@@ -151,7 +156,11 @@ namespace M22
                 TEXT = TextboxIMG.gameObject.GetComponentInChildren<TypeWriterScript>();
                 if (TEXT == null)
                     Debug.Log("This also failed! :(");
+                else
+                    TEXT.SetParent(this);
             }
+            else
+                TEXT.SetParent(this);
             if (background == null)
             {
                 Debug.Log("background not found in ScriptMaster; falling back to searching...");
@@ -199,8 +208,17 @@ namespace M22
         }
 
         public delegate void VoidDelegate();
-        public void NextLine()
+        public delegate void VoidDelegateWithBool(bool _bool = false);
+
+        public void NextLine(bool _isInLine = false)
         {
+            if(_isInLine == true || inLineFunctionMode == true)
+            {
+                TEXT.FinishedInlineFunction();
+                inLineFunctionMode = false;
+                return;
+            }
+
             ++lineIndex;
             CURRENT_LINE = currentScript_c.GetLine(lineIndex);
             if (VNHandlerScript.VNMode == true && CURRENT_LINE.m_lineType != LINETYPE.MAKE_DECISION)
@@ -215,8 +233,10 @@ namespace M22
             NextLine();
         }
 
-        public void ExecuteFunction(line_c _line)
+        public void ExecuteFunction(line_c _line, bool _isInLine = false)
         {
+            if (_isInLine == true) inLineFunctionMode = true;
+
             switch (_line.m_lineType)
             {
                 case LINETYPE.NARRATIVE:
@@ -231,7 +251,7 @@ namespace M22
                     if (VNHandlerScript == null || VNHandlerScript.VNMode == false)
                         TEXT.Reset(true, NextLine);
                     else
-                        NextLine();
+                        NextLine(_isInLine);
                     break;
                 case LINETYPE.DRAW_BACKGROUND:
                     backgroundTrans.sprite = M22.BackgroundMaster.GetBackground(_line.m_parameters_txt[0]);
@@ -263,43 +283,43 @@ namespace M22
                         WaitState = WAIT_STATE.CHARACTER_FADEIN;
                     }
                     else
-                        NextLine();
+                        NextLine(_isInLine);
                     break;
                 case LINETYPE.CLEAR_CHARACTER:
                     if (VNHandlerScript.ClearCharacter(_line.m_parameters_txt[0], _line.m_parameters[0] == 1 ? true : false) == false)
                     {
                         Debug.LogErrorFormat("Unable to clear character {0} at line {1}", _line.m_parameters_txt[0], _line.m_origScriptPos);
                     }
-                    NextLine();
+                    NextLine(_isInLine);
                     break;
                 case LINETYPE.PLAY_MUSIC:
                     M22.AudioMaster.ChangeTrack(_line.m_parameters_txt[0]);
-                    NextLine();
+                    NextLine(_isInLine);
                     break;
                 case LINETYPE.STOP_MUSIC:
                     if (_line.m_parameters_txt != null)
                         AudioMasterScript.StopMusic(_line.m_parameters_txt[0]);
                     else
                         AudioMasterScript.StopMusic("1.0");
-                    NextLine();
+                    NextLine(_isInLine);
                     break;
                 case LINETYPE.PLAY_STING:
                     M22.AudioMaster.PlaySting(_line.m_parameters_txt[0]);
-                    NextLine();
+                    NextLine(_isInLine);
                     break;
                 case LINETYPE.HIDE_WINDOW:
                     if (_line.m_parameters_txt != null && _line.m_parameters_txt.Count >= 1)
                         HideText(true, float.Parse(_line.m_parameters_txt[0]));
                     else
                         HideText();
-                    NextLine();
+                    NextLine(_isInLine);
                     break;
                 case LINETYPE.SHOW_WINDOW:
                     if (_line.m_parameters_txt != null && _line.m_parameters_txt.Count >= 1)
                         ShowText(true, float.Parse(_line.m_parameters_txt[0]));
                     else
                         ShowText();
-                    NextLine();
+                    NextLine(_isInLine);
                     break;
                 case LINETYPE.SET_FLAG:
                     if (SCRIPT_FLAGS.Contains(_line.m_parameters_txt[0]))
@@ -310,7 +330,7 @@ namespace M22
                     {
                         SCRIPT_FLAGS.Add(_line.m_parameters_txt[0]);
                     }
-                    NextLine();
+                    NextLine(_isInLine);
                     break;
                 case LINETYPE.IF_STATEMENT:
                     // m22IF _flag_to_check_if_true Command [params]
@@ -336,7 +356,7 @@ namespace M22
                     else
                     {
                         //Debug.Log("False!");
-                        NextLine();
+                        NextLine(_isInLine);
                     }
                     break;
                 case LINETYPE.MAKE_DECISION:
@@ -349,12 +369,12 @@ namespace M22
                 case LINETYPE.ENABLE_NOVEL_MODE:
                     if (VNHandlerScript.VNMode == true)
                         VNHandlerScript.ToggleVNMode();
-                    NextLine();
+                    NextLine(_isInLine);
                     break;
                 case LINETYPE.DISABLE_NOVEL_MODE:
                     if (VNHandlerScript.VNMode == false)
                         VNHandlerScript.ToggleVNMode();
-                    NextLine();
+                    NextLine(_isInLine);
                     break;
                 case LINETYPE.PLAY_VIDEO:
                     VideoPlayerInstance = GameObject.Instantiate<GameObject>(VideoPlayerPrefab, Canvases[(int)CANVAS_TYPES.EFFECTS].transform).GetComponent<VideoPlayer>();
@@ -398,7 +418,7 @@ namespace M22
                     HideText();
                     break;
                 default:
-                    NextLine();
+                    NextLine(_isInLine);
                     break;
             }
         }
@@ -536,7 +556,12 @@ namespace M22
                     break;
                 case WAIT_STATE.WAIT_COMMAND:
                     waitCommandTimer += Time.deltaTime;
-                    if (waitCommandTimer >= (CURRENT_LINE.m_parameters[0] * 0.001f))
+                    int param;
+                    if (inLineFunctionMode == true)
+                        param = CurrentInlineFunction.m_parameters[0];
+                    else
+                        param = CURRENT_LINE.m_parameters[0];
+                    if (waitCommandTimer >= (param * 0.001f))
                     {
                         WaitState = WAIT_STATE.NOT_WAITING;
                         NextLine();

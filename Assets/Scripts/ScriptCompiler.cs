@@ -217,36 +217,9 @@ namespace M22
             int scriptPos = 0;
             for (int i = 0; i < scriptLines.Count; i++)
             {
-                scriptLines[i] = scriptLines[i].Trim('\t');
-                if (scriptLines[i] == "\r\n" || scriptLines[i] == "\n")
-                {
-                    continue;
-                }
-                else if(scriptLines[i].Length == 0 || (scriptLines[i][0] == '/' && scriptLines[i][1] == '/'))
-                {
-                    continue;
-                }
-                SplitString(scriptLines[i], CURRENT_LINE_SPLIT, ' ');
-                if (CURRENT_LINE_SPLIT.Count == 0) continue;
-                M22.line_c tempLine_c = new M22.line_c();
-                tempLine_c.m_origScriptPos = i + 1;
-                tempLine_c.m_lineType = CheckLineType(CURRENT_LINE_SPLIT[0]);
-
-                if (tempLine_c.m_lineType == M22.LINETYPE.NARRATIVE)
-                {
-                    scriptLines[i] = scriptLines[i].Replace("\\n", "\n");
-                    tempLine_c.m_lineContents = scriptLines[i];
-                }
-                else if(tempLine_c.m_lineType == M22.LINETYPE.DIALOGUE)
-                {
-                    tempLine_c.m_lineContents = scriptLines[i];
-                    tempLine_c.m_lineContents = tempLine_c.m_lineContents.Substring(CURRENT_LINE_SPLIT[0].Length+1);
-                    CharacterNames.TryGetValue(CalculateHash(CURRENT_LINE_SPLIT[0]), out tempLine_c.m_speaker);
-                }
-                else
-                {
-                    CompileLine(ref tempLine_c, CURRENT_LINE_SPLIT, ref currentScript_checkpoints, scriptPos);
-                }
+                string currScriptLine = scriptLines[i];
+                M22.line_c tempLine_c = CompileLine(ref currScriptLine, i); // ref can't be an index so have to copy then copy back
+                scriptLines[i] = currScriptLine;
                 result.AddLine(tempLine_c);
                 scriptPos++;
             }
@@ -290,10 +263,7 @@ namespace M22
                             return M22.LINETYPE.NARRATIVE;
                         else
                         {
-                            //if(temp == "muto" || _input == "\tmystery")
-                            //{
-                                //Debug.Log("rbeakboot!");
-                            //}
+                               //Debug.Log("rbeakboot!");
                             return M22.LINETYPE.DIALOGUE;
                         }
                     }
@@ -308,7 +278,43 @@ namespace M22
 
         }
 
-        static void CompileLine(ref M22.line_c _lineC, List<string> _splitStr, ref List<M22.script_checkpoint> _chkpnt, int _scriptPos)
+        static public M22.line_c CompileLine(ref string func, int _scriptPos)
+        {
+            List<string> CURRENT_LINE_SPLIT = new List<string>();
+            M22.line_c tempLine_c = new M22.line_c();
+            func = func.Trim('\t');
+            if (func == "\r\n" || func == "\n")
+            {
+                return tempLine_c;
+            }
+            else if (func.Length == 0 || (func[0] == '/' && func[1] == '/'))
+            {
+                return tempLine_c;
+            }
+            SplitString(func, CURRENT_LINE_SPLIT, ' ');
+            if (CURRENT_LINE_SPLIT.Count == 0) return tempLine_c;
+            tempLine_c.m_origScriptPos = _scriptPos + 1;
+            tempLine_c.m_lineType = CheckLineType(CURRENT_LINE_SPLIT[0]);
+
+            if (tempLine_c.m_lineType == M22.LINETYPE.NARRATIVE)
+            {
+                func = func.Replace("\\n", "\n");
+                tempLine_c.m_lineContents = func;
+            }
+            else if (tempLine_c.m_lineType == M22.LINETYPE.DIALOGUE)
+            {
+                tempLine_c.m_lineContents = func;
+                tempLine_c.m_lineContents = tempLine_c.m_lineContents.Substring(CURRENT_LINE_SPLIT[0].Length + 1);
+                CharacterNames.TryGetValue(CalculateHash(CURRENT_LINE_SPLIT[0]), out tempLine_c.m_speaker);
+            }
+            else
+            {
+                CompileLine(ref tempLine_c, CURRENT_LINE_SPLIT, ref currentScript_checkpoints, _scriptPos);
+            }
+            return tempLine_c;
+        }
+
+        static public void CompileLine(ref M22.line_c _lineC, List<string> _splitStr, ref List<M22.script_checkpoint> _chkpnt, int _scriptPos)
         {
             for (int i = 0; i < _splitStr.Count; i++)
             {

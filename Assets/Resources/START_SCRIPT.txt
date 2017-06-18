@@ -10,7 +10,7 @@ PlayMusic Lullaby_of_Open_Eyes
 
 A light breeze causes the naked branches overhead to rattle like wooden windchimes.
 
-Goto en_A1
+Goto en_A2c
 
 This is a popular retreat for couples in the summer. The deciduous trees provide a beautiful green canopy, far out of sight of teachers and fellow students.
 
@@ -662,7 +662,7 @@ ExecuteFunction HospitalMask hide
 
 		Ah, get a grip! This is a big step, I know that… But there isn't any point to worrying so much about it, at least not this soon.
 
-		ExecuteFunction ScrollingBackground hisao_class init
+		//ExecuteFunction ScrollingBackground hisao_class init
 
 		//play music music_normal fadein 0.5
 		
@@ -678,7 +678,7 @@ ExecuteFunction HospitalMask hide
 
 		I stop walking in front of the classroom and face the other students. They all look normal, like students in any other school. But then, why would they be here?
 
-			ExecuteFunction ScrollingBackground hisao_class start
+			//ExecuteFunction ScrollingBackground hisao_class start
 		
 		They're probably like me and have something wrong with them, only it's just not immediately obvious. Then, I notice that one of the girls seems to be missing the thumb of her right hand. It's a little jarring.
 
@@ -746,7 +746,7 @@ ExecuteFunction HospitalMask hide
 
 		It makes me feel a little bad.
 		
-		ExecuteFunction ScrollingBackground hisao_class exit
+		//ExecuteFunction ScrollingBackground hisao_class exit
 		DrawBackground school_scienceroom
 		DrawCharacter muto normal 0
 		//scene bg school_scienceroom at bgright
@@ -789,7 +789,7 @@ ExecuteFunction HospitalMask hide
 
 		DrawCharacter misha hips_grin 0
 
-		mi_shi "It's nice to meet you, too!{{Wait 500}} But~!"
+		mi_shi "It's nice to meet you, too!{{Wait 650}} But~!"
 
 		mi_not_shi "I'm not Hakamichi, I'm Misha! This is Hakamichi. Shicchan~!"
 

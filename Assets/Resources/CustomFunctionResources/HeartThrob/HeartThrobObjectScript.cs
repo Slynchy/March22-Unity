@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class HeartThrobObjectScript : MonoBehaviour
 {
 
-    public M22.ScriptMaster.VoidDelegate callback;
+    public M22.ScriptMaster.VoidDelegateWithBool callback;
 
     Image IMG;
 
