@@ -42,7 +42,7 @@ namespace M22
             }
             else
             {
-                Debug.LogError("Failed to load background: Backgrounds/" + name);
+                //Debug.LogError("Failed to load background: Backgrounds/" + name);
                 return false;
             }
         }

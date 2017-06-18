@@ -17,12 +17,21 @@ public class CustomFunctionHandler : MonoBehaviour {
         }
     }
 
+    static public bool CheckFunctionExists(string _str)
+    {
+        return CustomFuncs.ContainsKey(_str);
+    }
+
     static private Dictionary<string, CustomFunctionContainer> CustomFuncs = new Dictionary<string, CustomFunctionContainer>();
 
     static public CustomFunctionDelegate GetFunction(string name)
     {
         CustomFunctionContainer returnVal;
-        CustomFuncs.TryGetValue(name, out returnVal);
+        if(CustomFuncs.TryGetValue(name, out returnVal) == false)
+        {
+            Debug.LogErrorFormat("Failed to execute custom function {0}", name);
+            return null;
+        }
         return returnVal.CustomFunc.Func;
     }
 

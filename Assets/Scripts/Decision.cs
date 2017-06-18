@@ -75,7 +75,6 @@ public class Decision : MonoBehaviour {
     
     void HandleChoice(string _choice)
     {
-        Debug.Log(_choice);
         Destroy(this.gameObject);
         int stringIndex = choiceStrings.FindIndex(a => a == _choice);
         if (scriptMastRef.SCRIPT_FLAGS.Contains(choiceFlags[stringIndex]))

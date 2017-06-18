@@ -10,18 +10,9 @@ PlayMusic Lullaby_of_Open_Eyes
 
 A light breeze causes the naked branches overhead to rattle like wooden windchimes.
 
-//Goto en_A1
+Goto en_A1
 
 This is a popular retreat for couples in the summer. The deciduous trees provide a beautiful green canopy, far out of sight of teachers and fellow students.
-
-						asdafsdfggrgerg
-						DrawCharacter shizu basic_normal 0
-						asfgreghtrthrth
-						DrawCharacter shizu adjust_happy 0
-						asdafsdfggrgerg
-						DrawCharacter shizu basic_normal 0
-						asfgreghtrthrth
-						ClearCharacters
 
 //ExecuteFunction heart_throb 4.0 2.0
 
@@ -632,6 +623,7 @@ ExecuteFunction HospitalMask hide
 	--en_A1c
 		
 		HideWindow
+		ClearCharacter muto true
 		Transition school_staircase2 tr-softwipe 0
 		ShowWindow
 
@@ -670,10 +662,11 @@ ExecuteFunction HospitalMask hide
 
 		Ah, get a grip! This is a big step, I know that… But there isn't any point to worrying so much about it, at least not this soon.
 
-		//scene ev hisao_class_start
-		//with fade
+		ExecuteFunction ScrollingBackground hisao_class init
 
 		//play music music_normal fadein 0.5
+		
+		PlayMusic School_Days
 
 		I follow the teacher into the classroom and look around, partially so I won't have to meet the curious gazes of my new classmates.
 
@@ -684,19 +677,132 @@ ExecuteFunction HospitalMask hide
 		The students' desks are just standard wooden desks with a shelf underneath for books and wooden chairs with metal frames. Simple and efficient.
 
 		I stop walking in front of the classroom and face the other students. They all look normal, like students in any other school. But then, why would they be here?
+
+			ExecuteFunction ScrollingBackground hisao_class start
 		
+		They're probably like me and have something wrong with them, only it's just not immediately obvious. Then, I notice that one of the girls seems to be missing the thumb of her right hand. It's a little jarring.
+
+		Despite the natural tendency to listen when someone's talking about you, I tune out the teacher's speech halfway through while he introduces me to the class.
+
+		I notice a flash of dark hair and see that someone is looking at me. A girl with really long, straight hair that is pretty eye-catching. As she sees me looking back at her, she covers her face with her hands as if it will make her invisible.
+
+		There is one boy with a cane leaning against the lockers at the rear of the class. It's weird seeing someone so young with a cane.
+
+		Another girl seems to be making some weird hand motions. Sign language? She peers at me over the rims of her glasses, then goes back to whatever she's doing.
+
+		She's kind of cute. So is the cheery-looking girl with pink hair sitting next to her. She's really hard to miss; I don't know how I didn't notice her the moment I walked in…
+
+		mu "…please welcome our newest classmate."
+
+		He claps his hands and so does everyone else, except one girl in the first row who has only one hand. I cringe a little, but hide it by bowing in thanks for this applause I did not deserve.
 		
+		m22IF choiceA1_1 Goto en_A2a
+		m22IF choiceA1_2 Goto en_A2b
 		
+		--en_A2a
+			
+			After the applause, there is a brief silence that nobody seems to want to be responsible for breaking.
+
+			The teacher soon realizes that he should probably say something. He opens up with some unintelligible noise, shuts up as he loses his momentum, and then starts introducing me.
+
+			Nobody seems to be too interested.
+
+			Maybe I should've said yes to the self-introduction thing.
+
+			Probably realizing he doesn't know anything about me, he just ends up saying my name wrong again, and asks me to write it on the blackboard.
+
+			I do that, and turn back to face the class, feeling awkward.
+			
+		--en_A2b
+
+			A collective silence tells me that I should open my mouth now.
+
+			hi "So… I'm Hisao Nakai."
+
+			And after that?
+
+			hi "My hobbies are reading and soccer. I hope to get along well with everyone even though I'm a new student."
+
+			And after that?
+
+			I'm being so boring. This is exactly like every self-introduction ever. I should say something more. Something more exciting.
+
+			I end up saying nothing, and the teacher picks up from there.
+
+			Everyone seems to be satisfied even with what little I said, though. A few girls are whispering to each other, throwing glances at me. It could've gone worse.
+
+			…
 		
+	--en_A2c
 		
+		//scene ev hisao_class_end
+		//with None
+
+		I listen to the teacher as he drones about getting along while letting my gaze sweep across the classroom.
+
+		Everyone seems to be listening to him intently and when he's done, they clap their hands again which feels like a weird thing to do.
+
+		The first row girl claps on this round, with her one hand against her other wrist that ends in a bandaged stump.
+
+		It makes me feel a little bad.
 		
+		ExecuteFunction ScrollingBackground hisao_class exit
+		DrawBackground school_scienceroom
+		DrawCharacter muto normal 0
+		//scene bg school_scienceroom at bgright
+		//show muto normal at center
+		//with fade
+
+		mu "We're going to be doing some group work today, so that'll give you a chance to talk with everyone. Is that okay with you?"
+
+		hi "Yeah, it's fine with me."
 		
+		DrawCharacter muto smile 0
+
+		mu "That's good, you can work with Hakamichi. She is the class representative."
+
+		mu "She can explain anything you might want to know. And who else would be able to do that better, right?"
+
+		ClearCharacter muto true
+
+		How could I know?
+
+		The teacher passes out the day's assignments and announces that we will be working in groups of three.
+
+		It hits me that I don't know who Hakamichi is. Slow. The teacher seems to catch my helpless expression.
+
+		mu "Oh, right. Hakamichi is right there, Shizune Hakamichi."
+
+		DrawCharacter misha perky_smile 0
+
+		As he calls out her name, the cute, bubbly looking girl with bright pink hair and gold eyes waves her hand at me. I take a seat next to her, by the window.
 		
-		
-		
-		
-		
-		
-		
+		hi "Hey, I guess you're Hakamichi, right? It's nice to meet you."
+
+		StopMusic
+
+		DrawCharacter misha cross_laugh 0
+
+		mi_shi "Hahaha~!"
+
+		What? I'm caught off guard by her laughter.
+
+		DrawCharacter misha hips_grin 0
+
+		mi_shi "It's nice to meet you, too!{{Wait 500}} But~!"
+
+		mi_not_shi "I'm not Hakamichi, I'm Misha! This is Hakamichi. Shicchan~!"
+
+		//play music music_shizune fadein 1.0
+		PlayMusic The_Student_Council
+
+		show misha hips_grin at twoleft
+		show bg school_scienceroom at center
+		with charamove
+
+		show shizu basic_normal at tworight
+		with charaenter
+
+		Giggling, Misha points to the girl next to her, the one I saw using sign language before. It looks like she has been staring at me this whole time. She nods once nonchalantly to show that she acknowledges my presence… but only barely.
 		
 		

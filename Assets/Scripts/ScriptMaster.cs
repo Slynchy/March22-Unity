@@ -265,6 +265,13 @@ namespace M22
                     else
                         NextLine();
                     break;
+                case LINETYPE.CLEAR_CHARACTER:
+                    if (VNHandlerScript.ClearCharacter(_line.m_parameters_txt[0], _line.m_parameters[0] == 1 ? true : false) == false)
+                    {
+                        Debug.LogErrorFormat("Unable to clear character {0} at line {1}", _line.m_parameters_txt[0], _line.m_origScriptPos);
+                    }
+                    NextLine();
+                    break;
                 case LINETYPE.PLAY_MUSIC:
                     M22.AudioMaster.ChangeTrack(_line.m_parameters_txt[0]);
                     NextLine();

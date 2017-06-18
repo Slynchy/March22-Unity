@@ -26,6 +26,7 @@ namespace M22
         DRAW_CHARACTER,
         TRANSITION,
         CLEAR_CHARACTERS,
+        CLEAR_CHARACTER,
         EXECUTE_FUNCTION,
         GOTO,
         WAIT,
@@ -88,6 +89,7 @@ namespace M22
                 "DrawCharacter",
                 "Transition",
                 "ClearCharacters",
+                "ClearCharacter",
                 "ExecuteFunction",
                 "Goto",
                 "Wait",
@@ -227,6 +229,7 @@ namespace M22
                 SplitString(scriptLines[i], CURRENT_LINE_SPLIT, ' ');
                 if (CURRENT_LINE_SPLIT.Count == 0) continue;
                 M22.line_c tempLine_c = new M22.line_c();
+                tempLine_c.m_origScriptPos = i + 1;
                 tempLine_c.m_lineType = CheckLineType(CURRENT_LINE_SPLIT[0]);
 
                 if (tempLine_c.m_lineType == M22.LINETYPE.NARRATIVE)
@@ -244,8 +247,6 @@ namespace M22
                 {
                     CompileLine(ref tempLine_c, CURRENT_LINE_SPLIT, ref currentScript_checkpoints, scriptPos);
                 }
-
-                tempLine_c.m_origScriptPos = i + 1;
                 result.AddLine(tempLine_c);
                 scriptPos++;
             }
@@ -407,7 +408,7 @@ namespace M22
 
                         if (!M22.AudioMaster.LoadMusic(_lineC.m_parameters_txt[0]))
                         {
-                            Debug.LogError("Failed to load music! - " + _lineC.m_parameters_txt[0]);
+                            Debug.LogErrorFormat("Failed to load music file \"{0}\" at line {1}!", _lineC.m_parameters_txt[0], _lineC.m_origScriptPos);
                         };
                     }
                     break;
@@ -425,13 +426,18 @@ namespace M22
                         // should be 4
                         while(_lineC.m_parameters_txt.Count < 4)
                             _lineC.m_parameters_txt.Add("");
+
+                        if(CustomFunctionHandler.CheckFunctionExists(_lineC.m_parameters_txt[0]) == false)
+                        {
+                            Debug.LogErrorFormat("Custom function \"{0}\" does not exist at line {1}!", _lineC.m_parameters_txt[0], _lineC.m_origScriptPos);
+                        }
                     }
                     break;
                 case M22.LINETYPE.STOP_MUSIC:
                     if (_splitStr.Count > 1)
                     {
                         _lineC.m_parameters_txt = new List<string>();
-                        _splitStr[1] = _splitStr[1].TrimEnd('\r', '\n');
+                        //_splitStr[1] = _splitStr[1].TrimEnd('\r', '\n');
                         _lineC.m_parameters_txt.Add(_splitStr[1]);
                     }
                     // we store the float value as a string for later use, if provided.
@@ -446,7 +452,7 @@ namespace M22
 
                         if (!M22.BackgroundMaster.LoadBackground(_lineC.m_parameters_txt[0]))
                         {
-                            Debug.LogError("Failed to load background! - " + _lineC.m_parameters_txt[0]);
+                            Debug.LogErrorFormat("Failed to load background {0} at line {1}", _lineC.m_parameters_txt[0], _lineC.m_origScriptPos);
                         };
                     }
                     break;
@@ -463,6 +469,21 @@ namespace M22
                         if(M22.ScriptMaster.LoadVideoFile(_splitStr[1]) == false)
                         {
                             Debug.LogError("Failed to load video file: " + _splitStr[1]);
+                        }
+                    }
+                    break;
+                case M22.LINETYPE.CLEAR_CHARACTER:
+                    if (_splitStr.Count >= 2)
+                    {
+                        _lineC.m_parameters = new List<int>();
+                        _lineC.m_parameters_txt = new List<string>();
+                        _lineC.m_parameters_txt.Add(_splitStr[1]);
+                        if (_splitStr.Count >= 3)
+                        {
+                            if (_splitStr[2].Equals("true"))
+                                _lineC.m_parameters.Add(1);
+                            else
+                                _lineC.m_parameters.Add(0);
                         }
                     }
                     break;

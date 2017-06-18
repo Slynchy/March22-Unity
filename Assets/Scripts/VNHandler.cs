@@ -175,12 +175,15 @@ namespace M22
         static public bool LoadCharacter(string _charname, string _modifier)
         {
             string path = "Characters/" + _charname + "/" + _modifier;
+            string backuppath = "Characters/" + _charname + "/" + _charname + "_" + _modifier;
             if (loadedCharacters.ContainsKey(_charname))
             {
                 Character temp;
                 loadedCharacters.TryGetValue(_charname, out temp);
                 if (temp.sprites.ContainsKey(_modifier)) return true;
                 Texture2D tempTex = Resources.Load(path) as Texture2D;
+                if (tempTex == null)
+                    tempTex = Resources.Load(backuppath) as Texture2D;
                 Sprite tempSpr = Sprite.Create(tempTex, new Rect(0, 0, tempTex.width, tempTex.height), new Vector2(0, 0));
                 if (tempSpr != null)
                 {
@@ -193,6 +196,8 @@ namespace M22
             {
                 Character temp = new Character();
                 Texture2D tempTex = Resources.Load(path) as Texture2D;
+                if(tempTex == null)
+                    tempTex = Resources.Load(backuppath) as Texture2D;
                 Sprite tempSpr = Sprite.Create(tempTex, new Rect(0, 0, tempTex.width, tempTex.height), new Vector2(0, 0));
                 if (tempSpr != null)
                 {
@@ -201,6 +206,21 @@ namespace M22
                     return true;
                 }
                 else return false;
+            }
+        }
+
+        public bool ClearCharacter(string _charname, bool _immediately)
+        {
+            GameObject tempGO = GameObject.Find(_charname);
+            if(tempGO != null)
+            {
+                var tempCS = tempGO.GetComponent<CharacterScript>();
+                tempCS.DestroyCharacter(false);
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
