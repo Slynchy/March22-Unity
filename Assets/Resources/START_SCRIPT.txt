@@ -8,9 +8,17 @@ ShowWindow
 
 PlayMusic Lullaby_of_Open_Eyes
 
-A light breeze causes the naked branches overhead to rattle like wooden windchimes.
+A light breeze causes the naked branches overhead to rattle like wooden windchimes
 
-Goto en_A2c
+		DrawBackground school_scienceroom 0 0 1.25 1.0
+		asdf
+		DrawCharacter misha perky_smile 0
+		asdf
+		DrawCharacter misha perky_smile -200
+		DrawBackground school_scienceroom -240 0 1.25 1.0
+		DrawCharacter shizu basic_normal 200
+
+//Goto en_A2c
 
 This is a popular retreat for couples in the summer. The deciduous trees provide a beautiful green canopy, far out of sight of teachers and fellow students.
 
@@ -800,11 +808,11 @@ ExecuteFunction HospitalMask hide
 
 		//show misha hips_grin at twoleft
 		//show bg school_scienceroom at center
+		DrawCharacter misha perky_smile -200
 		DrawBackground school_scienceroom -240 0 1.25 1.0
-		//with charamove
-
+		DrawCharacter shizu basic_normal 200
 		//show shizu basic_normal at tworight
-		//with charaenter
+		//with charamove
 
 		Giggling, Misha points to the girl next to her, the one I saw using sign language before. It looks like she has been staring at me this whole time. She nods once nonchalantly to show that she acknowledges my presence… but only barely.
 		

@@ -238,14 +238,15 @@ namespace M22
                 tempGO = GameObject.Instantiate<GameObject>(CharacterPrefab, GameObject.Find("Characters").transform);
                 tempGO.name = _charname; //+ "-" + _modifier;
                 var tempCS = tempGO.GetComponent<CharacterScript>();
+                tempCS.CurrentSpriteName = _modifier;
                 tempCS.destSpr = tempSpr;
                 //tempGO.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/empty") as Sprite;
-                tempGO.GetComponent<RectTransform>().offsetMin = new Vector2(tempGO.GetComponent<RectTransform>().offsetMin.x + _x, tempGO.GetComponent<RectTransform>().offsetMin.y);
+                tempGO.GetComponent<RectTransform>().anchoredPosition = new Vector2(tempGO.GetComponent<RectTransform>().anchoredPosition.x + _x, tempGO.GetComponent<RectTransform>().anchoredPosition.y);
             }
             else
             {
                 var tempCS = tempGO.GetComponent<CharacterScript>();
-                tempCS.UpdateSprite(CharacterPrefab, tempSpr);
+                tempCS.UpdateSprite(CharacterPrefab, tempSpr, _modifier, new Vector2(_x, 0));
             }
         }
     }

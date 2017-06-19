@@ -26,6 +26,7 @@ namespace M22
         private float inc = -0.1f;
         private RectTransform rect;
         private Material mat;
+        public string CurrentSpriteName;
 
         void Awake()
         {
@@ -71,19 +72,48 @@ namespace M22
 
         public STATES GetState() { return state; }
 
-        public void UpdateSprite(GameObject _prefab, Sprite _new)
+        private IEnumerator MoveToPos(int _newXpos, int _newYPos)
+        {
+            Vector2 oldPos = rect.anchoredPosition;
+            Vector2 newPos = new Vector2(_newXpos, _newYPos);
+            float progress = 0.0f;
+            while (rect.anchoredPosition != newPos)
+            {
+                //progress += Time.deltaTime * 1.0f;
+                progress = Mathf.Lerp(progress, 1.1f, Time.deltaTime);
+                rect.anchoredPosition = Vector2.Lerp(oldPos, newPos, progress);
+                yield return null;
+            }
+
+            //SM.FinishBackgroundMovement();
+        }
+
+        public void UpdateSprite(GameObject _prefab, Sprite _new, string _newName, Vector2 newOffset = default(Vector2))
         {
             state = STATES.CHANGING_SPRITE;
-            img.sprite = null;
-            tempSpr = destSpr;
-            destSpr = _new;
-            img.material.SetTexture("_MainTex", tempSpr.texture);
-            img.material.SetTexture("_SecondaryTex", destSpr.texture);
-            inc = -0.1f;
-            img.material.SetFloat("_Progress", inc);
-            rect.sizeDelta = destSpr.rect.size;
-            //img.material.SetTexture("_SecondaryTex", destSpr.texture);
-            //img.sprite = destSpr;
+            if(_newName.Equals(CurrentSpriteName))
+            {
+                // same sprite; just moving
+                StartCoroutine(
+                    MoveToPos(
+                        (int)(rect.anchoredPosition.x + newOffset.x),
+                        (int)(rect.anchoredPosition.y + newOffset.y)
+                    )
+                );
+            }
+            else
+            {
+                img.sprite = null;
+                tempSpr = destSpr;
+                destSpr = _new;
+                img.material.SetTexture("_MainTex", tempSpr.texture);
+                img.material.SetTexture("_SecondaryTex", destSpr.texture);
+                inc = -0.1f;
+                img.material.SetFloat("_Progress", inc);
+                rect.sizeDelta = destSpr.rect.size;
+                //img.material.SetTexture("_SecondaryTex", destSpr.texture);
+                //img.sprite = destSpr;
+            }
         }
 
         // Update is called once per frame
