@@ -450,17 +450,36 @@ namespace M22
                     // otherwise, just continue
                     break;
                 case M22.LINETYPE.DRAW_BACKGROUND:
-                    if (_splitStr.Count > 1)
+                    if (_splitStr.Count >= 2)
                     {
+                        _lineC.m_parameters = new List<int>();
                         _lineC.m_parameters_txt = new List<string>();
-                        _splitStr[1] = _splitStr[1].TrimEnd('\r', '\n');
                         _lineC.m_parameters_txt.Add(_splitStr[1]);
+                        if (_splitStr.Count >= 3)
+                        {
+                            _lineC.m_parameters.Add(Int32.Parse(_splitStr[2]));
+                            if (_splitStr.Count >= 4)
+                                _lineC.m_parameters.Add(Int32.Parse(_splitStr[3]));
+                            if (_splitStr.Count >= 5)
+                                _lineC.m_parameters_txt.Add(_splitStr[4]);
+                            if (_splitStr.Count >= 6)
+                                _lineC.m_parameters_txt.Add(_splitStr[5]);
+                        }
+                        else
+                        {
+                            _lineC.m_parameters.Add(0);
+                            _lineC.m_parameters.Add(0);
+                            _lineC.m_parameters_txt.Add("1.0");
+                            _lineC.m_parameters_txt.Add("1.0");
+                        }
 
                         if (!M22.BackgroundMaster.LoadBackground(_lineC.m_parameters_txt[0]))
                         {
-                            Debug.LogErrorFormat("Failed to load background {0} at line {1}", _lineC.m_parameters_txt[0], _lineC.m_origScriptPos);
+                            Debug.LogErrorFormat("Failed to load background \"{0}\" at line {1}", _lineC.m_parameters_txt[0], _lineC.m_origScriptPos);
                         };
                     }
+                    else
+                        Debug.LogErrorFormat("Not enough parameters on DrawBackground at line {0}", _lineC.m_origScriptPos);
                     break;
                 case M22.LINETYPE.ENABLE_NOVEL_MODE:
                     break;

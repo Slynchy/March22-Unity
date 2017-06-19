@@ -44,6 +44,8 @@ public class Transition : MonoBehaviour {
             img.material.SetFloat("_InOrOut", 0);
         else
             img.material.SetFloat("_InOrOut", 1);
+
+        img.material.SetFloat("_Alpha", 1);
     }
 	
 	// Update is called once per frame

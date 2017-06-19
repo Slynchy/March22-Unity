@@ -62,6 +62,7 @@ namespace M22
         CHARACTER_FADEOUT,
         TRANSITION,
         WAIT_COMMAND,
+        BACKGROUND_MOVING,
         VIDEO_PLAYING
     }
 
@@ -72,6 +73,8 @@ namespace M22
 
         public Image background;
         public Image backgroundTrans;
+        private BackgroundScript backgroundScript;
+        private BackgroundScript backgroundTransScript;
 
         private M22.Script.Script currentScript_c = new M22.Script.Script();
         private int lineIndex = 0;
@@ -168,7 +171,12 @@ namespace M22
                     background = GameObject.Find("Background").GetComponent<Image>();
                 if (background == null)
                     Debug.Log("This also failed! :(");
+                else
+                    backgroundScript = background.gameObject.GetComponent<BackgroundScript>();
             }
+            else
+                backgroundScript = background.gameObject.GetComponent<BackgroundScript>();
+
             if (backgroundTrans == null)
             {
                 Debug.Log("backgroundTrans not found in ScriptMaster; falling back to searching...");
@@ -176,7 +184,11 @@ namespace M22
                     backgroundTrans = GameObject.Find("BackgroundTransition").GetComponent<Image>();
                 if (backgroundTrans == null)
                     Debug.Log("This also failed! :(");
+                else
+                    backgroundTransScript = backgroundTrans.gameObject.GetComponent<BackgroundScript>();
             }
+            else
+                backgroundTransScript = backgroundTrans.gameObject.GetComponent<BackgroundScript>();
 
             if (GameObject.Find("BackgroundCanvas") != null)
                 Canvases.Add(GameObject.Find("BackgroundCanvas").GetComponent<Canvas>());
@@ -209,6 +221,12 @@ namespace M22
 
         public delegate void VoidDelegate();
         public delegate void VoidDelegateWithBool(bool _bool = false);
+
+        public void FinishBackgroundMovement()
+        {
+            if (WaitState == WAIT_STATE.BACKGROUND_MOVING) WaitState = WAIT_STATE.NOT_WAITING;
+            NextLine();
+        }
 
         public void NextLine(bool _isInLine = false)
         {
@@ -255,7 +273,26 @@ namespace M22
                     break;
                 case LINETYPE.DRAW_BACKGROUND:
                     backgroundTrans.sprite = M22.BackgroundMaster.GetBackground(_line.m_parameters_txt[0]);
-                    backgroundTrans.color = new Color(255, 255, 255, 0.001f);
+                    //RectTransform tempRT = backgroundTrans.gameObject.GetComponent<RectTransform>();
+                    //tempRT.offsetMax = new Vector2(backgroundTrans.sprite.texture.height, 0);
+
+                    if (backgroundTrans.sprite == background.sprite)
+                    {
+                        backgroundScript.UpdatePos(
+                            _line.m_parameters[0],
+                            _line.m_parameters[1]
+                        );
+                    }
+                    else
+                    {
+                        backgroundTransScript.UpdateBackground(
+                            _line.m_parameters[0],
+                            _line.m_parameters[1],
+                            float.Parse(_line.m_parameters_txt[1]),
+                            float.Parse(_line.m_parameters_txt[2])
+                        );
+                        backgroundTrans.color = new Color(1, 1, 1, 0.001f);
+                    }
                     break;
                 case LINETYPE.GOTO:
                     bool success = false;
@@ -404,9 +441,11 @@ namespace M22
                     break;
                 case LINETYPE.TRANSITION:
                     GameObject tempGO = GameObject.Instantiate<GameObject>(TransitionPrefab, Canvases[(int)CANVAS_TYPES.EFFECTS].transform);
+                    tempGO.GetComponent<Image>().material = Instantiate<Material>(tempGO.GetComponent<Image>().material) as Material;
                     Transition TransitionObj = tempGO.GetComponent<Transition>();
                     TransitionObj.callback = FadeToBlackCallback;
-                    TransitionObj.srcSprite = background.sprite;
+                    //TransitionObj.srcSprite = background.sprite;
+                    TransitionObj.srcSprite = Resources.Load<Sprite>("Images/empty") as Sprite;
                     TransitionEffects.TryGetValue(_line.m_parameters_txt[1], out TransitionObj.effect);
                     TransitionObj.destSprite = M22.BackgroundMaster.GetBackground(_line.m_parameters_txt[0]);
                     TransitionObj.inOrOut = (String.Equals(_line.m_parameters_txt[2], "in") ? Transition.IN_OR_OUT.IN : Transition.IN_OR_OUT.OUT);
@@ -433,6 +472,12 @@ namespace M22
         {
             Transition temp = GameObject.FindGameObjectWithTag("Transition").GetComponent<Transition>();
             background.sprite = temp.destSprite;
+            backgroundScript.UpdateBackground(
+                0,
+                0,
+                1.0f,
+                1.0f
+            );
             WaitState = WAIT_STATE.NOT_WAITING;
             NextLine();
         }
@@ -513,12 +558,20 @@ namespace M22
                         0
                     );
                     background.sprite = backgroundTrans.sprite;
+                    backgroundScript.UpdateBackground(
+                        CURRENT_LINE.m_parameters[0],
+                        CURRENT_LINE.m_parameters[1],
+                        float.Parse(CURRENT_LINE.m_parameters_txt[1]),
+                        float.Parse(CURRENT_LINE.m_parameters_txt[2])
+                    );
                     NextLine();
                 }
             }
 
             switch (WaitState)
             {
+                case WAIT_STATE.BACKGROUND_MOVING:
+                    break;
                 case WAIT_STATE.VIDEO_PLAYING:
                     if (VideoPlayerInstance.isPlaying == false)
                     {
