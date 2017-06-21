@@ -1,24 +1,16 @@
 ﻿--en_NOP1
 
 HideWindow 100.0
-ExecuteFunction snow_effect start
+//ExecuteFunction snow_effect start
 DrawBackground op_snowywoods
 
 ShowWindow
 
-PlayMusic Lullaby_of_Open_Eyes
+//PlayMusic Lullaby_of_Open_Eyes
 
-A light breeze causes the naked branches overhead to rattle like wooden windchimes
+A light breeze causes the naked branches overhead to rattle like wooden windchimes.
 
-		DrawBackground school_scienceroom 0 0 1.25 1.0
-		asdf
-		DrawCharacter misha perky_smile 0
-		asdf
-		DrawCharacter misha perky_smile -200
-		DrawBackground school_scienceroom -240 0 1.25 1.0
-		DrawCharacter shizu basic_normal 200
-
-//Goto en_A2c
+Goto en_A2
 
 This is a popular retreat for couples in the summer. The deciduous trees provide a beautiful green canopy, far out of sight of teachers and fellow students.
 
@@ -671,6 +663,9 @@ ExecuteFunction HospitalMask hide
 		Ah, get a grip! This is a big step, I know that… But there isn't any point to worrying so much about it, at least not this soon.
 
 		//ExecuteFunction ScrollingBackground hisao_class init
+		HideWindow
+		DrawBackground hisao_class 0 0 2.00 1.0
+		ShowWindow
 
 		//play music music_normal fadein 0.5
 		
@@ -687,6 +682,10 @@ ExecuteFunction HospitalMask hide
 		I stop walking in front of the classroom and face the other students. They all look normal, like students in any other school. But then, why would they be here?
 
 			//ExecuteFunction ScrollingBackground hisao_class start
+		// SetMovementType { Lerp, Smooth }
+		SetMovementSpeed 0.16
+		DrawBackground hisao_class -1500 0 2.00 1.0 true
+		SetMovementSpeed 1.00
 		
 		They're probably like me and have something wrong with them, only it's just not immediately obvious. Then, I notice that one of the girls seems to be missing the thumb of her right hand. It's a little jarring.
 
@@ -808,9 +807,11 @@ ExecuteFunction HospitalMask hide
 
 		//show misha hips_grin at twoleft
 		//show bg school_scienceroom at center
-		DrawCharacter misha perky_smile -200
+		HideWindow
+		DrawCharacter misha perky_smile -300 true
 		DrawBackground school_scienceroom -240 0 1.25 1.0
-		DrawCharacter shizu basic_normal 200
+		DrawCharacter shizu basic_normal 300
+		ShowWindow
 		//show shizu basic_normal at tworight
 		//with charamove
 

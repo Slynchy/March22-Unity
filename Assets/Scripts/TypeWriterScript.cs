@@ -9,6 +9,7 @@ namespace M22
 
         public float TextSpeed = 25.0f;
 
+        private float TextSpeedMultiplier = 1.0f;
         private string currentLine = "";
         private float strPos = 0.0f;
         private int currStrPos = 0;
@@ -17,6 +18,19 @@ namespace M22
         private ScriptMaster scriptMaster;
 
         private bool inLineFuncComplete = true;
+
+        public bool SetTextSpeed(float _newSpeed)
+        {
+            if (_newSpeed > 0)
+                TextSpeedMultiplier = _newSpeed;
+            else
+                return false;
+            return true;
+        }
+        public float GetTextSpeed()
+        {
+            return TextSpeedMultiplier;
+        }
 
         public void SetNewCurrentLine(string _newStr)
         {
@@ -92,7 +106,7 @@ namespace M22
             if (currentLine == null || String.Equals(currentLine, "")) return;
 
             if (strPos < currentLine.Length)
-                strPos += TextSpeed * Time.deltaTime;
+                strPos += TextSpeed * TextSpeedMultiplier * Time.deltaTime;
 
             if (Mathf.Floor(strPos) > currStrPos)
             {

@@ -224,8 +224,11 @@ namespace M22
 
         public void FinishBackgroundMovement()
         {
-            if (WaitState == WAIT_STATE.BACKGROUND_MOVING) WaitState = WAIT_STATE.NOT_WAITING;
-            NextLine();
+            if (WaitState == WAIT_STATE.BACKGROUND_MOVING)
+            {
+                WaitState = WAIT_STATE.NOT_WAITING;
+                NextLine();
+            }
         }
 
         public void NextLine(bool _isInLine = false)
@@ -271,6 +274,16 @@ namespace M22
                     else
                         NextLine(_isInLine);
                     break;
+                case LINETYPE.MOVEMENT_SPEED:
+                    if (VNHandlerScript != null)
+                        VNHandlerScript.SetMovementSpeed(float.Parse(_line.m_parameters_txt[0]));
+                    NextLine(_isInLine);
+                    break;
+                case LINETYPE.TEXT_SPEED:
+                    if (TEXT != null)
+                        TEXT.SetTextSpeed(float.Parse(_line.m_parameters_txt[0]));
+                    NextLine(_isInLine);
+                    break;
                 case LINETYPE.DRAW_BACKGROUND:
                     backgroundTrans.sprite = M22.BackgroundMaster.GetBackground(_line.m_parameters_txt[0]);
                     //RectTransform tempRT = backgroundTrans.gameObject.GetComponent<RectTransform>();
@@ -278,6 +291,7 @@ namespace M22
 
                     if (backgroundTrans.sprite == background.sprite)
                     {
+                        WaitState = WAIT_STATE.BACKGROUND_MOVING;
                         backgroundScript.UpdatePos(
                             _line.m_parameters[0],
                             _line.m_parameters[1]
@@ -292,6 +306,12 @@ namespace M22
                             float.Parse(_line.m_parameters_txt[2])
                         );
                         backgroundTrans.color = new Color(1, 1, 1, 0.001f);
+                    }
+
+                    if (_line.m_parameters[2] == 1)
+                    {
+                        WaitState = WAIT_STATE.NOT_WAITING;
+                        NextLine(_isInLine);
                     }
                     break;
                 case LINETYPE.GOTO:

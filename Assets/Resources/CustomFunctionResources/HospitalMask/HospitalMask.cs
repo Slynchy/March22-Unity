@@ -9,7 +9,6 @@ namespace CustomFunctions
     {
         GameObject HospitalMaskPrefab;
         GameObject HospitalMaskInstance;
-        HospitalMaskObjectScript HospitalMaskScript;
         M22.ScriptMaster ScriptMaster;
 
         public override void Awake()
@@ -27,7 +26,6 @@ namespace CustomFunctions
             if(param1.Equals("show"))
             {
                 HospitalMaskInstance = GameObject.Instantiate<GameObject>(HospitalMaskPrefab, ScriptMaster.GetCanvas(M22.ScriptMaster.CANVAS_TYPES.POSTCHARACTER).transform);
-                HospitalMaskScript = HospitalMaskInstance.GetComponent<HospitalMaskObjectScript>();
             }
             else
             {

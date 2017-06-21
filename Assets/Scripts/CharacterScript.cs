@@ -26,6 +26,7 @@ namespace M22
         private float inc = -0.1f;
         private RectTransform rect;
         private Material mat;
+        private VNHandler parent;
         public string CurrentSpriteName;
 
         void Awake()
@@ -44,6 +45,10 @@ namespace M22
             tempSpr = destSpr;
             img.material.SetTexture("_SecondaryTex", destSpr.texture);
             img.material.SetTexture("_MainTex", tempSpr.texture);
+
+            parent = Camera.main.GetComponent<VNHandler>();
+            if (parent == null)
+                Debug.LogError("Failed to get VNHandler from main camera!");
 
             if (effect == null)
             {
@@ -77,10 +82,11 @@ namespace M22
             Vector2 oldPos = rect.anchoredPosition;
             Vector2 newPos = new Vector2(_newXpos, _newYPos);
             float progress = 0.0f;
+            float speed = parent.GetMovementSpeed();
             while (rect.anchoredPosition != newPos)
             {
                 //progress += Time.deltaTime * 1.0f;
-                progress = Mathf.Lerp(progress, 1.1f, Time.deltaTime);
+                progress = Mathf.Lerp(progress, 1.2f, Time.deltaTime * speed);
                 rect.anchoredPosition = Vector2.Lerp(oldPos, newPos, progress);
                 yield return null;
             }

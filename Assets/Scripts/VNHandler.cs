@@ -43,6 +43,20 @@ namespace M22
 
         private Text CharacterName;
 
+        private float MovementSpeed = 1.0f;
+        public bool SetMovementSpeed(float _newSpeed)
+        {
+            if (_newSpeed > 0)
+                MovementSpeed = _newSpeed;
+            else
+                return false;
+            return true;
+        }
+        public float GetMovementSpeed()
+        {
+            return MovementSpeed;
+        }
+
         static private Dictionary<string, Character> loadedCharacters;
 
         private void Awake()

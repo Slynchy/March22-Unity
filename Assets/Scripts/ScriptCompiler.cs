@@ -37,6 +37,8 @@ namespace M22
         SET_FLAG,
         LOAD_SCRIPT,
         PLAY_VIDEO,
+        MOVEMENT_SPEED,
+        TEXT_SPEED,
         NUM_OF_LINETYPES
     }
 
@@ -99,7 +101,9 @@ namespace M22
                 "m22IF",
                 "SetFlag",
                 "LoadScript",
-                "PlayVideo"
+                "PlayVideo",
+                "SetMovementSpeed",
+                "SetTextSpeed"
         };
 
         private static void InitializeCharNames()
@@ -213,7 +217,7 @@ namespace M22
                 }
             }
 
-            List<string> CURRENT_LINE_SPLIT = new List<string>();
+            //List<string> CURRENT_LINE_SPLIT = new List<string>();
             int scriptPos = 0;
             for (int i = 0; i < scriptLines.Count; i++)
             {
@@ -340,6 +344,14 @@ namespace M22
                             //Debug.LogError("Failed to load background! - " + _lineC.m_parameters_txt[0]);
                             // failed to load bg!
                         };
+                    }
+                    break;
+                case M22.LINETYPE.TEXT_SPEED:
+                case M22.LINETYPE.MOVEMENT_SPEED:
+                    if (_splitStr.Count > 1)
+                    {
+                        _lineC.m_parameters_txt = new List<string>();
+                        _lineC.m_parameters_txt.Add(_splitStr[1]);
                     }
                     break;
                 case M22.LINETYPE.SET_ACTIVE_TRANSITION:
@@ -472,6 +484,11 @@ namespace M22
                             _lineC.m_parameters_txt.Add("1.0");
                             _lineC.m_parameters_txt.Add("1.0");
                         }
+
+                        if (_splitStr[_splitStr.Count-1].Equals("true"))
+                            _lineC.m_parameters.Add(1);
+                        else
+                            _lineC.m_parameters.Add(0);
 
                         if (!M22.BackgroundMaster.LoadBackground(_lineC.m_parameters_txt[0]))
                         {

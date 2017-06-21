@@ -10,16 +10,18 @@ namespace M22
 
         RectTransform RT;
         ScriptMaster SM;
+        VNHandler VN;
 
         private IEnumerator MoveToPos(int _newXpos, int _newYPos)
         {
             Vector2 oldPos = RT.anchoredPosition;
             Vector2 newPos = new Vector2(_newXpos, _newYPos);
             float progress = 0.0f;
+            float speed = VN.GetMovementSpeed();
             while (RT.anchoredPosition != newPos)
             {
                 //progress += Time.deltaTime * 1.0f;
-                progress = Mathf.Lerp(progress, 1.2f, Time.deltaTime);
+                progress = Mathf.Lerp(progress, 1.2f, Time.deltaTime * speed);
                 RT.anchoredPosition = Vector2.Lerp(oldPos, newPos, progress);
                 yield return null;
             }
@@ -52,6 +54,7 @@ namespace M22
         void Start()
         {
             SM = Camera.main.GetComponent<ScriptMaster>();
+            VN = Camera.main.GetComponent<VNHandler>();
         }
 
         // Update is called once per frame
