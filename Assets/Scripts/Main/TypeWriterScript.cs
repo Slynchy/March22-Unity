@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Text.RegularExpressions;
 
 namespace M22
 {
@@ -82,6 +83,7 @@ namespace M22
             page.text += '\n';
             strPos = currentLine.Length;
             currStrPos = currentLine.Length;
+            page.text = Regex.Replace(page.text, @"({{).+(}})", string.Empty);
             LineComplete = true;
         }
 

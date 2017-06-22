@@ -86,7 +86,7 @@ namespace M22
             switch(ScriptMaster.ActiveAnimationType)
             {
                 case ScriptCompiler.ANIMATION_TYPES.SMOOTH:
-                    while (rect.anchoredPosition != newPos)
+                    while (rect.anchoredPosition != newPos || progress >= 1.0f)
                     {
                         //progress += Time.deltaTime * 1.0f;
                         progress = Mathf.Lerp(progress, 1.2f, Time.deltaTime * speed);
@@ -95,7 +95,7 @@ namespace M22
                     }
                     break;
                 case ScriptCompiler.ANIMATION_TYPES.LERP:
-                    while (rect.anchoredPosition != newPos)
+                    while (rect.anchoredPosition != newPos || progress >= 1.0f)
                     {
                         progress += Time.deltaTime * speed;
                         rect.anchoredPosition = Vector2.Lerp(oldPos, newPos, progress);
@@ -104,6 +104,7 @@ namespace M22
                     break;
             }
 
+            rect.anchoredPosition = newPos;
             //SM.FinishBackgroundMovement();
         }
 
@@ -115,8 +116,8 @@ namespace M22
                 // same sprite; just moving
                 StartCoroutine(
                     MoveToPos(
-                        (int)(rect.anchoredPosition.x + newOffset.x),
-                        (int)(rect.anchoredPosition.y + newOffset.y)
+                        (int)(0 + newOffset.x),
+                        (int)(0 + newOffset.y)
                     )
                 );
             }
@@ -130,9 +131,26 @@ namespace M22
                 inc = -0.1f;
                 img.material.SetFloat("_Progress", inc);
                 rect.sizeDelta = destSpr.rect.size;
+
+                int newxpos = (int)(0 + newOffset.x);
+                if (newxpos == (int)(rect.anchoredPosition.x))
+                {
+                    //nothing
+                }
+                else
+                {
+                    StartCoroutine(
+                        MoveToPos(
+                            (int)(0 + newOffset.x),
+                            (int)(0 + newOffset.y)
+                        )
+                    );
+                }
+
                 //img.material.SetTexture("_SecondaryTex", destSpr.texture);
                 //img.sprite = destSpr;
             }
+            CurrentSpriteName = _newName;
         }
 
         // Update is called once per frame

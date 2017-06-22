@@ -130,7 +130,12 @@ namespace M22
 
                 script_character temp = new script_character();
                 temp.name = longName.Substring(1,longName.Length-2);
-                temp.color = new Color(Int32.Parse(lineSplit[lineSplit.Length-3]), Int32.Parse(lineSplit[lineSplit.Length - 2]), Int32.Parse(lineSplit[lineSplit.Length - 1]));
+                temp.color = new Color32(
+                    (byte)Int32.Parse(lineSplit[lineSplit.Length-3]),
+                    (byte)Int32.Parse(lineSplit[lineSplit.Length - 2]),
+                    (byte)Int32.Parse(lineSplit[lineSplit.Length - 1]),
+                    (byte)255
+                );
 
                 CharacterNames.Add(CalculateHash(shortName), temp);
             }
@@ -421,7 +426,7 @@ namespace M22
 
                         if (!M22.VNHandler.LoadCharacter(_lineC.m_parameters_txt[0], _lineC.m_parameters_txt[1]))
                         {
-                            Debug.LogError("Failed to load character! - " + _lineC.m_parameters_txt[0] + " - " + _lineC.m_parameters_txt[1]);
+                            Debug.LogErrorFormat("Failed to load character \"{0}\" at line {1}!", (_lineC.m_parameters_txt[0] + " - " + _lineC.m_parameters_txt[1]), _lineC.m_origScriptPos);
                         };
                     }
                     break;

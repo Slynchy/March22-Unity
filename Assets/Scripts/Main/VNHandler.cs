@@ -198,6 +198,13 @@ namespace M22
                 Texture2D tempTex = Resources.Load(path) as Texture2D;
                 if (tempTex == null)
                     tempTex = Resources.Load(backuppath) as Texture2D;
+
+                if(tempTex == null)
+                {
+                    //Debug.LogErrorFormat("Failed to load {0} or {1}!", path, backuppath);
+                    return false;
+                }
+
                 Sprite tempSpr = Sprite.Create(tempTex, new Rect(0, 0, tempTex.width, tempTex.height), new Vector2(0, 0));
                 if (tempSpr != null)
                 {

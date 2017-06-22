@@ -15,6 +15,45 @@ namespace M22
         private List<Button> choiceButtons;
 
         private M22.ScriptMaster scriptMastRef;
+        
+        private IEnumerator FadeIn()
+        {
+            float progress = 0.0f;
+            Image[] imgs = this.gameObject.GetComponentsInChildren<Image>();
+            switch (ScriptMaster.ActiveAnimationType)
+            {
+                case ScriptCompiler.ANIMATION_TYPES.SMOOTH:
+                    while (progress < 1)
+                    {
+                        progress = Mathf.Lerp(progress, 1.2f, Time.deltaTime);
+                        foreach (Image img in imgs)
+                        {
+                            if (img.gameObject == this.gameObject)
+                                img.color = new Color(1, 1, 1, progress * 0.33f);
+                            else
+                                img.color = new Color(1, 1, 1, progress);
+                        }
+                        yield return null;
+                    }
+                    break;
+                case ScriptCompiler.ANIMATION_TYPES.LERP:
+                    while (progress != 1)
+                    {
+                        progress += Time.deltaTime * 1.0f;
+                        foreach (Image img in imgs)
+                        {
+                            if (img.gameObject == this.gameObject)
+                                img.color = new Color(1, 1, 1, progress * 0.33f);
+                            else
+                                img.color = new Color(1, 1, 1, progress);
+                        }
+                        yield return null;
+                    }
+                    break;
+            }
+
+            //SM.FinishBackgroundMovement();
+        }
 
         public void Initialize(
             string _choice1string,
@@ -54,6 +93,10 @@ namespace M22
             choiceFlags.Add(_choice3flag);
         }
 
+        void Awake()
+        {
+        }
+
         void Start()
         {
             choiceTxt = GetComponentsInChildren<Text>();
@@ -75,6 +118,11 @@ namespace M22
             }
 
             scriptMastRef = Camera.main.GetComponent<M22.ScriptMaster>();
+            foreach (Image img in this.gameObject.GetComponentsInChildren<Image>())
+            {
+                img.color = new Color(1, 1, 1, 0);
+            }
+            StartCoroutine(FadeIn());
         }
 
         void HandleChoice(string _choice)
