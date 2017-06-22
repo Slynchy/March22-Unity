@@ -117,6 +117,8 @@ namespace M22
 
         private float waitCommandTimer = -1.0f;
 
+        static public ScriptCompiler.ANIMATION_TYPES ActiveAnimationType;
+
         static public bool LoadVideoFile(string _file)
         {
             if (loadedVideoClips.ContainsKey(_file))
@@ -285,6 +287,8 @@ namespace M22
                     NextLine(_isInLine);
                     break;
                 case LINETYPE.DRAW_BACKGROUND:
+                    if (backgroundScript.IsMoving())
+                        backgroundScript.SetIsMoving(false);
                     backgroundTrans.sprite = M22.BackgroundMaster.GetBackground(_line.m_parameters_txt[0]);
                     //RectTransform tempRT = backgroundTrans.gameObject.GetComponent<RectTransform>();
                     //tempRT.offsetMax = new Vector2(backgroundTrans.sprite.texture.height, 0);
@@ -351,6 +355,10 @@ namespace M22
                     break;
                 case LINETYPE.PLAY_MUSIC:
                     M22.AudioMaster.ChangeTrack(_line.m_parameters_txt[0]);
+                    NextLine(_isInLine);
+                    break;
+                case LINETYPE.ANIMATION_TYPE:
+                    ActiveAnimationType = (ScriptCompiler.ANIMATION_TYPES)_line.m_parameters[0];
                     NextLine(_isInLine);
                     break;
                 case LINETYPE.STOP_MUSIC:

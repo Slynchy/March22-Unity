@@ -39,6 +39,7 @@ namespace M22
         PLAY_VIDEO,
         MOVEMENT_SPEED,
         TEXT_SPEED,
+        ANIMATION_TYPE,
         NUM_OF_LINETYPES
     }
 
@@ -103,8 +104,15 @@ namespace M22
                 "LoadScript",
                 "PlayVideo",
                 "SetMovementSpeed",
-                "SetTextSpeed"
+                "SetTextSpeed",
+                "SetAnimationType"
         };
+        public enum ANIMATION_TYPES
+        {
+            SMOOTH,
+            LERP,
+            NUM_OF_ANIMATION_TYPES
+        }
 
         private static void InitializeCharNames()
         {
@@ -267,7 +275,7 @@ namespace M22
                             return M22.LINETYPE.NARRATIVE;
                         else
                         {
-                               //Debug.Log("rbeakboot!");
+                            //Debug.Log("rbeakboot!");
                             return M22.LINETYPE.DIALOGUE;
                         }
                     }
@@ -344,6 +352,26 @@ namespace M22
                             //Debug.LogError("Failed to load background! - " + _lineC.m_parameters_txt[0]);
                             // failed to load bg!
                         };
+                    }
+                    break;
+                case M22.LINETYPE.ANIMATION_TYPE:
+                    if (_splitStr.Count > 1)
+                    {
+                        _lineC.m_parameters = new List<int>();
+                        _splitStr[1] = _splitStr[1].ToLower();
+                        if (_splitStr[1].Equals("lerp"))
+                        {
+                            _lineC.m_parameters.Add((int)ANIMATION_TYPES.LERP);
+                        }
+                        else if (_splitStr[1].Equals("smooth"))
+                        {
+                            _lineC.m_parameters.Add((int)ANIMATION_TYPES.SMOOTH);
+                        }
+                        else
+                        {
+                            Debug.LogErrorFormat("Invalid animation type at line {0}!", _lineC.m_origScriptPos);
+                            _lineC.m_parameters.Add(0);
+                        }
                     }
                     break;
                 case M22.LINETYPE.TEXT_SPEED:

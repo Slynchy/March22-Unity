@@ -83,12 +83,25 @@ namespace M22
             Vector2 newPos = new Vector2(_newXpos, _newYPos);
             float progress = 0.0f;
             float speed = parent.GetMovementSpeed();
-            while (rect.anchoredPosition != newPos)
+            switch(ScriptMaster.ActiveAnimationType)
             {
-                //progress += Time.deltaTime * 1.0f;
-                progress = Mathf.Lerp(progress, 1.2f, Time.deltaTime * speed);
-                rect.anchoredPosition = Vector2.Lerp(oldPos, newPos, progress);
-                yield return null;
+                case ScriptCompiler.ANIMATION_TYPES.SMOOTH:
+                    while (rect.anchoredPosition != newPos)
+                    {
+                        //progress += Time.deltaTime * 1.0f;
+                        progress = Mathf.Lerp(progress, 1.2f, Time.deltaTime * speed);
+                        rect.anchoredPosition = Vector2.Lerp(oldPos, newPos, progress);
+                        yield return null;
+                    }
+                    break;
+                case ScriptCompiler.ANIMATION_TYPES.LERP:
+                    while (rect.anchoredPosition != newPos)
+                    {
+                        progress += Time.deltaTime * speed;
+                        rect.anchoredPosition = Vector2.Lerp(oldPos, newPos, progress);
+                        yield return null;
+                    }
+                    break;
             }
 
             //SM.FinishBackgroundMovement();

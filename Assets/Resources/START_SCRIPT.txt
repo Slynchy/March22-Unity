@@ -683,8 +683,10 @@ ExecuteFunction HospitalMask hide
 
 			//ExecuteFunction ScrollingBackground hisao_class start
 		// SetMovementType { Lerp, Smooth }
-		SetMovementSpeed 0.16
+		SetMovementSpeed 0.04
+		SetAnimationType Lerp
 		DrawBackground hisao_class -1500 0 2.00 1.0 true
+		SetAnimationType Smooth
 		SetMovementSpeed 1.00
 		
 		They're probably like me and have something wrong with them, only it's just not immediately obvious. Then, I notice that one of the girls seems to be missing the thumb of her right hand. It's a little jarring.

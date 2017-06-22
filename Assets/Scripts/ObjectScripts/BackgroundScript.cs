@@ -11,6 +11,16 @@ namespace M22
         RectTransform RT;
         ScriptMaster SM;
         VNHandler VN;
+        bool isMoving = false;
+
+        public bool IsMoving()
+        {
+            return isMoving;
+        }
+        public void SetIsMoving(bool _isMoving)
+        {
+            isMoving = _isMoving;
+        }
 
         private IEnumerator MoveToPos(int _newXpos, int _newYPos)
         {
@@ -18,12 +28,27 @@ namespace M22
             Vector2 newPos = new Vector2(_newXpos, _newYPos);
             float progress = 0.0f;
             float speed = VN.GetMovementSpeed();
-            while (RT.anchoredPosition != newPos)
+            isMoving = true;
+            switch (ScriptMaster.ActiveAnimationType)
             {
-                //progress += Time.deltaTime * 1.0f;
-                progress = Mathf.Lerp(progress, 1.2f, Time.deltaTime * speed);
-                RT.anchoredPosition = Vector2.Lerp(oldPos, newPos, progress);
-                yield return null;
+                case ScriptCompiler.ANIMATION_TYPES.SMOOTH:
+                    while (RT.anchoredPosition != newPos)
+                    {
+                        if (isMoving == false) break;
+                        progress = Mathf.Lerp(progress, 1.2f, Time.deltaTime * speed);
+                        RT.anchoredPosition = Vector2.Lerp(oldPos, newPos, progress);
+                        yield return null;
+                    }
+                    break;
+                case ScriptCompiler.ANIMATION_TYPES.LERP:
+                    while (RT.anchoredPosition != newPos)
+                    {
+                        if (isMoving == false) break;
+                        progress += Time.deltaTime * speed;
+                        RT.anchoredPosition = Vector2.Lerp(oldPos, newPos, progress);
+                        yield return null;
+                    }
+                    break;
             }
 
             SM.FinishBackgroundMovement();
