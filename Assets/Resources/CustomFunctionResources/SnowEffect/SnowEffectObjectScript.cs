@@ -2,46 +2,48 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-namespace CustomFunctions
+namespace M22
 {
-    public class SnowEffectObjectScript : MonoBehaviour
+    namespace CustomFunctions
     {
-        bool stopping = false;
-
-        Material particleMat;
-
-        const float stopSpeed = 0.5f;
-
-        void Start()
+        public class SnowEffectObjectScript : MonoBehaviour
         {
-            particleMat = /*GetComponent<ParticleSystem>().*/GetComponent<Renderer>().material;
-        }
+            bool stopping = false;
 
-        void Update()
-        {
-            if (stopping == true)
+            Material particleMat;
+
+            const float stopSpeed = 0.5f;
+
+            void Start()
             {
-                if (particleMat.GetColor("_TintColor").a > 0)//particleMat.color.a > 0)
+                particleMat = /*GetComponent<ParticleSystem>().*/GetComponent<Renderer>().material;
+            }
+
+            void Update()
+            {
+                if (stopping == true)
                 {
-                    particleMat.SetColor(
-                        "_TintColor",
-                        new Color(1, 1, 1,
-                            particleMat.GetColor("_TintColor").a - (stopSpeed * Time.deltaTime)
-                        )
-                    );
-                }
-                else
-                {
-                    Destroy(this.gameObject);
-                    return;
+                    if (particleMat.GetColor("_TintColor").a > 0)//particleMat.color.a > 0)
+                    {
+                        particleMat.SetColor(
+                            "_TintColor",
+                            new Color(1, 1, 1,
+                                particleMat.GetColor("_TintColor").a - (stopSpeed * Time.deltaTime)
+                            )
+                        );
+                    }
+                    else
+                    {
+                        Destroy(this.gameObject);
+                        return;
+                    }
                 }
             }
-        }
 
-        public void Stop()
-        {
-            stopping = true;
+            public void Stop()
+            {
+                stopping = true;
+            }
         }
     }
 }

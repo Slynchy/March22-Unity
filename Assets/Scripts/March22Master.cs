@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*  This is the master script for making VN/IntNovel games.
-
-    If you are just using M22 for narrative/dialogue,  
-    do not put this script in your scene, as it 
-    is responsible for initializing the game script.
+/*  
+ *  This is the master script for making VN/IntNovel games.
+ *
+ *  If you are just using M22 for narrative/dialogue,  
+ *  do not put this script in your scene, as it 
+ *  is responsible for initializing the game script.
 */
 
 namespace M22

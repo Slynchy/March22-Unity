@@ -3,38 +3,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CustomFunctions
+namespace M22
 {
-    public class HospitalMask : CustomFunction
+    namespace CustomFunctions
     {
-        GameObject HospitalMaskPrefab;
-        GameObject HospitalMaskInstance;
-        M22.ScriptMaster ScriptMaster;
-
-        public override void Awake()
+        public class HospitalMask : CustomFunction
         {
-            HospitalMaskPrefab = Resources.Load<GameObject>("CustomFunctionResources/HospitalMask/HospitalMaskPrefab") as GameObject;
-        }
+            GameObject HospitalMaskPrefab;
+            GameObject HospitalMaskInstance;
+            M22.ScriptMaster ScriptMaster;
 
-        public override void Start()
-        {
-            ScriptMaster = Camera.main.GetComponent<M22.ScriptMaster>();
-        }
-
-        public override void Func(string param1, string param2, string param3)
-        {
-            if(param1.Equals("show"))
+            public override void Awake()
             {
-                HospitalMaskInstance = GameObject.Instantiate<GameObject>(HospitalMaskPrefab, ScriptMaster.GetCanvas(M22.ScriptMaster.CANVAS_TYPES.POSTCHARACTER).transform);
+                HospitalMaskPrefab = Resources.Load<GameObject>("CustomFunctionResources/HospitalMask/HospitalMaskPrefab") as GameObject;
             }
-            else
+
+            public override void Start()
             {
-                if (HospitalMaskInstance == null)
-                    Debug.Log("Can't delete mask, there is no mask!");
+                ScriptMaster = Camera.main.GetComponent<M22.ScriptMaster>();
+            }
+
+            public override void Func(string param1, string param2, string param3)
+            {
+                if (param1.Equals("show"))
+                {
+                    HospitalMaskInstance = GameObject.Instantiate<GameObject>(HospitalMaskPrefab, ScriptMaster.GetCanvas(M22.ScriptMaster.CANVAS_TYPES.POSTCHARACTER).transform);
+                }
                 else
-                    GameObject.Destroy(HospitalMaskInstance);
+                {
+                    if (HospitalMaskInstance == null)
+                        Debug.Log("Can't delete mask, there is no mask!");
+                    else
+                        GameObject.Destroy(HospitalMaskInstance);
+                }
+                Camera.main.GetComponent<M22.ScriptMaster>().NextLine();
             }
-            Camera.main.GetComponent<M22.ScriptMaster>().NextLine();
         }
     }
 }

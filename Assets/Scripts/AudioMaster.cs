@@ -2,27 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Courtesy: https://forum.unity3d.com/threads/fade-out-audio-source.335031/
-public static class AudioFadeOut
-{
-
-    public static IEnumerator FadeOut(AudioSource audioSource, float FadeTime)
-    {
-        float startVolume = audioSource.volume;
-
-        while (audioSource.volume > 0)
-        {
-            audioSource.volume -= startVolume * Time.deltaTime * FadeTime;
-
-            yield return null;
-        }
-
-        audioSource.Stop();
-        audioSource.volume = startVolume;
-    }
-
-}
-
 namespace M22
 {
 
@@ -31,6 +10,22 @@ namespace M22
         static Dictionary<string, AudioClip> loadedAudio = new Dictionary<string, AudioClip>();
 
         static AudioSource musicSrc;
+
+        // Courtesy: https://forum.unity3d.com/threads/fade-out-audio-source.335031/
+        public static IEnumerator FadeOut(AudioSource audioSource, float FadeTime)
+        {
+            float startVolume = audioSource.volume;
+
+            while (audioSource.volume > 0)
+            {
+                audioSource.volume -= startVolume * Time.deltaTime * FadeTime;
+
+                yield return null;
+            }
+
+            audioSource.Stop();
+            audioSource.volume = startVolume;
+        }
 
         // Use this for initialization
         void Start()
@@ -53,7 +48,7 @@ namespace M22
         public void StopMusic(string _floatInput)
         {
             float speed = float.Parse(_floatInput);
-            StartCoroutine(AudioFadeOut.FadeOut(musicSrc, speed));
+            StartCoroutine(FadeOut(musicSrc, speed));
         }
 
         static public bool LoadMusic(string name)

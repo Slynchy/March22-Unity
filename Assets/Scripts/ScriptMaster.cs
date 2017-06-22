@@ -7,53 +7,53 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 
-public static class FadeEffectClass
-{
-
-    public static IEnumerator FadeOutIMG(Image img, float FadeTime)
-    {
-        while (img.color.a > 0)
-        {
-            img.color = new Color(img.color.r, img.color.g, img.color.b, img.color.a - (Time.deltaTime * FadeTime));
-
-            yield return null;
-        }
-    }
-
-    public static IEnumerator FadeInIMG(Image img, float FadeTime)
-    {
-        while (img.color.a < 1)
-        {
-            img.color = new Color(img.color.r, img.color.g, img.color.b, img.color.a + (Time.deltaTime * FadeTime));
-
-            yield return null;
-        }
-    }
-
-    public static IEnumerator FadeInTXT(Text img, float FadeTime)
-    {
-        while (img.color.a < 1)
-        {
-            img.color = new Color(img.color.r, img.color.g, img.color.b, img.color.a + (Time.deltaTime * FadeTime));
-
-            yield return null;
-        }
-    }
-
-    public static IEnumerator FadeOutTXT(Text img, float FadeTime)
-    {
-        while (img.color.a > 0)
-        {
-            img.color = new Color(img.color.r, img.color.g, img.color.b, img.color.a - (Time.deltaTime * FadeTime));
-
-            yield return null;
-        }
-    }
-
-}
-
 namespace M22
 {
+
+
+    public static class FadeEffectClass
+    {
+
+        public static IEnumerator FadeOutIMG(Image img, float FadeTime)
+        {
+            while (img.color.a > 0)
+            {
+                img.color = new Color(img.color.r, img.color.g, img.color.b, img.color.a - (Time.deltaTime * FadeTime));
+
+                yield return null;
+            }
+        }
+
+        public static IEnumerator FadeInIMG(Image img, float FadeTime)
+        {
+            while (img.color.a < 1)
+            {
+                img.color = new Color(img.color.r, img.color.g, img.color.b, img.color.a + (Time.deltaTime * FadeTime));
+
+                yield return null;
+            }
+        }
+
+        public static IEnumerator FadeInTXT(Text img, float FadeTime)
+        {
+            while (img.color.a < 1)
+            {
+                img.color = new Color(img.color.r, img.color.g, img.color.b, img.color.a + (Time.deltaTime * FadeTime));
+
+                yield return null;
+            }
+        }
+
+        public static IEnumerator FadeOutTXT(Text img, float FadeTime)
+        {
+            while (img.color.a > 0)
+            {
+                img.color = new Color(img.color.r, img.color.g, img.color.b, img.color.a - (Time.deltaTime * FadeTime));
+
+                yield return null;
+            }
+        }
+    }
 
     enum WAIT_STATE
     {

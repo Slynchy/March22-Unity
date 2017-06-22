@@ -3,10 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CustomFunctions
+namespace M22
 {
-    public class ScrollingBackground : CustomFunction
+    namespace CustomFunctions
     {
+        public class ScrollingBackground : CustomFunction
+        {
 
+        }
     }
 }
