@@ -10,7 +10,7 @@
 
 	A light breeze causes the naked branches overhead to rattle like wooden windchimes.
 
-	Goto en_A2
+	Goto en_A1
 
 	This is a popular retreat for couples in the summer. The deciduous trees provide a beautiful green canopy, far out of sight of teachers and fellow students.
 
@@ -881,11 +881,11 @@
 
 	--en_A2e
 
-		"Misha looks at me with a weird expression, then continues."
+		Misha looks at me with a weird expression, then continues.
 
 		mi "We don't know much about him, but maybe we'll find out later."
-
-		"Maybe I should've introduced myself after all. Anything would've given a better first impression than the teacher's drone and fumbling with my name."
+		
+		Maybe I should've introduced myself after all. Anything would've given a better first impression than the teacher's drone and fumbling with my name.
 		
 	--en_A2f
 
@@ -909,7 +909,7 @@
 
 		shi "…"
 
-		DrawCharacter misha cross_laugh -300
+		DrawCharacter misha cross_laugh -300 true
 		DrawCharacter shizu adjust_happy 300
 
 		mi "Hahahaha~! Yeah, you look just like a Hicchan!"
@@ -918,7 +918,7 @@
 
 		shi "…"
 
-		"Hakamichi taps her fingers on the desk to get Misha's attention. They gesture back and forth to each other excitedly, their hands a blur."
+		Hakamichi taps her fingers on the desk to get Misha's attention. They gesture back and forth to each other excitedly, their hands a blur.
 
 		DrawCharacter misha sign_smile -300
 
@@ -967,17 +967,170 @@
 		DrawCharacter misha perky_smile -300 true
 		DrawCharacter shizu behind_smile 300
 
-		"Learn about where you're going? I guess I didn't bother to do that, or just didn't care enough to do so."
+		Learn about where you're going? I guess I didn't bother to do that, or just didn't care enough to do so.
 
-		"I didn't look forward to this, even if I committed myself to go along with it half-assedly, but anyway."
+		I didn't look forward to this, even if I committed myself to go along with it half-assedly, but anyway.
 
-		"I don't say anything, and Misha signs something that ends in a shrug. What was that? It seems like it was about me."
+		I don't say anything, and Misha signs something that ends in a shrug. What was that? It seems like it was about me.
 
-		"I feel like slumping over in my seat. Both of them are smiling, but that shrug hit me unexpectedly deeply."
+		I feel like slumping over in my seat. Both of them are smiling, but that shrug hit me unexpectedly deeply.
 
 		DrawCharacter misha perky_sad -300
 
 		mi "You look down, are you okay?"
+		
+		DrawCharacter shizu basic_normal 300
+
+		shi "…"
+
+		DrawCharacter misha perky_smile -300
+
+		mi "Don't take it the wrong way, please~! I hate it when people are afraid to ask questions! That's how people learn things, by asking~!"
+
+		mi "Asking for help is perfectly normal, as much as needing help! Stop looking like you just failed a test!"
+
+		DrawCharacter misha cross_laugh -300
+
+		mi "Wahahaha~!"
+
+		hi "All right."
+
+		DrawCharacter shizu adjust_happy 300
+
+		shi "…"
+
+		DrawCharacter misha perky_smile -300
+
+		mi "Ah, and another thing, you don't have to call Shicchan something so formal like “Hakamichi” or “class rep” all the time! Just call her Shicchan~!"
+
+		StopMusic 0.23
+
+		DrawCharacter shizu adjust_blush 300
+
+		shi "…"
+
+		DrawCharacter misha hips_smile -300
+
+		mi "Ahaha~! Okay, maybe that's too casual. Maybe “Shizune” would be more appropriate?"
+
+		DrawCharacter shizu basic_normal2 300
+
+		shi "…"
+
+		DrawCharacter misha hips_grin -300
+
+		//play music music_shizune fadein 5.0
+		PlayMusic The_Student_Council
+
+		mi "Yup, yup~! “Shizune” is fine!"
+
+		hi "Heh. Okay, that would be a lot easier for me."
+
+		I feel a lot more at ease. Both of them seem so friendly, so I feel like an idiot for being so apprehensive earlier. Especially about Shizune, who I assumed would be all business.
+
+		Well, she still seems like that. Just less so, I guess.
+
+		DrawCharacter shizu behind_frown 300
+
+		shi "…!"
+
+		DrawCharacter misha perky_confused -300
+
+		mi "Huh? Oh, right, we haven't even touched the assignment! We should start work now, or Shicchan will get mad."
+
+		hi "The assignment is also kind of long, so we should start now if we want to finish it before the end of class."
+
+		DrawCharacter misha hips_laugh -300
+
+		mi "Wahaha~! That too!"
+		
+		DrawCharacter shizu basic_frown 300
+
+		shi "…"
+
+		Shizune glares at the two of us impatiently. I don't need to know sign language to understand that.
+
+		hi "Okay, okay, I get the message."
+
+		DrawCharacter shizu basic_normal 300
+
+		shi "…"
+
+		DrawCharacter misha perky_smile -300
+
+		mi "After class, we can take a walk around the grounds together. It's a nice day today! Okay~?"
+
+		The assignment is actually very challenging to get through, combining aspects of being both difficult and unnecessarily long.
+
+		StopMusic 0.09
+
+		HideWindow
+		PlaySting time
+		Transition black tr-delayblinds 0
+		ClearCharacters true
+		PlaySting time
+		Transition school_scienceroom tr-delayblinds 0
+		ShowWindow
+
+		Still, we finish it a few minutes earlier than anyone else in the class, despite our late start. Shizune and Misha are really capable.
+
+		They're quite different, though. The class rep is as calm and professional as she looks, while Misha is a lot more playful and girlish. Not to mention a little more easily distracted.
+
+		To be honest, the two of them did most of the work. I feel guilty about that.
+
+		PlaySting normalbell
+
+		The clock tower bells ring, signaling the end of the period. Time for lunch.
+
+		HideWindow
+		Transition school_hallway3 tr-softwipe 0
+		ShowWindow
+
+		Without knowing what else to do, I follow Misha, who is beckoning me into the hallway and down the stairs.
+		
+	--en_A3
+
+		HideWindow
+		Transition school_staircase2 tr-softwipe 0
+		ShowWindow
+
+		We descend even below the lobby where I met Mutou, down to the bottom floor.
+
+		//play ambient sfx_crowd_indoors fadein 6.0
+		//PlayMusic crowd_indoors
+		//PlayLoopedSting crowd_indoors
+		//  This function instantiates something on the camera that just plays 
+		HideWindow
+		Transition school_cafeteria tr-softwipe 0
+		ShowWindow
+
+		Just like everything in this school, the cafeteria seems too spacious and oddly modern in contrast to the classic exterior.
+
+		Its big windows open to the courtyard, towards the main gate.
+
+		DrawCharacter misha hips_grin 0
+
+		PlayMusic Ease
+
+		mi "It's the cafeteria~!"
+
+		"Her enthusiastic statement of the obvious makes people around us stare, but Misha doesn't seem to care so we proceed to the line."
+
+		ClearCharacter misha
+
+		There is a rather long list of menu options, which seems great until I realize that many of them are to accommodate students who need special diets.
+
+		How nice. It almost feels like I'm back at the hospital, eating portions measured with scientific precision to meet the needs of the patients.
+
+		I pick something at random and follow Shizune to a table, sitting opposite of her.
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		

@@ -437,6 +437,15 @@ namespace M22
                     else
                         _lineC.m_parameters.Add(1000);
                     break;
+                case M22.LINETYPE.CLEAR_CHARACTERS:
+                    _lineC.m_parameters = new List<int>();
+                    if (_splitStr.Count > 1 && _splitStr[1].Equals("true"))
+                    {
+                        _lineC.m_parameters.Add(1);
+                    }
+                    else
+                        _lineC.m_parameters.Add(0);
+                    break;
                 case M22.LINETYPE.PLAY_STING:
                     if (_splitStr.Count > 1)
                     {
@@ -560,6 +569,8 @@ namespace M22
                             else
                                 _lineC.m_parameters.Add(0);
                         }
+                        else
+                            _lineC.m_parameters.Add(0);
                     }
                     break;
                 case M22.LINETYPE.LOAD_SCRIPT:

@@ -6,5 +6,5 @@ op_doctor "Doctor" 255 255 255
 mu "Mutou" 255 255 255
 mi_shi "Shizune" 255 255 255
 mi_not_shi "S̶h̶i̶z̶u̶n̶e̶ Misha" 255 255 255
-shi "Shizune" 50 255 50
+shi "Shizune" 50 50 255
 mi "Misha" 255 105 180

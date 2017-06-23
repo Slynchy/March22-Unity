@@ -176,13 +176,13 @@ namespace M22
             Textbox.sprite = TextboxNarrative;
         }
 
-        public void ClearCharacters()
+        public void ClearCharacters(bool _instant)
         {
             GameObject charParent = GameObject.Find("Characters");
             for (int i = 0; i < charParent.transform.childCount; i++)
             {
                 var obj = charParent.transform.GetChild(i).gameObject.GetComponent<CharacterScript>();
-                obj.DestroyCharacter(false);
+                obj.DestroyCharacter(_instant);
             }
         }
 

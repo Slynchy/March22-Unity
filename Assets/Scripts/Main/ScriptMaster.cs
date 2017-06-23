@@ -213,6 +213,7 @@ namespace M22
             TransitionEffects.Add("tr-pronoise", Resources.Load<Sprite>("Transitions/tr-pronoise") as Sprite);
             TransitionEffects.Add("tr-clockwipe", Resources.Load<Sprite>("Transitions/tr-clockwipe") as Sprite);
             TransitionEffects.Add("tr-softwipe", Resources.Load<Sprite>("Transitions/tr-softwipe") as Sprite);
+            TransitionEffects.Add("tr-delayblinds", Resources.Load<Sprite>("Transitions/tr-delayblinds") as Sprite);
 
             if (VideoPlayerPrefab == null)
                 Debug.LogError("VideoPlayerPrefab not attached to ScriptMaster! Check this under Main Camera!");
@@ -456,7 +457,7 @@ namespace M22
                     LoadScript(_line.m_parameters_txt[0]);
                     break;
                 case LINETYPE.CLEAR_CHARACTERS:
-                    VNHandlerScript.ClearCharacters();
+                    VNHandlerScript.ClearCharacters(_line.m_parameters[0] == 1 ? true : false );
                     HideText();
                     WaitState = WAIT_STATE.CHARACTER_FADEOUT;
                     break;

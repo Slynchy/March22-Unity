@@ -54,10 +54,10 @@
 		// 0.54f
 
 		float4 dest = lerp(col.rgba, destCol.rgba, temp);
-		dest.r = clamp(dest.r, 0, 1);
-		dest.g = clamp(dest.g, 0, 1);
-		dest.b = clamp(dest.b, 0, 1);
-		dest.a = clamp(dest.a, 0, 1);
+		//dest.r = clamp(dest.r, 0, 1);
+		//dest.g = clamp(dest.g, 0, 1);
+		//dest.b = clamp(dest.b, 0, 1);
+		//dest.a = clamp(dest.a, 0, 1);
 		o.Albedo = dest;
 		o.Alpha = dest.a * _Alpha;
 	}
