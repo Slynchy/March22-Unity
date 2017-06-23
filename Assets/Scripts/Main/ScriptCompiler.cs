@@ -196,9 +196,86 @@ namespace M22
             return result.Count;
         }
 
+        static private int SplitString(ref string txt, ref List<string> result, string ch)
+        {
+            result.Clear();
+            string[] temp = txt.Split(new string[] { ch }, StringSplitOptions.None);
+            for (int i = 0; i < temp.Length; i++)
+            {
+                result.Add(temp[i]);
+            }
+            return result.Count;
+        }
+
+        public struct LoadedVariables
+        {
+            public string[] variables;
+            public string[] variableData;
+        }
+
+        static public LoadedVariables LoadVariablesFile()
+        {
+            var result = new LoadedVariables();
+            var txtAsset = Resources.Load("VARIABLES") as TextAsset;
+            if (txtAsset == null)
+            {
+                Debug.LogErrorFormat("Failed to load \"Resources/VARIABLES.txt\"! You should have one even if you aren't using it!");
+                return result;
+            }
+
+            string file = txtAsset.text;
+            if (file[file.Length - 1] != '\n')
+                file += '\n';
+            var varLines = SplitByChar('\n', ref file);
+            file = "";
+            result.variables = new string[varLines.Count];
+            result.variableData = new string[varLines.Count];
+
+            for (int i = 0; i < varLines.Count; i++)
+            {
+                var currentLine = varLines[i];
+                currentLine = currentLine.Trim(' ', '\n', '\r');
+                if (currentLine.Length < 4)
+                    continue;
+
+                List<string> splitStr = new List<string>();
+                SplitString(ref currentLine, ref splitStr, "===");
+                for (int n = 0; n < splitStr.Count; n++)
+                {
+                    splitStr[n] = splitStr[n].Trim(' ', '\n' , '\r');
+                }
+                if (splitStr.Count < 2)
+                    continue;
+
+                result.variables[i] = splitStr[0];
+                result.variableData[i] = splitStr[1];
+            }
+
+            return result;
+        }
+
+        static public List<string> SplitByChar(char _char, ref string _input)
+        {
+            var result = new List<string>();
+            string currentLine = "";
+            for (int i = 0; i < _input.Length; i++)
+            {
+                currentLine += _input[i];
+                if (_input[i] == _char)
+                {
+                    // new line
+                    result.Add(currentLine);
+                    currentLine = "";
+                }
+            }
+            return result;
+        }
+
         static public M22.Script.Script CompileScript(string filename)
         {
             var result = new M22.Script.Script();
+            
+            LoadedVariables loadedVars = LoadVariablesFile();
 
             //var file = File.ReadAllText(filename, Encoding.UTF8);
             var txtAsset = Resources.Load(filename) as TextAsset;
@@ -211,30 +288,32 @@ namespace M22
             {
                 file = "";
             }
+            txtAsset = null;
 
             if (file.Length == 0)
             {
                 Debug.LogError("Failed to load script file: " + filename);
                 return result;
             }
-            var scriptLines = new List<string>();
-            string currentLine = "";
-            for (int i = 0; i < file.Length; i++)
-            {
-                currentLine += file[i];
-                if (file[i] == '\n')
-                {
-                    // new line
-                    scriptLines.Add(currentLine);
-                    currentLine = "";
-                }
-            }
+
+            var scriptLines = SplitByChar('\n', ref file);
+            file = "";
 
             //List<string> CURRENT_LINE_SPLIT = new List<string>();
             int scriptPos = 0;
             for (int i = 0; i < scriptLines.Count; i++)
             {
                 string currScriptLine = scriptLines[i];
+
+                for (int n = 0; n < loadedVars.variables.Length; n++)
+                {
+                    if (loadedVars.variables[n] != null)
+                    {
+                        string tempStr = "[[" + loadedVars.variables[n] + "]]";
+                        currScriptLine = currScriptLine.Replace(tempStr, loadedVars.variableData[n]);
+                    }
+                }
+
                 M22.line_c tempLine_c = CompileLine(ref currScriptLine, i); // ref can't be an index so have to copy then copy back
                 scriptLines[i] = currScriptLine;
                 result.AddLine(tempLine_c);

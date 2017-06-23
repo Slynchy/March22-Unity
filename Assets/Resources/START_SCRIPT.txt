@@ -8,7 +8,7 @@
 
 	//PlayMusic Lullaby_of_Open_Eyes
 
-	A light breeze causes the naked branches overhead to rattle like wooden windchimes.
+	A light breeze causes the naked [[TestVariable345]] branches overhead to rattle like wooden windchimes.
 
 	Goto en_A1
 
