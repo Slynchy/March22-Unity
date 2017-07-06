@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace M22
 {
-    public class Transition : MonoBehaviour
+    public class BackgroundTransition : MonoBehaviour
     {
 
         public enum IN_OR_OUT
@@ -32,14 +32,8 @@ namespace M22
         void Start()
         {
             img = this.gameObject.GetComponent<Image>();
-            if (srcSprite != null)
-            {
-                img.material.mainTexture = srcSprite.texture;
-                img.sprite = srcSprite;
-                img.material.SetTexture("_MainTex", srcSprite.texture);
-            }
-            img.material.SetTexture("_SecondaryTex", destSprite.texture);
-            img.material.SetTexture("_TertiaryTex", effect.texture);
+            img.material.SetTexture("_MainTex", destSprite.texture);
+            img.material.SetTexture("_SecondaryTex", effect.texture);
 
             img.material.SetColor("_AmbientLighting", RenderSettings.ambientLight);
 

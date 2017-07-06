@@ -471,13 +471,13 @@ namespace M22
                 case LINETYPE.TRANSITION:
                     GameObject tempGO = GameObject.Instantiate<GameObject>(TransitionPrefab, Canvases[(int)CANVAS_TYPES.EFFECTS].transform);
                     tempGO.GetComponent<Image>().material = Instantiate<Material>(tempGO.GetComponent<Image>().material) as Material;
-                    Transition TransitionObj = tempGO.GetComponent<Transition>();
+                    BackgroundTransition TransitionObj = tempGO.GetComponent<BackgroundTransition>();
                     TransitionObj.callback = FadeToBlackCallback;
                     //TransitionObj.srcSprite = background.sprite;
                     TransitionObj.srcSprite = Resources.Load<Sprite>("Images/empty") as Sprite;
                     TransitionEffects.TryGetValue(_line.m_parameters_txt[1], out TransitionObj.effect);
                     TransitionObj.destSprite = M22.BackgroundMaster.GetBackground(_line.m_parameters_txt[0]);
-                    TransitionObj.inOrOut = (String.Equals(_line.m_parameters_txt[2], "in") ? Transition.IN_OR_OUT.IN : Transition.IN_OR_OUT.OUT);
+                    TransitionObj.inOrOut = (String.Equals(_line.m_parameters_txt[2], "in") ? BackgroundTransition.IN_OR_OUT.IN : BackgroundTransition.IN_OR_OUT.OUT);
                     WaitState = WAIT_STATE.TRANSITION;
                     break;
                 case LINETYPE.NUM_OF_LINETYPES:
@@ -499,7 +499,7 @@ namespace M22
 
         public void FadeToBlackCallback()
         {
-            Transition temp = GameObject.FindGameObjectWithTag("Transition").GetComponent<Transition>();
+            BackgroundTransition temp = GameObject.FindGameObjectWithTag("Transition").GetComponent<BackgroundTransition>();
             background.sprite = temp.destSprite;
             backgroundScript.UpdateBackground(
                 0,
