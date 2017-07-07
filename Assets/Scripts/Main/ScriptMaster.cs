@@ -60,6 +60,7 @@ namespace M22
         NOT_WAITING,
         CHARACTER_FADEIN,
         CHARACTER_FADEOUT,
+        CHARACTER_FADEOUT_INDIVIDUAL,
         TRANSITION,
         WAIT_COMMAND,
         BACKGROUND_MOVING,
@@ -75,6 +76,8 @@ namespace M22
         public Image backgroundTrans;
         private BackgroundScript backgroundScript;
         private BackgroundScript backgroundTransScript;
+
+        private GameObject LoopedSFXPrefab;
 
         private M22.Script.Script currentScript_c = new M22.Script.Script();
         private int lineIndex = 0;
@@ -218,6 +221,10 @@ namespace M22
             if (VideoPlayerPrefab == null)
                 Debug.LogError("VideoPlayerPrefab not attached to ScriptMaster! Check this under Main Camera!");
 
+            LoopedSFXPrefab = Resources.Load("Prefabs/SFXPrefab") as GameObject;
+            if(LoopedSFXPrefab == null)
+                Debug.LogError("Failed to load LoopedSFXPrefab! Check \"Resources/Prefabs\" for this!");
+
             if (TextboxIMG != null)
                 HideText();
         }
@@ -347,13 +354,6 @@ namespace M22
                     else
                         NextLine(_isInLine);
                     break;
-                case LINETYPE.CLEAR_CHARACTER:
-                    if (VNHandlerScript.ClearCharacter(_line.m_parameters_txt[0], _line.m_parameters[0] == 1 ? true : false) == false)
-                    {
-                        Debug.LogErrorFormat("Unable to clear character {0} at line {1}", _line.m_parameters_txt[0], _line.m_origScriptPos);
-                    }
-                    NextLine(_isInLine);
-                    break;
                 case LINETYPE.PLAY_MUSIC:
                     M22.AudioMaster.ChangeTrack(_line.m_parameters_txt[0]);
                     NextLine(_isInLine);
@@ -455,6 +455,33 @@ namespace M22
                     break;
                 case LINETYPE.LOAD_SCRIPT:
                     LoadScript(_line.m_parameters_txt[0]);
+                    break;
+                case LINETYPE.PLAY_SFX_LOOPED:
+                    SFXScript temploopSFX = GameObject.Instantiate<GameObject>(LoopedSFXPrefab, Camera.main.transform).GetComponent<SFXScript>();
+                    temploopSFX.Init(AudioMaster.GetAudio(_line.m_parameters_txt[0]), _line.m_parameters_txt[1], _line.m_parameters_txt[2], true);
+                    NextLine();
+                    break;
+                case LINETYPE.STOP_SFX_LOOPED:
+                    GameObject loopSFXobj = GameObject.Find(_line.m_parameters_txt[0]);
+                    if (loopSFXobj == null)
+                    {
+                        Debug.LogErrorFormat("Failed to stop looping SFX \"{0}\" at line {1}; is not currently playing!", _line.m_parameters_txt[0], _line.m_origScriptPos);
+                        NextLine();
+                        return;
+                    }
+                    SFXScript stopSFXloop = loopSFXobj.GetComponent<SFXScript>();
+                    stopSFXloop.Stop(_line.m_parameters_txt[1]);
+                    NextLine();
+                    break;
+                case LINETYPE.CLEAR_CHARACTER:
+                    if (VNHandlerScript.ClearCharacter(_line.m_parameters_txt[0], _line.m_parameters[0] == 1 ? true : false) == false)
+                    {
+                        Debug.LogErrorFormat("Unable to clear character {0} at line {1}", _line.m_parameters_txt[0], _line.m_origScriptPos);
+                    }
+                    //if (_line.m_parameters[0] == 1)
+                        NextLine(_isInLine);
+                    //else
+                     //   WaitState = WAIT_STATE.CHARACTER_FADEOUT_INDIVIDUAL;
                     break;
                 case LINETYPE.CLEAR_CHARACTERS:
                     VNHandlerScript.ClearCharacters(_line.m_parameters[0] == 1 ? true : false );

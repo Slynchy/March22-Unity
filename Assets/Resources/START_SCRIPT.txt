@@ -8,9 +8,9 @@
 
 	//PlayMusic Lullaby_of_Open_Eyes
 
-	A light breeze causes the naked [[TestVariable345]] branches overhead to rattle like wooden windchimes.
+	A light breeze causes the naked branches overhead to rattle like wooden windchimes.
 
-	Goto en_A1
+	Goto en_A3
 
 	This is a popular retreat for couples in the summer. The deciduous trees provide a beautiful green canopy, far out of sight of teachers and fellow students.
 
@@ -1062,7 +1062,7 @@
 
 		The assignment is actually very challenging to get through, combining aspects of being both difficult and unnecessarily long.
 
-		StopMusic 0.09
+		StopMusic 0.33
 
 		HideWindow
 		PlaySting time
@@ -1097,8 +1097,8 @@
 		We descend even below the lobby where I met Mutou, down to the bottom floor.
 
 		//play ambient sfx_crowd_indoors fadein 6.0
-		//PlayMusic crowd_indoors
-		//PlayLoopedSting crowd_indoors
+		// { sfx, volume, speed }
+		PlayLoopedSting crowd_indoors 0.19 0.11
 		//  This function instantiates something on the camera that just plays 
 		HideWindow
 		Transition school_cafeteria tr-softwipe 0
@@ -1108,40 +1108,19 @@
 
 		Its big windows open to the courtyard, towards the main gate.
 
-		DrawCharacter misha hips_grin 0
-
 		PlayMusic Ease
+		DrawCharacter misha hips_grin 0
 
 		mi "It's the cafeteria~!"
 
-		"Her enthusiastic statement of the obvious makes people around us stare, but Misha doesn't seem to care so we proceed to the line."
+		Her enthusiastic statement of the obvious makes people around us stare, but Misha doesn't seem to care so we proceed to the line.
 
-		ClearCharacter misha
+		ClearCharacter misha false
 
 		There is a rather long list of menu options, which seems great until I realize that many of them are to accommodate students who need special diets.
+
+		StopLoopedSting crowd_indoors 0.11
 
 		How nice. It almost feels like I'm back at the hospital, eating portions measured with scientific precision to meet the needs of the patients.
 
 		I pick something at random and follow Shizune to a table, sitting opposite of her.
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		

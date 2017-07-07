@@ -27,6 +27,20 @@ namespace M22
             audioSource.volume = startVolume;
         }
 
+        static public AudioClip GetAudio(string _input)
+        {
+            AudioClip output;
+            loadedAudio.TryGetValue(_input, out output);
+            if (output == null)
+                return null;
+            else return output;
+        }
+
+        static public bool IsAudioLoaded(string _input)
+        {
+            return loadedAudio.ContainsKey(_input);
+        }
+
         // Use this for initialization
         void Start()
         {

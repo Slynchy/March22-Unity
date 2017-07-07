@@ -40,6 +40,8 @@ namespace M22
         MOVEMENT_SPEED,
         TEXT_SPEED,
         ANIMATION_TYPE,
+        PLAY_SFX_LOOPED,
+        STOP_SFX_LOOPED,
         NUM_OF_LINETYPES
     }
 
@@ -105,7 +107,9 @@ namespace M22
                 "PlayVideo",
                 "SetMovementSpeed",
                 "SetTextSpeed",
-                "SetAnimationType"
+                "SetAnimationType",
+                "PlayLoopedSting",
+                "StopLoopedSting"
         };
         public enum ANIMATION_TYPES
         {
@@ -712,6 +716,50 @@ namespace M22
                             {
                                 _lineC.m_parameters.Add(tempCompiledLine.m_parameters[i]);
                             }
+                        }
+                    }
+                    break;
+                case M22.LINETYPE.PLAY_SFX_LOOPED:
+                    if (_splitStr.Count > 1)
+                    {
+                        _lineC.m_parameters_txt = new List<string>();
+                        _lineC.m_parameters_txt.Add(_splitStr[1]);
+
+                        if(_splitStr.Count > 3)
+                        {
+                            _lineC.m_parameters_txt.Add(_splitStr[2]);
+                            _lineC.m_parameters_txt.Add(_splitStr[3]);
+                        }
+                        else
+                        {
+                            _lineC.m_parameters_txt.Add("1.0");
+                            _lineC.m_parameters_txt.Add("1.0");
+                        }
+
+                        if (!M22.AudioMaster.LoadSting(_lineC.m_parameters_txt[0]))
+                        {
+                            Debug.LogError("Failed to load sting! - " + _lineC.m_parameters_txt[0]);
+                        };
+                    }
+                    break;
+                case M22.LINETYPE.STOP_SFX_LOOPED:
+                    if (_splitStr.Count > 1)
+                    {
+                        _lineC.m_parameters_txt = new List<string>();
+                        _lineC.m_parameters_txt.Add(_splitStr[1]);
+
+                        if(AudioMaster.IsAudioLoaded(_splitStr[1]) == false)
+                        {
+                            Debug.LogWarningFormat("Stopping a looped SFX that isn't played/loaded yet at line {0}; this shouldn't happen!", _lineC.m_origScriptPos);
+                        }
+
+                        if(_splitStr.Count > 2)
+                        {
+                            _lineC.m_parameters_txt.Add(_splitStr[2]);
+                        }
+                        else
+                        {
+                            _lineC.m_parameters_txt.Add("1.0");
                         }
                     }
                     break;
