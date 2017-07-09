@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using UnityEngine;
 
 namespace M22
 {
@@ -70,7 +69,7 @@ namespace M22
     public struct script_character
     {
         public string name;
-        public Color color;
+        public UnityWrapper.Color32 color;
     }
 
     public class ScriptCompiler
@@ -121,7 +120,7 @@ namespace M22
         private static void InitializeCharNames()
         {
             CharacterNames = new Dictionary<ulong, script_character>();
-            string tempStr = (Resources.Load("CHARACTER_NAMES") as TextAsset).text;
+            string tempStr = UnityWrapper.LoadTextFileAsString("CHARACTER_NAMES");
             tempStr += "\n\n"; // <- hack to fix last line being cut off
 
             string[] lines = tempStr.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
@@ -134,7 +133,7 @@ namespace M22
 
                 script_character temp = new script_character();
                 temp.name = longName.Substring(1,longName.Length-2);
-                temp.color = new Color32(
+                temp.color = new UnityWrapper.Color32(
                     (byte)Int32.Parse(lineSplit[lineSplit.Length-3]),
                     (byte)Int32.Parse(lineSplit[lineSplit.Length - 2]),
                     (byte)Int32.Parse(lineSplit[lineSplit.Length - 1]),
@@ -152,7 +151,7 @@ namespace M22
             InitializeCharNames();
 
             if (FunctionNames.Length != (int)M22.LINETYPE.NUM_OF_LINETYPES)
-                Debug.LogError("Number of LINETYPE entries do not match number of FunctionNames");
+                UnityWrapper.LogError("Number of LINETYPE entries do not match number of FunctionNames");
 
             for (int i = 0; i < FunctionNames.Length; i++)
             {
@@ -220,14 +219,13 @@ namespace M22
         static public LoadedVariables LoadVariablesFile()
         {
             var result = new LoadedVariables();
-            var txtAsset = Resources.Load("VARIABLES") as TextAsset;
-            if (txtAsset == null)
+            var file = UnityWrapper.LoadTextFileAsString("VARIABLES");
+            if (file == null || file == "")
             {
-                Debug.LogErrorFormat("Failed to load \"Resources/VARIABLES.txt\"! You should have one even if you aren't using it!");
+                UnityWrapper.LogError("Failed to load \"Resources/VARIABLES.txt\"! You should have one even if you aren't using it!");
                 return result;
             }
 
-            string file = txtAsset.text;
             if (file[file.Length - 1] != '\n')
                 file += '\n';
             var varLines = SplitByChar('\n', ref file);
@@ -282,21 +280,11 @@ namespace M22
             LoadedVariables loadedVars = LoadVariablesFile();
 
             //var file = File.ReadAllText(filename, Encoding.UTF8);
-            var txtAsset = Resources.Load(filename) as TextAsset;
-            string file;
-            if (txtAsset != null)
-            {
-                file = txtAsset.text;
-            }
-            else
-            {
-                file = "";
-            }
-            txtAsset = null;
+            var file = UnityWrapper.LoadTextFileAsString(filename);
 
             if (file.Length == 0)
             {
-                Debug.LogError("Failed to load script file: " + filename);
+                UnityWrapper.LogError("Failed to load script file: " + filename);
                 return result;
             }
 
@@ -457,7 +445,7 @@ namespace M22
                         }
                         else
                         {
-                            Debug.LogErrorFormat("Invalid animation type at line {0}!", _lineC.m_origScriptPos);
+                            UnityWrapper.LogErrorFormat("Invalid animation type at line {0}!", _lineC.m_origScriptPos);
                             _lineC.m_parameters.Add(0);
                         }
                     }
@@ -491,7 +479,7 @@ namespace M22
                 case M22.LINETYPE.DRAW_CHARACTER:
                     if (_splitStr.Count > 1)
                     {
-                        if (_splitStr.Count < 4) Debug.LogError("Not enough parameters for DrawCharacter @ Line " + _lineC.m_origScriptPos.ToString());
+                        if (_splitStr.Count < 4) UnityWrapper.LogError("Not enough parameters for DrawCharacter @ Line " + _lineC.m_origScriptPos.ToString());
                         _lineC.m_parameters_txt = new List<string>();
                         _lineC.m_parameters_txt.Add(_splitStr[1]);
                         _lineC.m_parameters_txt.Add(_splitStr[2]);
@@ -509,7 +497,7 @@ namespace M22
 
                         if (!M22.VNHandler.LoadCharacter(_lineC.m_parameters_txt[0], _lineC.m_parameters_txt[1]))
                         {
-                            Debug.LogErrorFormat("Failed to load character \"{0}\" at line {1}!", (_lineC.m_parameters_txt[0] + " - " + _lineC.m_parameters_txt[1]), _lineC.m_origScriptPos);
+                            UnityWrapper.LogErrorFormat("Failed to load character \"{0}\" at line {1}!", (_lineC.m_parameters_txt[0] + " - " + _lineC.m_parameters_txt[1]), _lineC.m_origScriptPos);
                         };
                     }
                     break;
@@ -538,7 +526,7 @@ namespace M22
 
                         if (!M22.AudioMaster.LoadSting(_lineC.m_parameters_txt[0]))
                         {
-                            Debug.LogError("Failed to load sting! - " + _lineC.m_parameters_txt[0]);
+                            UnityWrapper.LogError("Failed to load sting! - " + _lineC.m_parameters_txt[0]);
                         };
                     }
                     break;
@@ -551,7 +539,7 @@ namespace M22
 
                         if (!M22.AudioMaster.LoadMusic(_lineC.m_parameters_txt[0]))
                         {
-                            Debug.LogErrorFormat("Failed to load music file \"{0}\" at line {1}!", _lineC.m_parameters_txt[0], _lineC.m_origScriptPos);
+                            UnityWrapper.LogErrorFormat("Failed to load music file \"{0}\" at line {1}!", _lineC.m_parameters_txt[0], _lineC.m_origScriptPos);
                         };
                     }
                     break;
@@ -572,7 +560,7 @@ namespace M22
 
                         if(CustomFunctionHandler.CheckFunctionExists(_lineC.m_parameters_txt[0]) == false)
                         {
-                            Debug.LogErrorFormat("Custom function \"{0}\" does not exist at line {1}!", _lineC.m_parameters_txt[0], _lineC.m_origScriptPos);
+                            UnityWrapper.LogErrorFormat("Custom function \"{0}\" does not exist at line {1}!", _lineC.m_parameters_txt[0], _lineC.m_origScriptPos);
                         }
                     }
                     break;
@@ -617,11 +605,11 @@ namespace M22
 
                         if (!M22.BackgroundMaster.LoadBackground(_lineC.m_parameters_txt[0]))
                         {
-                            Debug.LogErrorFormat("Failed to load background \"{0}\" at line {1}", _lineC.m_parameters_txt[0], _lineC.m_origScriptPos);
+                            UnityWrapper.LogErrorFormat("Failed to load background \"{0}\" at line {1}", _lineC.m_parameters_txt[0], _lineC.m_origScriptPos);
                         };
                     }
                     else
-                        Debug.LogErrorFormat("Not enough parameters on DrawBackground at line {0}", _lineC.m_origScriptPos);
+                        UnityWrapper.LogErrorFormat("Not enough parameters on DrawBackground at line {0}", _lineC.m_origScriptPos);
                     break;
                 case M22.LINETYPE.ENABLE_NOVEL_MODE:
                     break;
@@ -635,7 +623,7 @@ namespace M22
 
                         if(M22.ScriptMaster.LoadVideoFile(_splitStr[1]) == false)
                         {
-                            Debug.LogError("Failed to load video file: " + _splitStr[1]);
+                            UnityWrapper.LogError("Failed to load video file: " + _splitStr[1]);
                         }
                     }
                     break;
@@ -738,7 +726,7 @@ namespace M22
 
                         if (!M22.AudioMaster.LoadSting(_lineC.m_parameters_txt[0]))
                         {
-                            Debug.LogError("Failed to load sting! - " + _lineC.m_parameters_txt[0]);
+                            UnityWrapper.LogError("Failed to load sting! - " + _lineC.m_parameters_txt[0]);
                         };
                     }
                     break;
@@ -750,7 +738,7 @@ namespace M22
 
                         if(AudioMaster.IsAudioLoaded(_splitStr[1]) == false)
                         {
-                            Debug.LogWarningFormat("Stopping a looped SFX that isn't played/loaded yet at line {0}; this shouldn't happen!", _lineC.m_origScriptPos);
+                            UnityWrapper.LogWarningFormat("Stopping a looped SFX that isn't played/loaded yet at line {0}; this shouldn't happen!", _lineC.m_origScriptPos);
                         }
 
                         if(_splitStr.Count > 2)
@@ -778,7 +766,7 @@ namespace M22
                         // Should be 5 or 7
                         if(splitByQuote.Count != 5 && splitByQuote.Count != 7)
                         {
-                            Debug.LogError("MakeDecision error; mismatched number of quotemarks!");
+                            UnityWrapper.LogError("MakeDecision error; mismatched number of quotemarks!");
                         }
 
                         for (int i = 1; i < splitByQuote.Count; i++)
