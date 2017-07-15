@@ -1116,6 +1116,7 @@
 		Her enthusiastic statement of the obvious makes people around us stare, but Misha doesn't seem to care so we proceed to the line.
 
 		//!Breakpoint
+		HideWindow
 		ClearCharacter misha false
 
 		There is a rather long list of menu options, which seems great until I realize that many of them are to accommodate students who need special diets.
@@ -1139,7 +1140,9 @@
 		I don't understand sign, so the point escapes me.
 
 		Maybe looking at a person who “talks” to you is proper and polite?
-
+		
+		DrawCharacter misha hips_smile -300 true
+		DrawCharacter shizu behind_blank 300
 		//show misha hips_smile
 		//show shizu behind_blank
 		//with charachange
@@ -1147,7 +1150,8 @@
 		mi "Do you want to know something?"
 
 		hi "What?"
-
+		
+		DrawCharacter misha hips_grin -300
 		//show misha hips_grin
 		//with charachange
 

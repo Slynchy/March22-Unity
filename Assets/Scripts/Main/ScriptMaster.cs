@@ -88,6 +88,13 @@ namespace M22
             strings = null;
             intParams = null;
         }
+        public WaitObject(WAIT_STATE _type, string _string)
+        {
+            type = _type;
+            strings = new List<string>();
+            strings.Add(_string);
+            intParams = null;
+        }
     }
 
     public class ScriptMaster : MonoBehaviour
@@ -513,7 +520,7 @@ namespace M22
                     if (_line.m_parameters[0] == 1)
                         NextLine(_isInLine);
                     else
-                        WaitQueue.Add(new WaitObject(WAIT_STATE.CHARACTER_FADEOUT_INDIVIDUAL));
+                        WaitQueue.Add(new WaitObject(WAIT_STATE.CHARACTER_FADEOUT_INDIVIDUAL, _line.m_parameters_txt[0]));
                     break;
                 case LINETYPE.CLEAR_CHARACTERS:
                     VNHandlerScript.ClearCharacters(_line.m_parameters[0] == 1 ? true : false );
@@ -698,6 +705,18 @@ namespace M22
                             WaitQueue.RemoveAt(0);
                             ShowText();
                             NextLine();
+                        }
+                        break;
+                    case WAIT_STATE.CHARACTER_FADEOUT_INDIVIDUAL:
+                        if(WaitQueue[0].strings.Count > 0)
+                        {
+                            GameObject find = GameObject.Find(WaitQueue[0].strings[0]);
+                            if(find == null)
+                            {
+                                WaitQueue.RemoveAt(0);
+                                ShowText();
+                                NextLine();
+                            }
                         }
                         break;
                     case WAIT_STATE.WAIT_COMMAND:
