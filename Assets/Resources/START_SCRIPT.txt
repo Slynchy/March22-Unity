@@ -1115,6 +1115,7 @@
 
 		Her enthusiastic statement of the obvious makes people around us stare, but Misha doesn't seem to care so we proceed to the line.
 
+		//!Breakpoint
 		ClearCharacter misha false
 
 		There is a rather long list of menu options, which seems great until I realize that many of them are to accommodate students who need special diets.
@@ -1124,3 +1125,30 @@
 		How nice. It almost feels like I'm back at the hospital, eating portions measured with scientific precision to meet the needs of the patients.
 
 		I pick something at random and follow Shizune to a table, sitting opposite of her.
+		
+		DrawCharacter misha hips_frown -300 true
+		DrawCharacter shizu basic_normal 300
+
+		As I nibble indifferently at the food I'd rather not eat, Misha pokes me in the side to get my attention and points to Shizune.
+		
+		DrawCharacter misha perky_smile -300 true
+		DrawCharacter shizu basic_frown 300
+
+		shi "…"
+
+		I don't understand sign, so the point escapes me.
+
+		Maybe looking at a person who “talks” to you is proper and polite?
+
+		//show misha hips_smile
+		//show shizu behind_blank
+		//with charachange
+
+		mi "Do you want to know something?"
+
+		hi "What?"
+
+		//show misha hips_grin
+		//with charachange
+
+		mi "About anything! We're your guides so you should ask if there is something~!"

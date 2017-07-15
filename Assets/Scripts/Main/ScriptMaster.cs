@@ -55,7 +55,7 @@ namespace M22
         }
     }
 
-    enum WAIT_STATE
+    public enum WAIT_STATE
     {
         NOT_WAITING,
         CHARACTER_FADEIN,
@@ -65,6 +65,29 @@ namespace M22
         WAIT_COMMAND,
         BACKGROUND_MOVING,
         VIDEO_PLAYING
+    }
+
+    public struct WaitObject
+    {
+        public WAIT_STATE type;
+        public List<String> strings;
+        public List<int> intParams;
+        public WaitObject(WAIT_STATE _type, String[] _strings, int[] _intParams)
+        {
+            type = _type;
+            strings = new List<string>();
+            intParams = new List<int>();
+            for (int i = 0; i < _strings.Length; i++)
+                strings.Add(_strings[i]);
+            for (int i = 0; i < _intParams.Length; i++)
+                intParams.Add(_intParams[i]);
+        }
+        public WaitObject(WAIT_STATE _type)
+        {
+            type = _type;
+            strings = null;
+            intParams = null;
+        }
     }
 
     public class ScriptMaster : MonoBehaviour
@@ -89,7 +112,8 @@ namespace M22
 
         public TypeWriterScript TEXT;
 
-        private WAIT_STATE WaitState = 0;
+        //private WAIT_STATE WaitState = 0;
+        private List<WaitObject> WaitQueue;
 
         public GameObject TransitionPrefab;
         private Dictionary<string, Sprite> TransitionEffects;
@@ -141,6 +165,7 @@ namespace M22
 
         void Awake()
         {
+            WaitQueue = new List<WaitObject>();
             Canvases = new List<Canvas>((int)CANVAS_TYPES.NUM_OF_CANVASES);
             loadedVideoClips = new Dictionary<string, VideoClip>();
             SCRIPT_FLAGS = new List<string>();
@@ -234,9 +259,10 @@ namespace M22
 
         public void FinishBackgroundMovement()
         {
-            if (WaitState == WAIT_STATE.BACKGROUND_MOVING)
+            if (WaitQueue.Count > 0 && WaitQueue[0].type == WAIT_STATE.BACKGROUND_MOVING)
             {
-                WaitState = WAIT_STATE.NOT_WAITING;
+                if (WaitQueue.Count > 0)
+                    WaitQueue.RemoveAt(0);
                 NextLine();
             }
         }
@@ -303,7 +329,8 @@ namespace M22
 
                     if (backgroundTrans.sprite == background.sprite)
                     {
-                        WaitState = WAIT_STATE.BACKGROUND_MOVING;
+                        //WaitState = WAIT_STATE.BACKGROUND_MOVING;
+                        WaitQueue.Add(new M22.WaitObject(WAIT_STATE.BACKGROUND_MOVING));
                         backgroundScript.UpdatePos(
                             _line.m_parameters[0],
                             _line.m_parameters[1]
@@ -322,7 +349,9 @@ namespace M22
 
                     if (_line.m_parameters[2] == 1)
                     {
-                        WaitState = WAIT_STATE.NOT_WAITING;
+                        //WaitState = WAIT_STATE.NOT_WAITING;
+                        if(WaitQueue.Count > 0)
+                            WaitQueue.RemoveAt(0);
                         NextLine(_isInLine);
                     }
                     break;
@@ -341,7 +370,8 @@ namespace M22
                         Debug.LogError("Failed to find checkpoint: " + _line.m_parameters_txt[0]);
                     break;
                 case LINETYPE.WAIT:
-                    WaitState = WAIT_STATE.WAIT_COMMAND;
+                    //WaitState = WAIT_STATE.WAIT_COMMAND;
+                    WaitQueue.Add(new WaitObject(WAIT_STATE.WAIT_COMMAND));
                     waitCommandTimer = 0;
                     break;
                 case LINETYPE.DRAW_CHARACTER:
@@ -349,7 +379,8 @@ namespace M22
                     if (_line.m_parameters[1] != 1)
                     {
                         HideText();
-                        WaitState = WAIT_STATE.CHARACTER_FADEIN;
+                        //WaitState = WAIT_STATE.CHARACTER_FADEIN;
+                        WaitQueue.Add(new WaitObject(WAIT_STATE.CHARACTER_FADEIN));
                     }
                     else
                         NextLine(_isInLine);
@@ -451,7 +482,8 @@ namespace M22
                     VideoPlayerInstance.clip = tempVid;
                     VideoPlayerInstance.SetTargetAudioSource(0, Camera.main.GetComponent<AudioSource>());
                     VideoPlayerInstance.Play();
-                    WaitState = WAIT_STATE.VIDEO_PLAYING;
+                    //WaitState = WAIT_STATE.VIDEO_PLAYING;
+                    WaitQueue.Add(new WaitObject(WAIT_STATE.VIDEO_PLAYING));
                     break;
                 case LINETYPE.LOAD_SCRIPT:
                     LoadScript(_line.m_parameters_txt[0]);
@@ -478,15 +510,16 @@ namespace M22
                     {
                         Debug.LogErrorFormat("Unable to clear character {0} at line {1}", _line.m_parameters_txt[0], _line.m_origScriptPos);
                     }
-                    //if (_line.m_parameters[0] == 1)
+                    if (_line.m_parameters[0] == 1)
                         NextLine(_isInLine);
-                    //else
-                     //   WaitState = WAIT_STATE.CHARACTER_FADEOUT_INDIVIDUAL;
+                    else
+                        WaitQueue.Add(new WaitObject(WAIT_STATE.CHARACTER_FADEOUT_INDIVIDUAL));
                     break;
                 case LINETYPE.CLEAR_CHARACTERS:
                     VNHandlerScript.ClearCharacters(_line.m_parameters[0] == 1 ? true : false );
                     HideText();
-                    WaitState = WAIT_STATE.CHARACTER_FADEOUT;
+                    //WaitState = WAIT_STATE.CHARACTER_FADEOUT;
+                    WaitQueue.Add(new WaitObject(WAIT_STATE.CHARACTER_FADEOUT));
                     break;
                 case LINETYPE.EXECUTE_FUNCTION:
                     CustomFunctionHandler.CustomFunctionDelegate temp = CustomFunctionHandler.GetFunction(_line.m_parameters_txt[0]);
@@ -505,7 +538,8 @@ namespace M22
                     TransitionEffects.TryGetValue(_line.m_parameters_txt[1], out TransitionObj.effect);
                     TransitionObj.destSprite = M22.BackgroundMaster.GetBackground(_line.m_parameters_txt[0]);
                     TransitionObj.inOrOut = (String.Equals(_line.m_parameters_txt[2], "in") ? BackgroundTransition.IN_OR_OUT.IN : BackgroundTransition.IN_OR_OUT.OUT);
-                    WaitState = WAIT_STATE.TRANSITION;
+                    //WaitState = WAIT_STATE.TRANSITION;
+                    WaitQueue.Add(new WaitObject(WAIT_STATE.TRANSITION));
                     break;
                 case LINETYPE.NUM_OF_LINETYPES:
                     // do nuzing.
@@ -534,7 +568,8 @@ namespace M22
                 1.0f,
                 1.0f
             );
-            WaitState = WAIT_STATE.NOT_WAITING;
+            //WaitState = WAIT_STATE.NOT_WAITING;
+            if (WaitQueue.Count > 0) WaitQueue.RemoveAt(0);
             NextLine();
         }
 
@@ -586,7 +621,7 @@ namespace M22
 
         void Update()
         {
-            if ((WaitState == WAIT_STATE.NOT_WAITING && Input.GetKeyDown(KeyCode.Return)) || (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
+            if ((WaitQueue.Count == 0 && Input.GetKeyDown(KeyCode.Return)) || (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
             {
                 if (backgroundTrans != null && backgroundTrans.color.a != 0)
                 {
@@ -624,59 +659,62 @@ namespace M22
                 }
             }
 
-            switch (WaitState)
+            if (WaitQueue.Count > 0)
             {
-                case WAIT_STATE.BACKGROUND_MOVING:
-                    break;
-                case WAIT_STATE.VIDEO_PLAYING:
-                    if (VideoPlayerInstance.isPlaying == false)
-                    {
-                        WaitState = WAIT_STATE.NOT_WAITING;
-                        Destroy(VideoPlayerInstance.gameObject);
-                        NextLine();
-                    }
-                    break;
-                case WAIT_STATE.CHARACTER_FADEIN:
-                    int size = GameObject.FindGameObjectsWithTag("Character").Length;
-                    int count = 0;
-                    foreach (var item in GameObject.FindGameObjectsWithTag("Character"))
-                    {
-                        if (item.GetComponent<CharacterScript>().GetState() == CharacterScript.STATES.IDLE)
+                switch (WaitQueue[0].type)
+                {
+                    case WAIT_STATE.BACKGROUND_MOVING:
+                        break;
+                    case WAIT_STATE.VIDEO_PLAYING:
+                        if (VideoPlayerInstance.isPlaying == false)
                         {
-                            count++;
+                            WaitQueue.RemoveAt(0);
+                            Destroy(VideoPlayerInstance.gameObject);
+                            NextLine();
                         }
-                    }
+                        break;
+                    case WAIT_STATE.CHARACTER_FADEIN:
+                        int size = GameObject.FindGameObjectsWithTag("Character").Length;
+                        int count = 0;
+                        foreach (var item in GameObject.FindGameObjectsWithTag("Character"))
+                        {
+                            if (item.GetComponent<CharacterScript>().GetState() == CharacterScript.STATES.IDLE)
+                            {
+                                count++;
+                            }
+                        }
 
-                    if (size == count)
-                    {
-                        WaitState = 0;
-                        ShowText();
-                        NextLine();
-                    }
-                    break;
-                case WAIT_STATE.CHARACTER_FADEOUT:
-                    size = GameObject.FindGameObjectsWithTag("Character").Length;
-                    if (size == 0)
-                    {
-                        WaitState = WAIT_STATE.NOT_WAITING;
-                        ShowText();
-                        NextLine();
-                    }
-                    break;
-                case WAIT_STATE.WAIT_COMMAND:
-                    waitCommandTimer += Time.deltaTime;
-                    int param;
-                    if (inLineFunctionMode == true)
-                        param = CurrentInlineFunction.m_parameters[0];
-                    else
-                        param = CURRENT_LINE.m_parameters[0];
-                    if (waitCommandTimer >= (param * 0.001f))
-                    {
-                        WaitState = WAIT_STATE.NOT_WAITING;
-                        NextLine();
-                        waitCommandTimer = -1;
-                    }
-                    break;
+                        if (size == count)
+                        {
+                            WaitQueue.RemoveAt(0);
+                            ShowText();
+                            NextLine();
+                        }
+                        break;
+                    case WAIT_STATE.CHARACTER_FADEOUT:
+                        size = GameObject.FindGameObjectsWithTag("Character").Length;
+                        if (size == 0)
+                        {
+                            WaitQueue.RemoveAt(0);
+                            ShowText();
+                            NextLine();
+                        }
+                        break;
+                    case WAIT_STATE.WAIT_COMMAND:
+                        waitCommandTimer += Time.deltaTime;
+                        int param;
+                        if (inLineFunctionMode == true)
+                            param = CurrentInlineFunction.m_parameters[0];
+                        else
+                            param = CURRENT_LINE.m_parameters[0];
+                        if (waitCommandTimer >= (param * 0.001f))
+                        {
+                            WaitQueue.RemoveAt(0);
+                            NextLine();
+                            waitCommandTimer = -1;
+                        }
+                        break;
+                }
             }
 
         }
