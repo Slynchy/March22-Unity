@@ -1432,3 +1432,349 @@
 		nk "There's always someone from my staff around, even at night, so never hesitate to call us if there is a problem."
 
 		The famous twenty-four-hour nursing staff.
+
+		hi "Wow, this is like a hospital."
+
+		nk "Well, not exactly. For instance, we don't do brain surgery here."
+
+		His joke feels so out of place that I'm left thinking why he even said it.
+
+		hi "Yeah… just that it's really weird to have so many medical people at a school."
+
+		nk "You'll get used to it."
+
+		I'm not so sure of that myself but I don't let the nurse know it.
+
+		nk "Now, let me just find your file again…"
+
+		While he searches for something from his computer and shuffles stacks of papers around, I let my gaze wander around the room.
+
+		It's the epitome of generic, I'd like to say.
+
+		Beige walls and ceiling, dark gray laminate flooring, and all the equipment you'd expect from a school nurse's office.
+
+		Even the ridiculous educational posters are hanging on all four walls, reminding me to eat properly - three times a day and from all the food groups.
+
+		DrawCharacter nurse grin 0
+
+		Smiling, the nurse draws a thick file from a stack of similarly thick files and opens it.
+
+		nk "So, you already have medication for the arrhythmia, just remember to take your pills every morning and evening or it won't be much help."
+
+		DrawCharacter nurse fabulous 0
+
+		nk "Apart from that… do you do any sports? Rash stuff like… I don't know, boxing?"
+
+		He grins to his own joke but I don't.
+
+		hi "Eh, well. I played soccer occasionally with some classmates."
+
+		nk "All right, I'm afraid I'm going to have to recommend you refrain from doing that. At least, for the time being."
+
+		hi "Oh."
+
+		My lack of reaction makes him raise an eyebrow, but really, I'm not too bothered by him forbidding me to kick a ball around.
+
+		I guess I never did it out of burning passion for the sport. Just to have something to do.
+
+		nk "Any kind of concussion might be very dangerous to your heart, and risking another attack is not a good idea."
+
+		nk "Was the previous one caused by a sudden concussion to the chest area? There is no mention of the cause in your papers."
+
+		hi "Err… not exactly."
+
+		DrawCharacter nurse concern 0
+
+		I sidestep the question acceptably, and he glances at me over his papers, with a more serious expression on his face.
+
+		nk "Still, you need to keep your body healthy so some exercise would do you good."
+
+		nk "We have physical therapy and such available as I said, but I don't think you really need such heavy measures."
+
+		nk "Just get some light exercise regularly."
+
+		nk "Brisk walks or even light jogging, jumping rope, that sort of thing. Swimming, maybe? There's a pool here."
+
+		hi "So I was told."
+
+		DrawCharacter nurse neutral 0
+
+		nk "You were? Very good."
+
+		nk "At any rate, and I'm sure you've been told this before, you just need to take care not to overexert yourself."
+
+		He wags his finger to emphasize the point. No need really, I've heard this a thousand times already.
+
+		DrawCharacter nurse concern 0
+
+		nk "Absolutely no unnecessary risks. Take care of yourself."
+
+		hi "Okay."
+
+		He goes over my papers one more time and sets them on the desk, obviously content.
+
+		DrawCharacter nurse neutral 0
+
+		nk "Good. That's it, then. Come meet me if you ever need something."
+
+		Transition school_nursehall tr-softwipe 0
+
+		StopMusic 0.4
+
+		I'm ushered out before I even realize it. A quick visit, indeed.
+
+	--en_A4
+
+		Transition school_courtyard tr-softwipe 0
+
+		//play music music_pearly fadein 4.0
+		//PlayMusic asdf
+
+		I end up standing in front of the main building and the auxiliary building, although to my eyes, they still look one and the same.
+
+		It's the first real look I get at the other students, so I watch people coming out of the school, going towards the gate or the dorms.
+
+		Everyone seems to know where they are going.
+
+		And I still keep thinking that most of them don't look too special for being students at a special school. Then again, neither do I.
+
+		Does that make me one of them?{w} One of us?
+
+		…
+
+		I should go somewhere too, to prevent me from getting lost.
+
+		It's around dinnertime, but I feel tired instead of hungry.
+
+		The weariness in me only grows as I trudge towards the dorms, set a little way apart from the main building complex.
+
+		Transition school_gardens tr-softwipe 0
+
+		There is a garden of sorts between the school and the dorms; shrubbery, flowers and that overbearing smell of fresh cut grass that fills the atmosphere.
+
+		It dawns on my tired mind that the smell feels novel because I haven't been outside at all for so long.
+
+		DrawBackground school_dormext_start 200 0 1.25 1.0
+
+		"The dorm building is big and made of red brick. Like the others, it feels way too pompous for what it is, so I push forward, going inside."
+
+		Transition school_dormhallground tr-softwipe 0
+
+		It takes more time than necessary to fish out the key I was given from my pocket.
+
+		hi "Room one-one-nine…"
+
+		Despite the ornate exterior, the inside of the dorm is fairly new, functional, and boring.
+
+		Just like in the main building, the halls and doors are wide to accommodate wheelchairs. The same goes for the elevators at the ends of the hallways.
+
+		I poke my head around the corner of the common room door.
+
+		Inside a few students are watching the television.
+
+		One nods and gives a quick “hello” before turning back to the TV.
+
+		Seems that only the girls around here are sociable. I suppose that's perfectly fine with me.
+
+		I climb the stairs to the upper floor.
+
+		Transition school_dormhallway tr-softwipe 0
+
+		Here, small corridors branch off from the main hallway.
+
+		Each of these minor halls seems to have a toilet and shower, as well as four rooms.
+
+		About halfway down the hall, I spy room 119.
+
+		The name plates on the rooms adjacent to mine are blank. I guess there are just two of us here.
+
+		//play sound sfx_doorknock2
+		//stop music fadeout 3.0
+		PlaySting doorknock2
+		StopMusic 0.2
+
+		Light shines from below the door of room 117, so I knock lightly.
+
+		hi "Hello, is anyone home?"
+
+		From inside, I hear a few movements, then the clicking of way more locks than I thought these doors had. After a moment the door squeaks open.
+
+		//show kenji tsun at Slide(0.4,0.5,0.5,0.5,0.5)
+		//with charaenter
+		//play music music_kenji fadein 0.5
+		PlayMusic Out_of_the_Loop
+		DrawCharacter kenji tsun -200 true
+		DrawCharacter kenji tsun 0
+
+		A bespectacled boy is standing in the doorway. He is looking at me very intently through his extremely thick eyeglasses.
+
+		ke_ "Who is it?"
+
+		Blind? No, at least not completely, why would he have eyeglasses if he was?
+		
+		DrawCharacter kenji tsun_close 0
+
+		He leans closer to me until our noses are almost touching. His breath stinks of garlic.
+
+		hi "Hisao Nakai… I'm moving into the next room. I thought I should introduce my…"
+
+		DrawCharacter kenji happy 0
+
+		His face suddenly brightens in realization, and he stands back upright, thrusting his hand out in a smiling greeting, almost straight to my diaphragm.
+
+		ke_ "Oh, 'sup dude? The name's Kenji."
+
+		hi "Ah, hi."
+
+		I take Kenji's sweaty hand and shake it, still a little rattled by the sudden change of attitude and vehement welcome.
+
+		ke "There were some suspicious-looking people going in and out of your room earlier."
+
+		hi "It was probably my parents."
+
+		DrawCharacter kenji tsun 0
+
+		ke "Your parents? You sure? 'Cause they could've been some other people, too. You can't judge a book by its cover."
+
+		His out-of-place proverb is left hanging between us awkwardly as I try to think of some way to respond.
+
+		hi "I'd say the chances are high enough."
+
+		He shudders and makes some exaggerated hand gestures.
+
+		DrawCharacter kenji neutral 0
+
+		ke "You're a brave man, Hisao."
+
+		DrawCharacter kenji tsun 0
+
+		ke "Me, I don't think I could trust the chances."
+
+		ke "The only one I trust is myself."
+
+		hi "Does that mean I shouldn't get to know you, either?"
+
+		He thinks about this for a while.
+
+		DrawCharacter kenji neutral 0
+
+		ke "A wise decision."
+
+		DrawCharacter kenji happy 0
+
+		ke "Damn, you are smarter than you look."
+
+		ke "Probably."
+
+		ke "What do you look like? I hope not smart."
+
+		DrawCharacter kenji neutral_close 0
+
+		He squints his eyes and leans closer again, but I lean backwards to dodge it.
+
+		DrawCharacter kenji tsun 0
+
+		ke "Never mind, it doesn't matter."
+
+		ClearCharacters
+		StopMusic 0.2
+
+		With that, he turns, fumbles around for a moment in search of the door handle,{{PlaySting doorslam}}{{Wait 300}} and shuts the door behind him.
+
+		I slide the key into the lock of the door marked 119.
+
+		Transition school_dormhisao_ss tr-softwipe 0
+		//PlayMusic 
+		//play music music_night fadein 1.0
+
+		Bleak beige walls, white linen, a desk made of some type of light wood. Ugly curtains.
+
+		It's no one's room; impersonal, like my hospital room was.
+
+		My bags are sitting at the foot of my bed, looking a lot emptier than they did this morning.
+
+		The closet is sitting open, stocked with my clothes.
+
+		Also, it seems that there are a number of school uniforms hanging there as well.
+
+		A note is pinned to the sleeve of one of the shirts.
+
+		//window hide
+		//$ written_note("Hi Hicchan. We've unpacked your things and made your bed.\nThey said that if these don't fit then you should go to the office tomorrow.\nIf you have any problems, you can always call us.\n\nLove, Mom and Dad")
+		//window show
+
+		Well, at least I don't have to worry about unpacking.
+
+		I kind of hoped I would have, then there would be something to do.
+
+		It's still too early.
+
+		I put the note down on the desktop and lie down on the bed, feeling drained.
+
+		Lying there makes me want to read something, but I have nothing with me.
+
+		I wonder if the hospital conditioned me for wanting to read whenever I have nothing to do.
+
+		The restless urge just keeps growing until I have to stand up.
+
+		Maybe it's stress or something.
+
+		I was pretty nervous about it before coming and for the entire day today too. I still am, I think.
+
+		Damn, I have to distract myself somehow, so I won't be this unnatural all the time.
+
+		Tomorrow, I'll go borrow some books from the library.
+
+		Yeah, I'll do that.
+
+		But for now…
+
+		//show pills:
+		//	alpha 0.0 xalign 0.5 yanchor 0.5 ypos 0.7 subpixel True
+		//	easein 1.0 ypos 0.5 alpha 1.0
+		//with Pause (1.0)
+
+		The bottles of medications neatly arranged on my night table catch my eye.
+
+		I pick up one and shake it just to hear the contents rattle inside, and then read the glued-on pharmacy label.
+
+		//window hide
+		//show pills:
+		//	alpha 1.0 xalign 0.5 yanchor 0.5 ypos 0.5 subpixel True
+		//	easeout 1.0 ypos 0.7 alpha 0.0
+		//with Pause (1.0)
+		//hide pills
+		//with None
+		//$ written_note("Hisao Nakai\n\nTwo tablets daily to stay alive", quiet=True)
+		//window show
+
+		It doesn't really say that, but it could just as well.
+
+		It's kinda twisted, having your life depend on chemicals like this. I resent it a little, but what choice do I have?
+
+		With a sigh, I begin my new daily ritual of taking the right number of pills from each bottle, being careful to check the correct dosages.
+
+		…
+
+		I lie down again, feeling hollow and uncertain, and after that I keep staring at the blank, unfamiliar ceiling for a long time.
+
+		StopMusic 0.09
+		Transition school_dormhisao_ni tr-pronoise 0
+
+		It doesn't start looking any more familiar, not even after darkness falls and long shadows draw across my room like fingers.
+
+		The sheets feel slightly more comfortable, warm and nest-like against the chill that passes for room temperature here.
+
+		Soon the lighter shade of darkness that is the ceiling looks like every ceiling does at night, and it becomes the only thing I recognize any more.
+
+		The night beckons me to sleep, and I feel the coldness of unfamiliarity and fear creeping up my spine once again.
+
+		I keep drifting further away from the world I knew.
+
+		//$ suppress_window_after_timeskip = True
+
+		//scene black
+		//with shuteye
+
+		Transition black tr_eyes 0
+		Wait 1000
