@@ -27,6 +27,16 @@ namespace M22
             audioSource.volume = startVolume;
         }
 
+        static public void UnloadAudio()
+        {
+            foreach (var item in loadedAudio)
+            {
+                //item.Value.UnloadAudioData();
+                Resources.UnloadAsset(item.Value);
+            }
+            loadedAudio.Clear();
+        }
+
         static public AudioClip GetAudio(string _input)
         {
             AudioClip output;

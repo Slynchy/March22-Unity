@@ -12,6 +12,15 @@ namespace M22
         static private Sprite black;
         static private Sprite white;
 
+        static public void UnloadBackgrounds()
+        {
+            foreach (var item in loadedBackgrounds)
+            {
+                Resources.UnloadAsset(item.Value);
+            }
+            loadedBackgrounds.Clear();
+        }
+
         void Awake()
         {
             Texture2D tempTex = Resources.Load("Images/black") as Texture2D;

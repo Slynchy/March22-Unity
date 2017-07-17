@@ -401,6 +401,11 @@ namespace M22
             }
             return tempLine_c;
         }
+        
+        static public void UnloadCheckpoints()
+        {
+            currentScript_checkpoints.Clear();
+        }
 
         static public void CompileLine(ref M22.line_c _lineC, List<string> _splitStr, ref List<M22.script_checkpoint> _chkpnt, int _scriptPos)
         {

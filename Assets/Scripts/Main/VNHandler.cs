@@ -21,6 +21,8 @@ namespace M22
 
     public class VNHandler : MonoBehaviour
     {
+        static private Dictionary<string, Character> loadedCharacters;
+
         public bool VNMode = false;
         public int VNFontSize = 16;
         public int NovelFontSize = 34;
@@ -57,7 +59,18 @@ namespace M22
             return MovementSpeed;
         }
 
-        static private Dictionary<string, Character> loadedCharacters;
+        static public void UnloadCharacters()
+        {
+            if (loadedCharacters == null) return;
+            foreach (var item in loadedCharacters)
+            {
+                foreach (var sprite in item.Value.sprites)
+                {
+                    Resources.UnloadAsset(sprite.Value);
+                }
+            }
+            loadedCharacters.Clear();
+        }
 
         private void Awake()
         {

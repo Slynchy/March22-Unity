@@ -740,6 +740,11 @@ namespace M22
 
         public void LoadScript(string _fname)
         {
+            BackgroundMaster.UnloadBackgrounds();
+            ScriptCompiler.UnloadCheckpoints();
+            AudioMaster.UnloadAudio();
+            VNHandler.UnloadCharacters();
+            Resources.UnloadUnusedAssets();
             currentScript_c = M22.ScriptCompiler.CompileScript(_fname);
             lineIndex = 0;
             TEXT.Reset(true);
