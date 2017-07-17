@@ -86,7 +86,7 @@ namespace M22
             switch(ScriptMaster.ActiveAnimationType)
             {
                 case ScriptCompiler.ANIMATION_TYPES.SMOOTH:
-                    while (rect.anchoredPosition != newPos || progress >= 1.0f)
+                    while (rect.anchoredPosition != newPos || progress <= 1.0f)
                     {
                         //progress += Time.deltaTime * 1.0f;
                         progress = Mathf.Lerp(progress, 1.2f, Time.deltaTime * speed);
