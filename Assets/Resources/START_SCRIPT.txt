@@ -10,7 +10,7 @@
 
 	A light breeze causes the naked branches overhead to rattle like wooden windchimes.
 
-	Goto en_A3
+	Goto en_A3dDEBUG
 
 	This is a popular retreat for couples in the summer. The deciduous trees provide a beautiful green canopy, far out of sight of teachers and fellow students.
 
@@ -1098,7 +1098,7 @@
 
 		//play ambient sfx_crowd_indoors fadein 6.0
 		// { sfx, volume, speed }
-		PlayLoopedSting crowd_indoors 0.19 0.11
+		PlayLoopedSting crowd_indoors 0.10 0.11
 		//  This function instantiates something on the camera that just plays 
 		HideWindow
 		Transition school_cafeteria tr-softwipe 0
@@ -1121,7 +1121,7 @@
 
 		There is a rather long list of menu options, which seems great until I realize that many of them are to accommodate students who need special diets.
 
-		StopLoopedSting crowd_indoors 0.11
+		//StopLoopedSting crowd_indoors 0.11
 
 		How nice. It almost feels like I'm back at the hospital, eating portions measured with scientific precision to meet the needs of the patients.
 
@@ -1156,3 +1156,279 @@
 		//with charachange
 
 		mi "About anything! We're your guides so you should ask if there is something~!"
+
+	--choiceA3
+
+		hi "Hmm, I wonder…"
+
+		//"Ask about the library."
+		//"Ask about Shizune's deafness."
+		//"I think I got everything I need to know."
+		MakeDecision "Ask about the library." choiceA3_1 "Ask about Shizune's deafness." choiceA3_2 "I think I got everything I need to know." choiceA3_3
+		m22IF choiceA3_1 Goto en_A3a
+		m22IF choiceA3_2 Goto en_A3b
+		m22IF choiceA3_2 Goto en_A3c
+
+	--en_A3a
+
+		hi "Oh, yeah. Is there a library in the school? Lately I've gotten into reading a lot so I'd like to check it out."
+
+		Misha gives the kind of frown that makes it clear she doesn't consider reading a healthy hobby, but then picks up her smile again.
+
+		mi "There is~! It's in the second floor, we can show it to you sometime!"
+
+		hi "Thanks."
+
+		I return to my food while the girls talk between themselves.
+
+
+
+	--en_A3b
+
+		Shizune intrigues me, and I kind of want to ask something about her.
+
+		But I can't really ask about something that personal, can I?
+
+		Hmm…
+
+		I can't come up with anything else to ask so I just focus on my food while the girls talk between themselves.
+
+
+
+	--en_A3c
+
+		hi "I can't think of anything, really."
+
+		DrawCharacter misha sign_smile -300 true
+
+		mi "Ooh! That means we've been good guides, doesn't it, doesn't it~?"
+
+		…
+
+		hi "Eeh… if you say so."
+
+		DrawCharacter misha hips_grin -300 true
+		DrawCharacter shizu behind_smile 300
+
+		Misha positively beams, and so does Shizune after a quick translation.
+
+		I shake my head at their somewhat exaggerated enthusiasm, and shift my focus on the food.
+
+	--en_A3d
+
+		Misha and Shizune sign back and forth very animatedly, throwing sideway glances at me but Misha refrains from translating.
+
+		Maybe they are talking about secret girl stuff or something.
+
+		…
+
+		//stop music fadeout 3.0
+		//$ renpy.music.set_volume(1.0, .5, channel="ambient")
+		//stop ambient fadeout 3.0
+		StopMusic 0.5
+		StopLoopedSting crowd_indoors 0.5
+
+		I quickly notice a conversation in sign is not enough to fill a silence.
+
+		HideWindow
+		PlaySting time
+		Transition black tr-delayblinds 0
+		PlaySting time
+	--en_A3dDEBUG
+		Transition school_scienceroom tr-delayblinds 0
+		ShowWindow
+
+		//play music music_daily fadein 0.5
+		PlayMusic Daylight
+
+		We arrive in the classroom early, but we're not the first.
+
+		DrawCharacter hanako emb_downtimid 800 false
+
+		That dark haired girl I noticed before is slumped over her desk at the last row.
+
+			// Shake the screen, and change sprite to this one instantly
+		DrawCharacter hanako defarms_shock 900 false
+			// Then move her more to the edge
+
+		She jumps a little when Misha crashes into the room with the elegance of a rhino.
+
+		She shrinks deeper into her seat. I can feel her tension all the way from here, as if she were slowly turning into stone just from our presence.
+
+		Misha and Shizune either don't notice or don't mind it, as they walk directly past her to their seats and begin to converse.
+
+		//show hanako defarms_shock at offscreenright
+		//with charamove
+		SetAnimationType Lerp
+		DrawCharacter hanako defarms_shock 1200
+		SetAnimationType Smooth
+
+		//hide hanako
+		//with None
+		ClearCharacter hanako true
+
+		I'm left wondering about her, even when the classroom slowly fills with other students and finally, the teacher.
+
+		Getting into the rhythm of school feels strange; it's as if my brain remembers how this is done, but my body doesn't.
+
+		Towards the end of the class I start yawning and counting the minutes left.
+
+		I shouldn't be this tired on my first day of school.
+
+		Maybe it's the long time spent in the hospital that made me like this. I'm even feeling physically weak and lifeless.
+
+		//scene bg school_scienceroom
+		//with shorttimeskip
+		HideWindow
+		PlaySting time
+		Transition black tr-delayblinds 0
+		PlaySting time
+		Transition school_scienceroom tr-delayblinds 0
+		ShowWindow
+
+		//play sound sfx_normalbell
+		PlaySting normalbell
+
+		Before long, the final bell rings.
+
+		School is finally over for the day.
+
+		Beside me, Misha and Shizune are having a short conversation. After a bit of deliberation, Misha turns to me.
+
+		DrawCharacter misha perky_smile -300 true
+		DrawCharacter shizu behind_blank 300
+
+		shi "…"
+
+		mi "Unfortunately we can't stay and show you around today, Hicchan. We've got to hurry already, since there is a lot of work for us to do."
+
+		DrawCharacter shizu basic_normal2 300
+
+		shi "…"
+
+		mi "You'll find your way around here, I'm sure of it."
+
+		hi "Ah, wait! The teacher said I'd have to see the nurse. Where do I have to go?"
+
+		DrawCharacter misha hips_grin -300 true
+		DrawCharacter shizu behind_smile 300
+
+		mi "Is that so? We can at least show you that much~!"
+
+		mi "Come on, the nurses have their own building, so we have to go outside."
+
+		ClearCharacters
+
+		Transition school_hallway3 tr-softwipe 0
+
+		We join the flow of students making their way down the stairwell and outside, with the girls pointing out other senior classrooms in the same hallway as ours.
+		
+		Transition school_courtyard tr-softwipe 0
+
+		When we get outside, the girls make their way to the smaller building right next to the school.
+
+		It's built in the same style, so it looks like it's actually a part of the main building.
+
+		DrawCharacter misha perky_smile -300 true
+		DrawCharacter shizu behind_smile 300
+
+		shi "…"
+
+		mi "This is the auxiliary building here. There's a lot of official and important stuff inside, like the Yamaku Foundation office and all the nurses' offices. They even have a swimming pool!"
+
+		hi "How is that official?"
+
+		DrawCharacter shizu behind_frustrated 300
+
+		shi "…"
+
+		DrawCharacter misha hips_grin -300
+
+		mi "Don't be silly, Hicchan! It's for physical therapy of course."
+
+		DrawCharacter misha sign_smile -300
+
+		mi "Anyway, all the nursing staff facilities are in there too. The head nurse's office is on the first floor."
+
+		DrawCharacter misha hips_smile -300 true
+		DrawCharacter shizu behind_smile 300
+
+		mi "You'll be fine from here, right~? We'll be going, then! See you tomorrow!"
+
+		hi "Yeah, thanks. Bye."
+
+		StopMusic 0.16
+
+		ClearCharacters
+
+		A whole building for stuff that has nothing to do with the actual education?
+
+		I guess it's necessary for a place like this.
+
+		Transition school_nursehall tr-softwipe 0
+
+		I walk in, hoping that this really will be only a quick visit like the teacher said.
+
+		On a white door on the left is a green cross with the text “Head Nurse” and a nameplate.
+
+		PlaySound doorknock2
+
+		A voice from the inside responds to my knock almost immediately, but I can't quite make it out.
+
+		It sounded a bit like an invitation to open the door, so I invite myself further in.
+
+		PlaySound dooropen
+
+		Transition school_nurseoffice tr-softwipe 0
+
+		The room is not large and it smells strange. A friendly-looking man turns around on his office chair to face me as I enter.
+
+		His desk is neat and tidy, but the bin under the table is overflowing with used medical utensils and there are at least a dozen coffee-cup rings lingering on the desk.
+
+		PlayMusic Ah_Eh_I_Oh_You
+
+		//show nurse neutral at center
+		//with charaenter
+		DrawCharacter nurse neutral 0
+
+		nk_ "Hello there. What can I do for you today?"
+
+		He is young-looking and sort of rugged, but the dimples in his cheeks wash that impression away when he smiles.
+
+		hi "Erm, are you the nurse?"
+		
+		DrawCharacter nurse grin 0
+
+		He smiles like a person who has heard this very same question hundreds of times.
+
+		nk_ "Why yes, I am. It says so on the door, no?"
+
+		nk_ "You can call me by my name or just “the nurse” like everyone else."
+
+		Of course. I shake off my confusion, realizing I probably should grab his extended hand.{w} His handshake is rather firm and friendly.
+
+		hi "Right… err, I'm a new student and my homeroom teacher told me to come and meet you. My name is Hisao Nakai."
+
+		PlaySound snap
+
+		His eyes light up with revelation and he snaps his fingers.
+
+		DrawCharacter nurse fabulous 0
+
+		nk "Oh you're THAT Nakai. I was just reading your file in the morning."
+
+		nk "Some kind of chronic arrhythmia and related congenital heart muscle deficiency, right?"
+
+		He gestures me to sit down in a vacant armchair in front of his desk.
+
+		hi "Eh, yes."
+
+		DrawCharacter nurse neutral 0
+
+		nk "Good. Well, you've probably been briefed about the school enough, so I'll just go over this quickly."
+
+		nk "We have all kinds of facilities available, mostly physical therapy and such."
+
+		nk "There's always someone from my staff around, even at night, so never hesitate to call us if there is a problem."
+
+		The famous twenty-four-hour nursing staff.
