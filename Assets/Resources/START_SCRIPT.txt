@@ -6,11 +6,11 @@
 
 	ShowWindow
 
-	//PlayMusic Lullaby_of_Open_Eyes
+	PlayMusic Lullaby_of_Open_Eyes
 
 	A light breeze causes the naked branches overhead to rattle like wooden windchimes.
 
-	Goto en_A3dDEBUG
+	//Goto testDebugChkPnt
 
 	This is a popular retreat for couples in the summer. The deciduous trees provide a beautiful green canopy, far out of sight of teachers and fellow students.
 
@@ -1528,7 +1528,7 @@
 		Transition school_courtyard tr-softwipe 0
 
 		//play music music_pearly fadein 4.0
-		//PlayMusic asdf
+		PlayMusic Fripperies
 
 		I end up standing in front of the main building and the auxiliary building, although to my eyes, they still look one and the same.
 
@@ -1538,9 +1538,9 @@
 
 		And I still keep thinking that most of them don't look too special for being students at a special school. Then again, neither do I.
 
-		Does that make me one of them?{w} One of us?
+		Does that make me one of them?{{Wait 500}} One of us?
 
-		…
+		...
 
 		I should go somewhere too, to prevent me from getting lost.
 
@@ -1554,7 +1554,7 @@
 
 		It dawns on my tired mind that the smell feels novel because I haven't been outside at all for so long.
 
-		DrawBackground school_dormext_start 200 0 1.25 1.0
+		DrawBackground school_dormext_start -400 0 1.25 1.0
 
 		"The dorm building is big and made of red brick. Like the others, it feels way too pompous for what it is, so I push forward, going inside."
 
@@ -1599,11 +1599,9 @@
 
 		From inside, I hear a few movements, then the clicking of way more locks than I thought these doors had. After a moment the door squeaks open.
 
-		//show kenji tsun at Slide(0.4,0.5,0.5,0.5,0.5)
-		//with charaenter
-		//play music music_kenji fadein 0.5
 		PlayMusic Out_of_the_Loop
 		DrawCharacter kenji tsun -200 true
+		Wait 50
 		DrawCharacter kenji tsun 0
 
 		A bespectacled boy is standing in the doorway. He is looking at me very intently through his extremely thick eyeglasses.
@@ -1612,12 +1610,14 @@
 
 		Blind? No, at least not completely, why would he have eyeglasses if he was?
 		
-		DrawCharacter kenji tsun_close 0
+		ClearCharacter kenji true
+		DrawCharacter kenji_close tsun_close 0
 
 		He leans closer to me until our noses are almost touching. His breath stinks of garlic.
 
 		hi "Hisao Nakai… I'm moving into the next room. I thought I should introduce my…"
-
+		
+		ClearCharacter kenji_close true
 		DrawCharacter kenji happy 0
 
 		His face suddenly brightens in realization, and he stands back upright, thrusting his hand out in a smiling greeting, almost straight to my diaphragm.
@@ -1667,11 +1667,13 @@
 		ke "Probably."
 
 		ke "What do you look like? I hope not smart."
-
-		DrawCharacter kenji neutral_close 0
+		
+		ClearCharacter kenji true
+		DrawCharacter kenji_close neutral_close 0
 
 		He squints his eyes and leans closer again, but I lean backwards to dodge it.
-
+		
+		ClearCharacter kenji_close true
 		DrawCharacter kenji tsun 0
 
 		ke "Never mind, it doesn't matter."

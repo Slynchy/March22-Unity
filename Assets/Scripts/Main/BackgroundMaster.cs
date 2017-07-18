@@ -74,10 +74,5 @@ namespace M22
                 return new Sprite();
             }
         }
-
-        void UnloadBackgrounds()
-        {
-            loadedBackgrounds.Clear();
-        }
     }
 }

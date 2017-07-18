@@ -420,21 +420,6 @@ namespace M22
                     _splitStr[0] = _splitStr[0].TrimEnd('\r', '\n');
                     _chkpnt.Add(new M22.script_checkpoint(_scriptPos, _splitStr[0]));
                     break;
-                case M22.LINETYPE.TRANSITION:
-                    if (_splitStr.Count > 1)
-                    {   //Transition other_iwanako tr_eyes 0
-                        _lineC.m_parameters_txt = new List<string>();
-                        _lineC.m_parameters_txt.Add(_splitStr[1]);
-                        _lineC.m_parameters_txt.Add(_splitStr[2]);
-                        _lineC.m_parameters_txt.Add(_splitStr[3]);
-
-                        if (!M22.BackgroundMaster.LoadBackground(_lineC.m_parameters_txt[0]))
-                        {
-                            //Debug.LogError("Failed to load background! - " + _lineC.m_parameters_txt[0]);
-                            // failed to load bg!
-                        };
-                    }
-                    break;
                 case M22.LINETYPE.ANIMATION_TYPE:
                     if (_splitStr.Count > 1)
                     {
@@ -578,6 +563,21 @@ namespace M22
                     }
                     // we store the float value as a string for later use, if provided.
                     // otherwise, just continue
+                    break;
+                case M22.LINETYPE.TRANSITION:
+                    if (_splitStr.Count > 1)
+                    {   //Transition other_iwanako tr_eyes 0
+                        _lineC.m_parameters_txt = new List<string>();
+                        _lineC.m_parameters_txt.Add(_splitStr[1]);
+                        _lineC.m_parameters_txt.Add(_splitStr[2]);
+                        _lineC.m_parameters_txt.Add(_splitStr[3]);
+
+                        if (!M22.BackgroundMaster.LoadBackground(_lineC.m_parameters_txt[0]))
+                        {
+                            UnityWrapper.LogErrorFormat("Failed to load background - \"{0}\"", _lineC.m_parameters_txt[0]);
+                            // failed to load bg!
+                        };
+                    }
                     break;
                 case M22.LINETYPE.DRAW_BACKGROUND:
                     if (_splitStr.Count >= 2)

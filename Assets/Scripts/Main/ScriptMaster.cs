@@ -628,7 +628,7 @@ namespace M22
 
         void Update()
         {
-            if ((WaitQueue.Count == 0 && Input.GetKeyDown(KeyCode.Return)) || (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
+            if ((WaitQueue.Count == 0 && InputWrapper.NextLineButton()) || InputWrapper.SkipTextButton())
             {
                 if (backgroundTrans != null && backgroundTrans.color.a != 0)
                 {

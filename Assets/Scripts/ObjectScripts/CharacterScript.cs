@@ -12,7 +12,8 @@ namespace M22
             IDLE,
             FADEIN,
             FADEOUT,
-            CHANGING_SPRITE
+            CHANGING_SPRITE,
+            MOVING
         }
 
         public bool complete = false;
@@ -37,7 +38,7 @@ namespace M22
             img.material = mat;
             img.material.SetFloat("_Alpha", 0);
 
-            state = STATES.FADEIN;
+            //state = STATES.FADEIN;
         }
 
         void Start()
@@ -60,6 +61,7 @@ namespace M22
             img.material.SetFloat("_InOrOut", 0);
 
             rect.sizeDelta = destSpr.rect.size;
+            StartCoroutine(FadeIn());
         }
 
         public void DestroyCharacter(bool _immediately)
@@ -71,7 +73,7 @@ namespace M22
             }
             else
             {
-                state = STATES.FADEOUT;
+                StartCoroutine(FadeOut());
             }
         }
 
@@ -79,6 +81,7 @@ namespace M22
 
         private IEnumerator MoveToPos(int _newXpos, int _newYPos)
         {
+            state = STATES.MOVING;
             Vector2 oldPos = rect.anchoredPosition;
             Vector2 newPos = new Vector2(_newXpos, _newYPos);
             float progress = 0.0f;
@@ -105,7 +108,37 @@ namespace M22
             }
 
             rect.anchoredPosition = newPos;
+            if (state == STATES.MOVING)
+                state = STATES.IDLE;
             //SM.FinishBackgroundMovement();
+        }
+
+        private IEnumerator FadeOut()
+        {
+            state = STATES.FADEOUT;
+            float currAlphaOut = img.material.GetFloat("_Alpha");
+            while (currAlphaOut > 0.0f)
+            {
+                currAlphaOut = currAlphaOut - (speed * Time.deltaTime);
+                img.material.SetFloat("_Alpha", currAlphaOut);
+                yield return null;
+            }
+            Destroy(this.gameObject);
+        }
+
+        private IEnumerator FadeIn()
+        {
+            state = STATES.FADEIN;
+            float currAlphaIn = img.material.GetFloat("_Alpha");
+            while (currAlphaIn < 1.0f)
+            {
+                currAlphaIn = currAlphaIn + (speed * Time.deltaTime);
+                img.material.SetFloat("_Alpha", currAlphaIn);
+                yield return null;
+            }
+            img.material.SetFloat("_Alpha", 1);
+            if(state == STATES.FADEIN)
+                state = STATES.IDLE;
         }
 
         public void UpdateSprite(GameObject _prefab, Sprite _new, string _newName, Vector2 newOffset = default(Vector2))
@@ -161,27 +194,17 @@ namespace M22
                 case STATES.IDLE:
                     return;
                 case STATES.FADEIN:
-                    float currAlphaIn = img.material.GetFloat("_Alpha");
-                    if (currAlphaIn < 1.0f)
-                    {
-                        img.material.SetFloat("_Alpha", currAlphaIn + (speed * Time.deltaTime));
-                    }
-                    else
-                    {
-                        img.material.SetFloat("_Alpha", 1);
-                        state = STATES.IDLE;
-                    }
                     break;
                 case STATES.FADEOUT:
-                    float currAlphaOut = img.material.GetFloat("_Alpha");
-                    if (currAlphaOut > 0.0f)
-                    {
-                        img.material.SetFloat("_Alpha", currAlphaOut - (speed * Time.deltaTime));
-                    }
-                    else
-                    {
-                        Destroy(this.gameObject);
-                    }
+                    //float currAlphaOut = img.material.GetFloat("_Alpha");
+                    //if (currAlphaOut > 0.0f)
+                    //{
+                    //    img.material.SetFloat("_Alpha", currAlphaOut - (speed * Time.deltaTime));
+                    //}
+                    //else
+                    //{
+                    //    Destroy(this.gameObject);
+                    //}
                     break;
                 case STATES.CHANGING_SPRITE:
                     if (inc >= 1f)
