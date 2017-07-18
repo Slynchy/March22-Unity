@@ -1,7 +1,7 @@
 ﻿--en_NOP1
 
 	HideWindow 100.0
-	//ExecuteFunction snow_effect start
+	ExecuteFunction snow_effect start
 	DrawBackground op_snowywoods
 
 	ShowWindow
@@ -1318,12 +1318,16 @@
 		mi "Come on, the nurses have their own building, so we have to go outside."
 
 		ClearCharacters
-
+		
+		HideWindow
 		Transition school_hallway3 tr-softwipe 0
+		ShowWindow
 
 		We join the flow of students making their way down the stairwell and outside, with the girls pointing out other senior classrooms in the same hallway as ours.
 		
+		HideWindow
 		Transition school_courtyard tr-softwipe 0
+		ShowWindow
 
 		When we get outside, the girls make their way to the smaller building right next to the school.
 
@@ -1364,8 +1368,10 @@
 		A whole building for stuff that has nothing to do with the actual education?
 
 		I guess it's necessary for a place like this.
-
+		
+		HideWindow
 		Transition school_nursehall tr-softwipe 0
+		ShowWindow
 
 		I walk in, hoping that this really will be only a quick visit like the teacher said.
 
@@ -1378,8 +1384,10 @@
 		It sounded a bit like an invitation to open the door, so I invite myself further in.
 
 		PlaySound dooropen
-
+		
+		HideWindow
 		Transition school_nurseoffice tr-softwipe 0
+		ShowWindow
 
 		The room is not large and it smells strange. A friendly-looking man turns around on his office chair to face me as I enter.
 
@@ -1516,16 +1524,20 @@
 		DrawCharacter nurse neutral 0
 
 		nk "Good. That's it, then. Come meet me if you ever need something."
-
+		
+		HideWindow
 		Transition school_nursehall tr-softwipe 0
+		ShowWindow
 
 		StopMusic 0.4
 
 		I'm ushered out before I even realize it. A quick visit, indeed.
 
 	--en_A4
-
+	
+		HideWindow
 		Transition school_courtyard tr-softwipe 0
+		ShowWindow
 
 		//play music music_pearly fadein 4.0
 		PlayMusic Fripperies
@@ -1547,8 +1559,10 @@
 		It's around dinnertime, but I feel tired instead of hungry.
 
 		The weariness in me only grows as I trudge towards the dorms, set a little way apart from the main building complex.
-
+		
+		HideWindow
 		Transition school_gardens tr-softwipe 0
+		ShowWindow
 
 		There is a garden of sorts between the school and the dorms; shrubbery, flowers and that overbearing smell of fresh cut grass that fills the atmosphere.
 
@@ -1557,8 +1571,10 @@
 		DrawBackground school_dormext_start -400 0 1.25 1.0
 
 		"The dorm building is big and made of red brick. Like the others, it feels way too pompous for what it is, so I push forward, going inside."
-
+		
+		HideWindow
 		Transition school_dormhallground tr-softwipe 0
+		ShowWindow
 
 		It takes more time than necessary to fish out the key I was given from my pocket.
 
@@ -1577,8 +1593,10 @@
 		Seems that only the girls around here are sociable. I suppose that's perfectly fine with me.
 
 		I climb the stairs to the upper floor.
-
+		
+		HideWindow
 		Transition school_dormhallway tr-softwipe 0
+		ShowWindow
 
 		Here, small corridors branch off from the main hallway.
 
@@ -1600,7 +1618,7 @@
 		From inside, I hear a few movements, then the clicking of way more locks than I thought these doors had. After a moment the door squeaks open.
 
 		PlayMusic Out_of_the_Loop
-		DrawCharacter kenji tsun -200 true
+		DrawCharacter kenji tsun -100 true
 		Wait 50
 		DrawCharacter kenji tsun 0
 
@@ -1684,9 +1702,11 @@
 		With that, he turns, fumbles around for a moment in search of the door handle,{{PlaySting doorslam}}{{Wait 300}} and shuts the door behind him.
 
 		I slide the key into the lock of the door marked 119.
-
+		
+		HideWindow
 		Transition school_dormhisao_ss tr-softwipe 0
-		//PlayMusic 
+		ShowWindow
+		PlayMusic Nocturne
 		//play music music_night fadein 1.0
 
 		Bleak beige walls, white linen, a desk made of some type of light wood. Ugly curtains.
@@ -1759,9 +1779,11 @@
 		…
 
 		I lie down again, feeling hollow and uncertain, and after that I keep staring at the blank, unfamiliar ceiling for a long time.
-
+		
+		HideWindow
 		StopMusic 0.09
 		Transition school_dormhisao_ni tr-pronoise 0
+		ShowWindow
 
 		It doesn't start looking any more familiar, not even after darkness falls and long shadows draw across my room like fingers.
 
