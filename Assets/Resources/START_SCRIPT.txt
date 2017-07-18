@@ -236,7 +236,8 @@
 	// This is where video would play!
 	PlayVideo op_1
 	Transition black tr_eyes 0
-
+	
+	EnableNovelMode
 	NewPage
 
 	\n\n\n\n\n\n\n\nIt's been four months since my heart attack.
@@ -842,7 +843,7 @@
 		
 		I start to wonder if the teacher was messing with me, saying things like “you'll be able to talk to people” and “who better to explain things to you.”
 
-		DrawCharacter misha hips_smile 300
+		DrawCharacter misha hips_smile -300
 		//show misha hips_smile
 		//with charachange
 
