@@ -46,6 +46,7 @@ namespace M22
             CustomFuncs.Add("snow_effect", new CustomFunctionContainer("snow_effect", new M22.CustomFunctions.SnowEffect()));
             CustomFuncs.Add("HospitalMask", new CustomFunctionContainer("HospitalMask", new M22.CustomFunctions.HospitalMask()));
             CustomFuncs.Add("WrittenNote", new CustomFunctionContainer("WrittenNote", new M22.CustomFunctions.WrittenNote()));
+            CustomFuncs.Add("sakura_effect", new CustomFunctionContainer("sakura_effect", new M22.CustomFunctions.SakuraEffect()));
 
             foreach (var item in CustomFuncs)
             {

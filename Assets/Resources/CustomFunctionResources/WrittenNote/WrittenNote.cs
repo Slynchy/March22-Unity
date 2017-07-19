@@ -9,13 +9,15 @@ namespace M22
     {
         public class WrittenNote : CustomFunction
         {
+            Sprite NoteSprite;
             GameObject WrittenNoteInstance;
             GameObject WrittenNotePrefab;
-            M22.ScriptMaster ScriptMaster;
+            ScriptMaster ScriptMaster;
 
             public override void Awake()
             {
                 WrittenNotePrefab = Resources.Load<GameObject>("CustomFunctionResources/WrittenNote/WrittenNotePrefab") as GameObject;
+                NoteSprite = Resources.Load<Sprite>("CustomFunctionResources/WrittenNote/WrittenNotePrefab");
             }
 
             public override void Start()
@@ -26,7 +28,7 @@ namespace M22
             public override void Func(string param1, string param2, string param3)
             {
                 string param_fixed = param1.Replace('_', ' ');
-                WrittenNoteInstance = GameObject.Instantiate<GameObject>(WrittenNotePrefab, ScriptMaster.GetCanvas(M22.ScriptMaster.CANVAS_TYPES.EFFECTS).transform);
+                WrittenNoteInstance = GameObject.Instantiate<GameObject>(WrittenNotePrefab, ScriptMaster.GetCanvas(M22.ScriptMaster.CANVAS_TYPES.POSTCHARACTER).transform);
 
                 ScriptMaster.NextLine();
             }
