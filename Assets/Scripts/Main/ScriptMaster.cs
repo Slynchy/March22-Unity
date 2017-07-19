@@ -516,6 +516,8 @@ namespace M22
                     if (VNHandlerScript.ClearCharacter(_line.m_parameters_txt[0], _line.m_parameters[0] == 1 ? true : false) == false)
                     {
                         Debug.LogErrorFormat("Unable to clear character {0} at line {1}", _line.m_parameters_txt[0], _line.m_origScriptPos);
+                        NextLine(_isInLine);
+                        break;
                     }
                     if (_line.m_parameters[0] == 1)
                         NextLine(_isInLine);
@@ -673,7 +675,7 @@ namespace M22
                     case WAIT_STATE.BACKGROUND_MOVING:
                         break;
                     case WAIT_STATE.VIDEO_PLAYING:
-                        if (VideoPlayerInstance.isPlaying == false)
+                        if (VideoPlayerInstance.isPlaying == false || InputWrapper.NextLineButton())
                         {
                             WaitQueue.RemoveAt(0);
                             Destroy(VideoPlayerInstance.gameObject);
@@ -681,9 +683,10 @@ namespace M22
                         }
                         break;
                     case WAIT_STATE.CHARACTER_FADEIN:
-                        int size = GameObject.FindGameObjectsWithTag("Character").Length;
+                        var characters = GameObject.FindGameObjectsWithTag("Character");
+                        int size = characters.Length;
                         int count = 0;
-                        foreach (var item in GameObject.FindGameObjectsWithTag("Character"))
+                        foreach (var item in characters)
                         {
                             if (item.GetComponent<CharacterScript>().GetState() == CharacterScript.STATES.IDLE)
                             {

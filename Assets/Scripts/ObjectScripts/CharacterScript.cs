@@ -38,7 +38,7 @@ namespace M22
             img.material = mat;
             img.material.SetFloat("_Alpha", 0);
 
-            //state = STATES.FADEIN;
+            state = STATES.FADEIN;
         }
 
         void Start()

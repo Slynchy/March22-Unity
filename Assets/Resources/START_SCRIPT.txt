@@ -10,7 +10,7 @@
 
 	A light breeze causes the naked branches overhead to rattle like wooden windchimes.
 
-	//Goto testDebugChkPnt
+	Goto debugGotoLmao
 
 	This is a popular retreat for couples in the summer. The deciduous trees provide a beautiful green canopy, far out of sight of teachers and fellow students.
 
@@ -858,13 +858,9 @@
 		mi "I'm like an interpreter~! She says it's nice to meet you, too!"
 
 		DrawCharacter shizu basic_normal2 300
-		//show shizu basic_normal2
-		//with charachange
 
 		shi "…"
 
-		//show misha perky_smile
-		//with charachange
 		DrawCharacter misha perky_smile -300
 
 		mi "You're the new student, aren't you? Well, Shicchan, of course he is! If he wasn't, he would have been standing up there for no reason, right? Right~!"
@@ -1114,20 +1110,23 @@
 
 		mi "It's the cafeteria~!"
 
+	--debugGotoLmao
+
 		Her enthusiastic statement of the obvious makes people around us stare, but Misha doesn't seem to care so we proceed to the line.
 
 		//!Breakpoint
 		HideWindow
 		ClearCharacter misha false
+		ShowWindow
 
 		There is a rather long list of menu options, which seems great until I realize that many of them are to accommodate students who need special diets.
 
 		//StopLoopedSting crowd_indoors 0.11
 
 		How nice. It almost feels like I'm back at the hospital, eating portions measured with scientific precision to meet the needs of the patients.
-
-		I pick something at random and follow Shizune to a table, sitting opposite of her.
 		
+		I pick something at random and follow Shizune to a table, sitting opposite of her.
+
 		DrawCharacter misha hips_frown -300 true
 		DrawCharacter shizu basic_normal 300
 
@@ -1235,7 +1234,6 @@
 		PlaySting time
 		Transition black tr-delayblinds 0
 		PlaySting time
-	--en_A3dDEBUG
 		Transition school_scienceroom tr-delayblinds 0
 		ShowWindow
 

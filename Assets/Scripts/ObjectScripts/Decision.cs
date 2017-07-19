@@ -20,36 +20,17 @@ namespace M22
         {
             float progress = 0.0f;
             Image[] imgs = this.gameObject.GetComponentsInChildren<Image>();
-            switch (ScriptMaster.ActiveAnimationType)
+            while (progress < 1)
             {
-                case ScriptCompiler.ANIMATION_TYPES.SMOOTH:
-                    while (progress < 1)
-                    {
-                        progress = Mathf.Lerp(progress, 1.2f, Time.deltaTime);
-                        foreach (Image img in imgs)
-                        {
-                            if (img.gameObject == this.gameObject)
-                                img.color = new Color(1, 1, 1, progress * 0.33f);
-                            else
-                                img.color = new Color(1, 1, 1, progress);
-                        }
-                        yield return null;
-                    }
-                    break;
-                case ScriptCompiler.ANIMATION_TYPES.LERP:
-                    while (progress != 1)
-                    {
-                        progress += Time.deltaTime * 1.0f;
-                        foreach (Image img in imgs)
-                        {
-                            if (img.gameObject == this.gameObject)
-                                img.color = new Color(1, 1, 1, progress * 0.33f);
-                            else
-                                img.color = new Color(1, 1, 1, progress);
-                        }
-                        yield return null;
-                    }
-                    break;
+                progress += Time.deltaTime * 1.0f;
+                foreach (Image img in imgs)
+                {
+                    if (img.gameObject == this.gameObject)
+                        img.color = new Color(1, 1, 1, progress * 0.33f);
+                    else
+                        img.color = new Color(1, 1, 1, progress);
+                }
+                yield return null;
             }
 
             //SM.FinishBackgroundMovement();
