@@ -374,7 +374,10 @@ namespace M22
                         }
                     }
                     if (!success)
+                    {
                         Debug.LogError("Failed to find checkpoint: " + _line.m_parameters_txt[0]);
+                        NextLine(_isInLine);
+                    }
                     break;
                 case LINETYPE.WAIT:
                     //WaitState = WAIT_STATE.WAIT_COMMAND;
@@ -462,6 +465,9 @@ namespace M22
                         //Debug.Log("False!");
                         NextLine(_isInLine);
                     }
+                    break;
+                case LINETYPE.NULL_OPERATOR:
+                    NextLine(_isInLine);
                     break;
                 case LINETYPE.MAKE_DECISION:
                     GameObject tempObj = GameObject.Instantiate<GameObject>(DecisionsPrefab, Canvases[(int)CANVAS_TYPES.EFFECTS].transform);
@@ -675,7 +681,7 @@ namespace M22
                     case WAIT_STATE.BACKGROUND_MOVING:
                         break;
                     case WAIT_STATE.VIDEO_PLAYING:
-                        if (VideoPlayerInstance.isPlaying == false || InputWrapper.NextLineButton())
+                        if (VideoPlayerInstance.isPlaying == false)
                         {
                             WaitQueue.RemoveAt(0);
                             Destroy(VideoPlayerInstance.gameObject);
@@ -749,6 +755,7 @@ namespace M22
             VNHandler.UnloadCharacters();
             Resources.UnloadUnusedAssets();
             currentScript_c = M22.ScriptCompiler.CompileScript(_fname);
+            //M22.ScriptCompiler.CompileScriptAsync(_fname, ref currentScript_c);
             lineIndex = 0;
             TEXT.Reset(true);
             CURRENT_LINE = currentScript_c.GetLine(lineIndex);

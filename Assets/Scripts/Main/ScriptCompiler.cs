@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace M22
@@ -10,6 +7,7 @@ namespace M22
 
     public enum LINETYPE
     {
+        NULL_OPERATOR,
         NEW_PAGE,
         NARRATIVE,
         DRAW_BACKGROUND,
@@ -78,6 +76,7 @@ namespace M22
         public static Dictionary<ulong, M22.LINETYPE> FunctionHashes;
         public static List<M22.script_checkpoint> currentScript_checkpoints = new List<M22.script_checkpoint>();
         public static readonly string[] FunctionNames = {
+                "nopnopnop",
                 "NewPage",
                 "thIsIssNarraTIVE", // <- This should never be returned!
                 "DrawBackground",
@@ -273,6 +272,27 @@ namespace M22
             return result;
         }
 
+        public struct ScriptCompileProgress
+        {
+            float progress;
+        }
+
+        static public void CompileScriptAsync(string filename, ref M22.Script.Script _out)
+        {
+            M22.Script.Script output = new M22.Script.Script();
+            _out = output;
+            var aThread = new System.Threading.Thread(() => CompileScript(filename, ref output));
+            aThread.Start();
+            return;
+        }
+
+        static void Run(){ }
+
+        static public void CompileScript(string filename, ref M22.Script.Script _out)
+        {
+            _out = CompileScript(filename);
+        }
+
         static public M22.Script.Script CompileScript(string filename)
         {
             var result = new M22.Script.Script();
@@ -308,6 +328,7 @@ namespace M22
 
                 M22.line_c tempLine_c = CompileLine(ref currScriptLine, i); // ref can't be an index so have to copy then copy back
                 scriptLines[i] = currScriptLine;
+                //if(tempLine_c.m_lineType == LINETYPE.NULL_OPERATOR)
                 result.AddLine(tempLine_c);
                 scriptPos++;
             }
