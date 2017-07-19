@@ -1,7 +1,7 @@
 ﻿--en_NOP1
 
 	HideWindow 100.0
-	ExecuteFunction snow_effect start
+	//ExecuteFunction snow_effect start
 	DrawBackground op_snowywoods
 
 	ShowWindow
@@ -205,8 +205,6 @@
 
 	ShowWindow
 
---debugGotolmao
-
 	iwanako "HISAO!"
 
 	The beating in my chest suddenly stops, and I go weak at the knees.
@@ -217,7 +215,7 @@
 
 	ExecuteFunction snow_effect stop
 	StopMusic
-	Transition black tr-pronoise 0
+	Transition black tr-flashback 0
 
 	EnableNovelMode
 	ShowWindow
@@ -237,7 +235,8 @@
 
 	// This is where video would play!
 	PlayVideo op_1
-	Transition black tr_eyes 0
+
+--debugGotolmao
 	
 	EnableNovelMode
 	NewPage
@@ -252,7 +251,7 @@
 	//scene bg hosp_room
 	//show sakura
 	//show hospitalmask
-	ExecuteFunction snow_effect start
+	ExecuteFunction sakura_effect start
 	ExecuteFunction HospitalMask show
 
 	PlayMusic Raindrops_and_Puddles
@@ -479,10 +478,10 @@
 	At the very least, I'll try to see what my new life will look like.
 
 	HideWindow
-	ExecuteFunction snow_effect stop
+	ExecuteFunction sakura_effect stop
 	Transition white default 0
 	ExecuteFunction HospitalMask hide
-	//PlayVideo tc_act1
+	PlayVideo tc_act1
 
 --en_A1
 

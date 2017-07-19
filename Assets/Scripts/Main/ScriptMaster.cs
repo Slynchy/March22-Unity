@@ -249,6 +249,7 @@ namespace M22
             TransitionEffects.Add("tr-clockwipe", Resources.Load<Sprite>("Transitions/tr-clockwipe") as Sprite);
             TransitionEffects.Add("tr-softwipe", Resources.Load<Sprite>("Transitions/tr-softwipe") as Sprite);
             TransitionEffects.Add("tr-delayblinds", Resources.Load<Sprite>("Transitions/tr-delayblinds") as Sprite);
+            TransitionEffects.Add("tr-flashback", Resources.Load<Sprite>("Transitions/tr-flashback") as Sprite);
 
             if (VideoPlayerPrefab == null)
                 Debug.LogError("VideoPlayerPrefab not attached to ScriptMaster! Check this under Main Camera!");
@@ -544,7 +545,7 @@ namespace M22
                         Debug.LogError("Failed to find custom function: " + _line.m_parameters_txt[0]);
                     break;
                 case LINETYPE.TRANSITION:
-                    GameObject tempGO = GameObject.Instantiate<GameObject>(TransitionPrefab, Canvases[(int)CANVAS_TYPES.EFFECTS].transform);
+                    GameObject tempGO = GameObject.Instantiate<GameObject>(TransitionPrefab, Canvases[(int)CANVAS_TYPES.POSTCHARACTER].transform);
                     tempGO.GetComponent<Image>().material = Instantiate<Material>(tempGO.GetComponent<Image>().material) as Material;
                     BackgroundTransition TransitionObj = tempGO.GetComponent<BackgroundTransition>();
                     TransitionObj.callback = FadeToBlackCallback;
