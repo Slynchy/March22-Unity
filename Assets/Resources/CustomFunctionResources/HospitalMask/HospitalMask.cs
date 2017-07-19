@@ -27,7 +27,7 @@ namespace M22
             {
                 if (param1.Equals("show"))
                 {
-                    HospitalMaskInstance = GameObject.Instantiate<GameObject>(HospitalMaskPrefab, ScriptMaster.GetCanvas(M22.ScriptMaster.CANVAS_TYPES.POSTCHARACTER).transform);
+                    HospitalMaskInstance = GameObject.Instantiate<GameObject>(HospitalMaskPrefab, ScriptMaster.GetCanvas(M22.ScriptMaster.CANVAS_TYPES.POSTCHARACTER).GetComponent<RectTransform>().transform) as GameObject;
                 }
                 else
                 {
