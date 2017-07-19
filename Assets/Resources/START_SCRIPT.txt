@@ -10,7 +10,11 @@
 
 	A light breeze causes the naked branches overhead to rattle like wooden windchimes.
 
-	Goto debugGotolmao
+	//Goto debugGotolmao
+	HideWindow
+	ExecuteFunction WrittenNote in Hi_Hicchan._We've_unpacked_your_things_and_made_your_bed.\nThey_said_that_if_these_don't_fit_then_you_should_go_to_the_office_tomorrow.\nIf_you_have_any_problems,_you_can_always_call_us.\n\nLove,_Mom_and_Dad
+	ExecuteFunction WrittenNote out
+	ShowWindow
 
 	This is a popular retreat for couples in the summer. The deciduous trees provide a beautiful green canopy, far out of sight of teachers and fellow students.
 
@@ -1722,7 +1726,7 @@
 		//window hide
 		//$ written_note("Hi Hicchan. We've unpacked your things and made your bed.\nThey said that if these don't fit then you should go to the office tomorrow.\nIf you have any problems, you can always call us.\n\nLove, Mom and Dad")
 		//window show
-		ExecuteFunction WrittenNote Hi_Hicchan._We've_unpacked_your_things_and_made_your_bed.\nThey_said_that_if_these_don't_fit_then_you_should_go_to_the_office_tomorrow.\nIf_you_have_any_problems,_you_can_always_call_us.\n\nLove,_Mom_and_Dad
+		//ExecuteFunction WrittenNote Hi_Hicchan._We've_unpacked_your_things_and_made_your_bed.\nThey_said_that_if_these_don't_fit_then_you_should_go_to_the_office_tomorrow.\nIf_you_have_any_problems,_you_can_always_call_us.\n\nLove,_Mom_and_Dad
 
 		Well, at least I don't have to worry about unpacking.
 
