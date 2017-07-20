@@ -589,9 +589,10 @@ namespace M22
                     if (_splitStr.Count > 1)
                     {   //Transition other_iwanako tr_eyes 0
                         _lineC.m_parameters_txt = new List<string>();
-                        _lineC.m_parameters_txt.Add(_splitStr[1]);
-                        _lineC.m_parameters_txt.Add(_splitStr[2]);
-                        _lineC.m_parameters_txt.Add(_splitStr[3]);
+                        for (int i = 1; i < _splitStr.Count; i++)
+                        {
+                            _lineC.m_parameters_txt.Add(_splitStr[i]);
+                        }
 
                         if (!M22.BackgroundMaster.LoadBackground(_lineC.m_parameters_txt[0]))
                         {

@@ -11,6 +11,8 @@ namespace M22
 
         static AudioSource musicSrc;
 
+        static bool _forceStop = false;
+
         // Courtesy: https://forum.unity3d.com/threads/fade-out-audio-source.335031/
         public static IEnumerator FadeOut(AudioSource audioSource, float FadeTime)
         {
@@ -18,6 +20,12 @@ namespace M22
 
             while (audioSource.volume > 0)
             {
+                if (_forceStop == true)
+                {
+                    _forceStop = false;
+                    yield break;
+                }
+
                 audioSource.volume -= startVolume * Time.deltaTime * FadeTime;
 
                 yield return null;
@@ -117,6 +125,7 @@ namespace M22
 
         static public void ChangeTrack(string _track)
         {
+            _forceStop = true;
             musicSrc.Stop();
             musicSrc.time = 0;
             AudioClip track;

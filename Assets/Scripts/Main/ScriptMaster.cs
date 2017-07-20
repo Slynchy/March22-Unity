@@ -549,6 +549,10 @@ namespace M22
                     tempGO.GetComponent<Image>().material = Instantiate<Material>(tempGO.GetComponent<Image>().material) as Material;
                     BackgroundTransition TransitionObj = tempGO.GetComponent<BackgroundTransition>();
                     TransitionObj.callback = FadeToBlackCallback;
+                    if(_line.m_parameters_txt.Count >= 4)
+                    {
+                        TransitionObj.Speed = float.Parse(_line.m_parameters_txt[3]);
+                    }
                     //TransitionObj.srcSprite = background.sprite;
                     TransitionObj.srcSprite = Resources.Load<Sprite>("Images/empty") as Sprite;
                     TransitionEffects.TryGetValue(_line.m_parameters_txt[1], out TransitionObj.effect);

@@ -51,7 +51,7 @@ namespace M22
         {
             if (inc >= 1f)
             {
-                inc = 1.0f;
+                inc = 1f;
                 currDelay += Time.deltaTime;
                 if (currDelay >= Delay)
                 {
