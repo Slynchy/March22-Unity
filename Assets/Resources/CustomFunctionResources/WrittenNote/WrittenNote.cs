@@ -26,9 +26,9 @@ namespace M22
 
             // param1 = in or out
             // param2 = text, delimited by underscores
-            public override void Func(string param1, string param2, string param3)
+            public override void Func(string[] _params)
             {
-                if(param1.Equals("out"))
+                if(_params[0].Equals("out"))
                 {
                     if (WrittenNoteInstance == null)
                     {
@@ -42,7 +42,7 @@ namespace M22
                 }
                 else
                 {
-                    string param2_fixed = param2.Replace('_', ' ');
+                    string param2_fixed = _params[1].Replace('_', ' ');
                     param2_fixed = param2_fixed.Replace("\\n", "\n");
                     WrittenNoteInstance = GameObject.Instantiate<GameObject>(WrittenNotePrefab, ScriptMaster.GetCanvas(M22.ScriptMaster.CANVAS_TYPES.POSTCHARACTER).transform);
                     WrittenNoteInstance.GetComponentInChildren<Text>().text = param2_fixed;

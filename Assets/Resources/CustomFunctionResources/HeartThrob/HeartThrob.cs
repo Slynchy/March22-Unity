@@ -18,12 +18,12 @@ namespace M22
                 HeartThrobPrefab = Resources.Load<GameObject>("CustomFunctionResources/HeartThrob/HeartThrobPrefab") as GameObject;
             }
 
-            public override void Func(string param1, string param2, string param3)
+            public override void Func(string[] _params)
             {
                 HeartThrobInstance = GameObject.Instantiate<GameObject>(HeartThrobPrefab, GameObject.Find("EffectCanvas").transform);
                 HeartThrobScript = HeartThrobInstance.GetComponent<HeartThrobObjectScript>();
-                HeartThrobScript.fadeInSpeed = float.Parse(param1);
-                HeartThrobScript.fadeOutSpeed = float.Parse(param2);
+                HeartThrobScript.fadeInSpeed = float.Parse(_params[0]);
+                HeartThrobScript.fadeOutSpeed = float.Parse(_params[1]);
                 HeartThrobScript.callback = Camera.main.GetComponent<M22.ScriptMaster>().NextLine;
             }
         }

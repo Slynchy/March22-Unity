@@ -18,12 +18,12 @@ namespace M22
                 SnowEffectPrefab = Resources.Load<GameObject>("CustomFunctionResources/SnowEffect/SnowEffectPrefab") as GameObject;
             }
 
-            public override void Func(string param1, string param2, string param3)
+            public override void Func(string[] _params)
             {
                 bool stopOrStart = false; // false == stop, true == start
-                if (param1.Equals("start"))
+                if (_params[0].Equals("start"))
                     stopOrStart = true;
-                else if (param1.Equals("stop"))
+                else if (_params[0].Equals("stop"))
                     stopOrStart = false;
                 else
                 {

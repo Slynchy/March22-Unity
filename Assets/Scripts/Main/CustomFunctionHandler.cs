@@ -8,7 +8,7 @@ namespace M22
     public class CustomFunctionHandler : MonoBehaviour
     {
 
-        public delegate void CustomFunctionDelegate(string param1, string param2, string param3);
+        public delegate void CustomFunctionDelegate(string[] _params);
 
         struct CustomFunctionContainer
         {
@@ -68,6 +68,6 @@ namespace M22
     {
         virtual public void Awake() { }
         virtual public void Start() { }
-        virtual public void Func(string param1, string param2, string param3) { }
+        virtual public void Func(string[] _params) { }
     }
 }

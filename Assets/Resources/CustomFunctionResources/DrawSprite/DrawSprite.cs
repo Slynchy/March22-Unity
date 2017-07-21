@@ -23,9 +23,9 @@ namespace M22
                 ScriptMaster = Camera.main.GetComponent<M22.ScriptMaster>();
             }
 
-            public override void Func(string param1, string param2, string param3)
+            public override void Func(string[] _params)
             {
-                if (param1.Equals("out"))
+                if (_params[0].Equals("out"))
                 {
                     if (SpriteInstance == null)
                     {
@@ -40,7 +40,7 @@ namespace M22
                 else
                 {
                     SpriteInstance = GameObject.Instantiate<GameObject>(SpritePrefab, ScriptMaster.GetCanvas(M22.ScriptMaster.CANVAS_TYPES.POSTCHARACTER).transform);
-                    SpriteInstance.GetComponent<SpriteObjectScript>().SetSprite(Resources.Load<Sprite>("Images/" + param2));
+                    SpriteInstance.GetComponent<SpriteObjectScript>().SetSprite(Resources.Load<Sprite>("Images/" + _params[1]));
                 }
             }
         }

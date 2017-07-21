@@ -540,7 +540,14 @@ namespace M22
                 case LINETYPE.EXECUTE_FUNCTION:
                     CustomFunctionHandler.CustomFunctionDelegate temp = CustomFunctionHandler.GetFunction(_line.m_parameters_txt[0]);
                     if (temp != null)
-                        temp(_line.m_parameters_txt[1], _line.m_parameters_txt[2], _line.m_parameters_txt[3]);
+                    {
+                        string[] funcParams = new string[_line.m_parameters_txt.Count-1];
+                        for (int i = 1; i < _line.m_parameters_txt.Count; i++)
+                        {
+                            funcParams[i-1] = _line.m_parameters_txt[i];
+                        }
+                        temp(funcParams);
+                    }
                     else
                         Debug.LogError("Failed to find custom function: " + _line.m_parameters_txt[0]);
                     break;

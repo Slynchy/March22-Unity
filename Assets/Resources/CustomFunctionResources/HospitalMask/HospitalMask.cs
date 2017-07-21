@@ -23,9 +23,9 @@ namespace M22
                 ScriptMaster = Camera.main.GetComponent<M22.ScriptMaster>();
             }
 
-            public override void Func(string param1, string param2, string param3)
+            public override void Func(string[] _params)
             {
-                if (param1.Equals("show"))
+                if (_params[0].Equals("show"))
                 {
                     HospitalMaskInstance = GameObject.Instantiate<GameObject>(HospitalMaskPrefab, ScriptMaster.GetCanvas(M22.ScriptMaster.CANVAS_TYPES.POSTCHARACTER).GetComponent<RectTransform>().transform) as GameObject;
                 }
