@@ -22,6 +22,7 @@ namespace M22
 
                 yield return null;
             }
+            img.color = new Color(img.color.r, img.color.g, img.color.b, 0);
         }
 
         public static IEnumerator FadeInIMG(Image img, float FadeTime)
@@ -32,6 +33,7 @@ namespace M22
 
                 yield return null;
             }
+            img.color = new Color(img.color.r, img.color.g, img.color.b, 1);
         }
 
         public static IEnumerator FadeInTXT(Text img, float FadeTime)
@@ -42,6 +44,7 @@ namespace M22
 
                 yield return null;
             }
+            img.color = new Color(img.color.r, img.color.g, img.color.b, 1);
         }
 
         public static IEnumerator FadeOutTXT(Text img, float FadeTime)
@@ -52,6 +55,7 @@ namespace M22
 
                 yield return null;
             }
+            img.color = new Color(img.color.r, img.color.g, img.color.b, 0);
         }
     }
 

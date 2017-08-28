@@ -34,6 +34,7 @@ namespace M22
             img = this.gameObject.GetComponent<Image>();
             img.material.SetTexture("_MainTex", destSprite.texture);
             img.material.SetTexture("_SecondaryTex", effect.texture);
+            currDelay = 0;
 
             img.material.SetColor("_AmbientLighting", RenderSettings.ambientLight);
 
@@ -55,8 +56,7 @@ namespace M22
                 currDelay += Time.deltaTime;
                 if (currDelay >= Delay)
                 {
-                    if (callback != null)
-                        callback();
+                    callback.Invoke();
                     Destroy(this.gameObject);
                 }
             }

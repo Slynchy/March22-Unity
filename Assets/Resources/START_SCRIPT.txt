@@ -10,7 +10,7 @@
 
 	A light breeze causes the naked branches overhead to rattle like wooden windchimes.
 
-	Goto DEBUGGOTOLMAO
+	//Goto DEBUGGOTOLMAO
 
 	This is a popular retreat for couples in the summer. The deciduous trees provide a beautiful green canopy, far out of sight of teachers and fellow students.
 
@@ -1798,6 +1798,6 @@
 
 		//scene black
 		//with shuteye
-
-		Transition black tr_eyes 0
+		
+		Transition black tr_eyes in
 		Wait 1000

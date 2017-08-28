@@ -20,14 +20,15 @@ namespace M22
         {
             float progress = 0.0f;
             Image[] imgs = this.gameObject.GetComponentsInChildren<Image>();
-            while (progress < 1)
+            while (progress < 1.0f)
             {
                 progress += Time.deltaTime * 1.0f;
+                if (progress > 1.0f) progress = 1.0f;
                 foreach (Image img in imgs)
                 {
-                    if (img.gameObject == this.gameObject)
-                        img.color = new Color(1, 1, 1, progress * 0.33f);
-                    else
+                    //if (img.gameObject == this.gameObject)
+                    //    img.color = new Color(1, 1, 1, progress * 0.33f);
+                    //else
                         img.color = new Color(1, 1, 1, progress);
                 }
                 yield return null;
