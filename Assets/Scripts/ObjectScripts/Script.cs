@@ -11,7 +11,7 @@ namespace M22
         public class Script
         {
             private List<line_c> compiledLines;
-            private List<Texture2D> loadedBackgrounds;
+            //private List<Texture2D> loadedBackgrounds;
 
             public line_c GetLine(int index)
             {
@@ -38,38 +38,42 @@ namespace M22
 
             public int AddBackground(Texture2D _input)
             {
-                loadedBackgrounds.Add(_input);
-                return loadedBackgrounds.Count - 1;
+                // loadedBackgrounds.Add(_input);
+                // return loadedBackgrounds.Count - 1;
+                return 0;
             }
 
             public int AddBackground(string _input)
             {
-                Texture2D temp = Resources.Load<Texture2D>("Backgrounds/" + _input);
-                if (temp == null)
-                    Debug.LogError("Failed to load background: " + _input);
-                loadedBackgrounds.Add(temp);
-                return loadedBackgrounds.Count - 1;
+                // Texture2D temp = Resources.Load<Texture2D>("Backgrounds/" + _input);
+                // if (temp == null)
+                //     Debug.LogError("Failed to load background: " + _input);
+                // loadedBackgrounds.Add(temp);
+                // return loadedBackgrounds.Count - 1;
+
+                return 0;
             }
 
             public Texture2D GetBackground(string _input)
             {
-                foreach (var item in loadedBackgrounds)
-                {
-                    if (String.Equals(item.name, _input)) return item;
-                }
+                //foreach (var item in loadedBackgrounds)
+                //{
+                //    if (String.Equals(item.name, _input)) return item;
+                //}
+                //return default(Texture2D);
                 return default(Texture2D);
             }
 
             public Script()
             {
                 compiledLines = new List<line_c>();
-                loadedBackgrounds = new List<Texture2D>();
+                //loadedBackgrounds = new List<Texture2D>();
             }
 
             ~Script()
             {
                 compiledLines.Clear();
-                loadedBackgrounds.Clear();
+                //loadedBackgrounds.Clear();
             }
         }
     }
