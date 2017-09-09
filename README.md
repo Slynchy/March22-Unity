@@ -1,4 +1,4 @@
-# ![March22 Engine](http://i.imgur.com/9ftTAtK.png)
+# ![March22 Engine](https://i.imgur.com/8rT6c8Z.png)
 An interactive narrative/visual novel engine for Unity, currently supporting Win/Mac/Linux, Android, and iOS.
 
 ## How to use
