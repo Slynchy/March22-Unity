@@ -7,11 +7,28 @@ public class UnityWrapper
 
     public static string LoadTextFileAsString(string _path)
     {
-        var temp = (Resources.Load(_path) as TextAsset);
-        if (temp != null)
-            return temp.text;
+        var filePath = System.IO.Path.Combine(Application.streamingAssetsPath, _path + ".txt");
+        string temp = "";
+        try
+        {
+            temp = System.IO.File.ReadAllText(filePath);
+        }
+        catch(System.Exception exc)
+        {
+            temp = "";
+        }
+        if(temp == "" || temp == null)
+        {
+            var temp2 = (Resources.Load(_path) as TextAsset);
+            if (temp2 != null)
+                return temp2.text;
+            else
+                return "";
+        }
         else
-            return "";
+        {
+            return temp;
+        }
     }
 
     public static void LogError(string _error)
