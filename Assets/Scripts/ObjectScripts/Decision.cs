@@ -24,12 +24,20 @@ namespace M22
             {
                 progress += Time.deltaTime * 1.0f;
                 if (progress > 1.0f) progress = 1.0f;
-                foreach (Image img in imgs)
+                for (int i = 0; i < imgs.Length; i++)
                 {
-                    //if (img.gameObject == this.gameObject)
-                    //    img.color = new Color(1, 1, 1, progress * 0.33f);
-                    //else
-                        img.color = new Color(1, 1, 1, progress);
+                    var img = imgs[i];
+                    if (img)
+                    {
+                        if (img.sprite.name.Equals("black"))
+                        {
+                            img.color = new Color(1, 1, 1, progress * 0.4f);
+                        }
+                        else
+                        {
+                            img.color = new Color(1, 1, 1, progress);
+                        }
+                    }
                 }
                 yield return null;
             }

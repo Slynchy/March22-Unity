@@ -10,7 +10,7 @@
 
 	A light breeze causes the naked branches overhead to rattle like wooden windchimes.
 
-	//Goto DEBUGGOTOLMAO
+	Goto debugGotolmao
 
 	This is a popular retreat for couples in the summer. The deciduous trees provide a beautiful green canopy, far out of sight of teachers and fellow students.
 
@@ -235,8 +235,6 @@
 
 	// This is where video would play!
 	PlayVideo op_1
-
---debugGotolmao
 	
 	EnableNovelMode
 	NewPage
@@ -546,6 +544,9 @@
 	It was the last chance I had to turn back, even if I had no life I could return to.
 
 	But still, after entering, there was absolutely no way I could go back any more.
+	
+	
+--debugGotolmao
 
 	Feeling nervous and with this realization set in my head, I open the front door.
 	
@@ -1691,8 +1692,6 @@
 		
 		ClearCharacter kenji_close true
 		DrawCharacter kenji tsun 0
-
-	--DEBUGGOTOLMAO
 
 		ke "Never mind, it doesn't matter."
 
