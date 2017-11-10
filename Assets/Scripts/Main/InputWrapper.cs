@@ -18,7 +18,7 @@ namespace M22
                 case RuntimePlatform.WebGLPlayer:
                 case RuntimePlatform.LinuxEditor:
                 case RuntimePlatform.LinuxPlayer:
-                case RuntimePlatform.OSXDashboardPlayer:
+                //case RuntimePlatform.OSXDashboardPlayer:
                 case RuntimePlatform.OSXEditor:
                 case RuntimePlatform.OSXPlayer:
                     return Input.GetKeyDown(KeyCode.Return);
@@ -71,7 +71,7 @@ namespace M22
                 case RuntimePlatform.WebGLPlayer:
                 case RuntimePlatform.LinuxEditor:
                 case RuntimePlatform.LinuxPlayer:
-                case RuntimePlatform.OSXDashboardPlayer:
+                //case RuntimePlatform.OSXDashboardPlayer:
                 case RuntimePlatform.OSXEditor:
                 case RuntimePlatform.OSXPlayer:
                     return (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
