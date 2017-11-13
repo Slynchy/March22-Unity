@@ -680,12 +680,12 @@ namespace M22
                         0
                     );
                     background.sprite = backgroundTrans.sprite;
-                    backgroundScript.UpdateBackground(
-                        CURRENT_LINE.m_parameters[0],
-                        CURRENT_LINE.m_parameters[1],
-                        float.Parse(CURRENT_LINE.m_parameters_txt[1]),
-                        float.Parse(CURRENT_LINE.m_parameters_txt[2])
-                    );
+                    //backgroundScript.UpdateBackground(
+                    //    CURRENT_LINE.m_parameters[0],
+                    //    CURRENT_LINE.m_parameters[1],
+                    //    float.Parse(CURRENT_LINE.m_parameters_txt[1]),
+                    //    float.Parse(CURRENT_LINE.m_parameters_txt[2])
+                    //);
                     NextLine();
                 }
             }

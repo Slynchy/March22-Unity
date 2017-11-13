@@ -1,0 +1,534 @@
+﻿
+
+EnableNovelMode
+
+
+
+
+
+Goto 64ab86e7-1f9e-4259-b107-680f99bcf41d
+
+--5f9c7a54-90ed-4527-a410-ea26eb61482c
+
+
+
+\nThe hospital?
+
+It's not really a place I'd like to live in.
+
+The doctors and nurses feel so impersonal and faceless.
+
+I guess it's because they are in a hurry and they have a million other patients waiting for them, but it makes me feel uncomfortable.
+
+For the first month or so, I asked the head cardiologist every time I saw him for a rough estimate of when I'd be able to leave.
+
+He never answered anything in a straightforward way, but told me to wait and see if the treatment and surgeries worked.
+
+\nSo, I idly observed the scar that those surgeries had left on my chest slowly change its appearance over time, thinking of it as some kind of an omen.
+
+I still ask the head cardiologist about leaving, but my expectations are low enough now that I'm not disappointed any more when I don't get a reply. The way he shuffles around the answer shows that there is at least some hope.
+
+
+
+
+
+Goto f8a8a8ef-aa05-4bea-9c59-ab461a14182f
+
+--3d6c3361-a7e0-4116-9d14-23337e46d3ad
+
+
+
+// Sorry for the hack, forgot to add it in time!
+ShowWindow
+	
+	\n\n\n\n\n\n\n\nIt's been four months since my heart attack.
+
+
+
+
+
+Goto be21e491-d611-4c50-9e5d-ed0ad114758a
+
+--be21e491-d611-4c50-9e5d-ed0ad114758a
+
+
+
+HideWindow
+
+
+
+
+
+Goto 5d6f2824-1a3d-4601-8f0e-a3d979803719
+
+--5d6f2824-1a3d-4601-8f0e-a3d979803719
+
+
+
+NewPage
+
+
+
+
+
+Goto e7edff2f-56d8-423a-a6e6-a2ce5447e041
+
+--e7edff2f-56d8-423a-a6e6-a2ce5447e041
+
+
+
+Transition hosp_room tr_eyes 1.00
+
+
+
+
+
+Goto 128cd0e5-af98-4917-af6a-be14b882e666
+
+--128cd0e5-af98-4917-af6a-be14b882e666
+
+
+
+PlayMusic Raindrops_and_Puddles
+
+
+
+
+
+Goto 6eba280b-47fc-41af-b536-32f196f14740
+
+--6eba280b-47fc-41af-b536-32f196f14740
+
+
+
+ShowWindow
+
+
+
+
+
+Goto 73499db8-0a10-4da4-bb91-a3d7b18a00c5
+
+--73499db8-0a10-4da4-bb91-a3d7b18a00c5
+
+
+
+// Sorry again!
+ExecuteFunction sakura_effect start
+//ExecuteFunction HospitalMask show
+
+In that whole time, I can probably count the times I've left this hospital room unsupervised on one hand.
+
+Four months is a pretty long time when you're left alone with your thoughts. So, I've had plenty of time to come to terms with my situation.
+
+Arrhythmia.
+
+A strange word. A foreign, alien one. One that you don't want to be in the same room with.
+
+A rare condition. It causes the heart to act erratically and occasionally beat way too fast. It can be fatal.
+
+Apparently, I've had it for a long time. They said it was a miracle that I was able to go on so long without anything happening.
+
+Is that really a miracle? I guess it was supposed to make me feel better, more appreciative of my life.
+
+It really didn't do anything to cheer me up.
+
+
+
+
+
+Goto 58f510bf-1987-4487-b336-1cca47b345ab
+
+--58f510bf-1987-4487-b336-1cca47b345ab
+
+
+
+NewPage
+
+
+
+
+
+Goto 21a98e0e-7dfd-4774-a71e-44c13a8a4f3d
+
+--21a98e0e-7dfd-4774-a71e-44c13a8a4f3d
+
+
+
+My parents, I think, were hit harder by the news than I was. They practically had two hemorrhages apiece.
+
+I had already had a full day by then to digest everything. To them, it was all fresh. They were even willing to sell our house in order to pay for a cure.
+
+Of course there isn't a cure.
+
+
+
+
+
+Goto 5ea935ae-e1a9-4f51-b615-5b801725d17d
+
+--5ea935ae-e1a9-4f51-b615-5b801725d17d
+
+
+
+NewPage
+
+
+
+
+
+Goto 70a8dd17-456d-414c-bde6-26643e72e21d
+
+--70a8dd17-456d-414c-bde6-26643e72e21d
+
+
+
+Because of the late discovery of this… condition, I've had to stay at the hospital, to recuperate from the treatments.
+
+When I was first admitted, it felt as if I was missed…
+
+For about a week, my room in the ward was full of flowers, balloons and cards.
+
+But, the visitors soon dwindled and all the get-well gifts began trickling down to nothing shortly after.
+
+I realized that the only reason I had gotten so many cards and flowers was because sending me their sympathy had been turned into a class project.
+
+Maybe some people were genuinely concerned, but I doubt it. Even in the beginning, I barely had visitors. By the end of the first month, only my parents came by on a regular basis.
+
+Iwanako was the last to stop visiting.
+
+After six weeks, I never saw her again. We never had that much to talk about when she visited, anyway.
+
+We didn't touch the subject that was between us on that snowy day ever again.
+
+
+
+
+
+Goto c4963c3f-0775-4902-8310-1c4351d6c956
+
+--c4963c3f-0775-4902-8310-1c4351d6c956
+
+
+
+NewPage
+
+
+
+
+
+Goto 5f9c7a54-90ed-4527-a410-ea26eb61482c
+
+--64ab86e7-1f9e-4259-b107-680f99bcf41d
+
+
+
+NewPage
+
+
+
+
+
+Goto 3d6c3361-a7e0-4116-9d14-23337e46d3ad
+
+--f8a8a8ef-aa05-4bea-9c59-ab461a14182f
+
+
+
+NewPage
+
+
+
+
+
+Goto be170bca-bf16-4205-ba1d-161fab903bc2
+
+--be170bca-bf16-4205-ba1d-161fab903bc2
+
+
+
+\n\n\n\nAt some point I stopped watching TV. I don't know why, I just did.
+
+Maybe it was the wrong kind of escapism for my situation.
+
+\nI started reading instead. There was a small “library” at the hospital, although it was more like a storeroom for books. I began working my way through it, one small stack at a time. After consuming them, I would go back for more.
+
+I found that I liked reading and I think I even became a bit addicted. I started feeling naked without a book in my hands.
+
+\nBut I loved the stories.
+
+
+
+
+
+Goto 162647e2-272e-4498-b3a7-5d1bf046d079
+
+--162647e2-272e-4498-b3a7-5d1bf046d079
+
+
+
+NewPage
+
+
+
+
+
+Goto 5c84bb0e-c088-496f-acbd-0bbfd42584d6
+
+--5c84bb0e-c088-496f-acbd-0bbfd42584d6
+
+
+
+\nThat was what my life was like.
+
+\nThe days became increasingly harder to distinguish from each other, differing only by the book I was reading and the weather outside. It felt like time blurred into some kind of gooey mass I was trapped inside, instead of moving within.
+
+A week could go by without me really noticing it.
+
+Sometimes, I'd pause in realization that I didn't know what day of the week it was.
+
+But other times, all the things that surrounded me would painfully crash into my consciousness, through the barrier of nonchalance I had set up for myself.
+
+The pages of my book would start to feel sharp and burning hot and the heaviness in my chest would become so hard to bear that I had to put the book aside and just lay down for a while, looking at the ceiling as if I was going to cry.
+
+But that happened only rarely.
+
+\nAnd I couldn't even cry.
+
+
+
+
+
+Goto 7898a60f-6dc6-43b6-9729-886d4320b3c2
+
+--7898a60f-6dc6-43b6-9729-886d4320b3c2
+
+
+
+HideWindow
+
+
+
+
+
+Goto 2ba222d3-e0d2-4079-aa5f-191ec52b2f43
+
+--2ba222d3-e0d2-4079-aa5f-191ec52b2f43
+
+
+
+Wait 500
+
+
+
+
+
+Goto e9716e33-2351-4f9b-8d95-107605f9dce8
+
+--e9716e33-2351-4f9b-8d95-107605f9dce8
+
+
+
+DisableNovelMode
+
+
+
+
+
+Goto 1c3a7108-0975-478b-8a30-fed1a9423652
+
+--1c3a7108-0975-478b-8a30-fed1a9423652
+
+
+
+ShowWindow
+
+
+
+
+
+Goto 430269a7-d5c3-4023-9d61-4e3ac11bcf18
+
+--430269a7-d5c3-4023-9d61-4e3ac11bcf18
+
+
+
+Today, the doctor comes in and gives me a smile. He seems excited, but not very. It's like he is trying to make an effort to be happy on my behalf.
+
+My parents are here. It's been a few days since I've last seen them. Both of them are even sort of dressed up. Is this supposed to be some kind of special occasion? It's not a party.
+
+There is this ritual the head cardiologist has. He takes his time, sorting his papers, then setting them aside as if to make a point of the pointlessness of what he just did.
+
+Then he casually sits down on the edge of the bed next to mine. He looks me in the eyes for a moment.
+
+op_doctor "Hello, Hisao. How are you today?"
+
+I don't answer him but I smile a little, back at him.
+
+op_doctor "I believe that you can go home; your heart is stronger now, and with some precautions, you should be fine."
+
+op_doctor "We have all your medication sorted out. I'll give your father the prescription."
+
+The doctor hands a sheet of paper to my dad, whose expression turns wooden as he reads it quickly.
+
+op_dad "So many…"
+
+I take it from his hand and take a look myself, feeling numb. How am I supposed to react to this?
+
+// wallodrugs scene
+
+The absurdly long list of medications staring back at me from the paper seems insurmountable. They all blend together in a sea of letters.
+
+This is insane.
+
+Side effects, adverse effects, contraindications and dosages are listed line after line with cold precision.
+
+I try to read them, but it's so futile.
+
+I can't understand any of it. Attempting to only makes me feel sicker.
+
+All this… for the rest of my life, every day?
+
+op_doctor "I'm afraid that is the best we can do at this point."
+
+op_doctor "However, new medications are always being developed, so I wouldn't be surprised to see that list fade over the years."
+
+Years… What kind of confidence booster is that? I'd have felt better if he hadn't said anything at all…
+
+op_doctor "Also, I've spoken with your parents and we believe that it would be best if you don't return to your old school."
+
+What!?
+
+op_dad "Please, calm down, Hisao. Listen to what the doctor has to say…"
+
+Calm down? The way he says it tells me he knew full well that I wouldn't like it. Am I going to be home schooled?
+
+Whatever of my concern shows, it's ignored.
+
+op_doctor "We all understand that your education is paramount; however, I don't think that it's wise for you to be without supervision."
+
+op_doctor "At least not until we're sure that your medication is suitable."
+
+op_doctor "So, I've spoken to your parents about a transfer."
+
+op_doctor "It's a school called Yamaku Academy that specializes in dealing with disabled students."
+
+Disabled? What? Am I…
+
+op_doctor "It has a 24-hour nursing staff and it's only a few minutes from a highly regarded general hospital. The majority of students live on the campus."
+
+op_doctor "Think of it as a boarding school of sorts. It's designed to give students a degree of independence, while keeping help nearby."
+
+Independence? It's a school for disabled kids. Don't try to disguise that fact.
+
+If it was really that “free,” there wouldn't be a 24-hour nursing staff, and you wouldn't make a hospital being nearby a selling point.
+
+op_dad "Of course, that's only if you want to go. But… your mother and I aren't really able to home school you."
+
+op_dad "We went out there and had a look a couple of weeks back; I think you'd like it."
+
+It looks like I really don't have a choice.
+
+op_doctor "Compared to other heart problems, people with your condition usually tend to live long lives. You'll need a job one day and this is a good opportunity to continue your education."
+
+This isn't an opportunity, don't call it an opportunity. Don't call it a goddamned opportunity.
+
+op_doctor "Well, you should be excited at the chance to go back to school. I remember you wanted to return to school, and while it's not the same one…"
+
+A special school. That's…
+
+An insult. That is what I want to say. It's a step down.
+
+op_dad "It's not what you think. All of the students there are pretty active, in their own sort of way."
+
+op_dad "It's geared towards students that can still get around and learn, but just need a little help… in one way or another."
+
+op_doctor "Your father's right. And many of the graduates of the school have gone on to do amazing things. A person doesn't have to be held back by their disability."
+
+op_doctor "One of my colleagues in another hospital is a graduate."
+
+I don't care. A person doesn't have to be held back by their disability? That's what a disability is.
+
+I really hate that something so important was decided for me. But what can I do about it? A “normal” life is out of the question now.
+
+
+
+
+
+
+Goto 6f1adde6-9af6-4fed-bc19-0f56388036ce
+
+--6f1adde6-9af6-4fed-bc19-0f56388036ce
+
+
+
+StopMusic 0.11
+
+
+
+
+
+Goto a7586cec-cfb3-433a-945a-deeaf7c9dc39
+
+--a7586cec-cfb3-433a-945a-deeaf7c9dc39
+
+
+
+It's funny, I had always thought my life was actually kind of boring, but now I miss it.
+
+I want to protest. I want to blame this lack of reaction on shock, or fatigue. I could easily yell out something now - something about how I can go back to school anyway. But, no.
+
+I don't say anything. The fact is that I know now it's futile.
+
+I look around the room, feeling very tired of all this. The hospital, doctors, my condition, everything. I don't see anything that would make me feel any different.
+
+There really isn't a choice. I know this, but the thought of going to a disabled school… what are those even like? As much as I try to put a positive spin on this, it's very difficult.
+
+But let me try.
+
+A clean slate isn't a bad thing.
+
+That is all I can think of to get me through this. At least I still have something; even if it's a “special school,” it's something. It's a fresh start, and my life isn't over. It would be a mistake to just resign myself to thinking that.
+
+At the very least, I'll try to see what my new life will look like.
+
+
+
+
+
+Goto 7b029481-ac2f-49be-8afa-2bcdc91ed120
+
+--7b029481-ac2f-49be-8afa-2bcdc91ed120
+
+
+
+HideWindow
+
+
+
+
+
+Goto e84eb26a-3656-4b6c-8c7f-fe4213aa9c32
+
+--e84eb26a-3656-4b6c-8c7f-fe4213aa9c32
+
+
+
+Transition white default 1.00
+
+
+
+
+
+Goto fa0985ce-e37e-4a36-a446-93105896beda
+
+--fa0985ce-e37e-4a36-a446-93105896beda
+
+
+
+PlayVideo tc_act1
+
+
+
+
+
