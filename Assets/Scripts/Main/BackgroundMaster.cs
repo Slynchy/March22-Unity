@@ -71,7 +71,7 @@ namespace M22
             else
             {
                 Debug.LogError("Failed to find background: " + file);
-                return new Sprite();
+                return Sprite.Create();
             }
         }
     }
