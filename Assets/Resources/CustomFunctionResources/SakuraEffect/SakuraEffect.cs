@@ -21,7 +21,7 @@ namespace M22
 
             public override void Start()
             {
-                ScriptMaster = Camera.main.GetComponent<M22.ScriptMaster>();
+                ScriptMaster = Camera.main.GetComponent<M22.SceneManager>().ScriptMaster;
             }
 
             public override void Func(string[] _params)
@@ -48,9 +48,24 @@ namespace M22
                 {
                     if (SakuraEffectInstance == null || SakuraEffectScript == null)
                     {
-                        Debug.LogError("Trying to stop SnowEffect when there isn't one!");
-                        ScriptMaster.NextLine();
-                        return;
+                        var gameObjects = GameObject.FindObjectsOfType<GameObject>() as GameObject[];
+
+                        for (var i = 0; i < gameObjects.Length; i++)
+                        {
+                            if (gameObjects[i].name.Contains("SakuraPrefab"))
+                            {
+                                SakuraEffectInstance = gameObjects[i];
+                                SakuraEffectScript = SakuraEffectInstance.GetComponent<SakuraEffectObjectScript>();
+                                break;
+                            }
+                        }
+
+                        if (!SakuraEffectInstance || !SakuraEffectScript)
+                        {
+                            Debug.LogError("Trying to stop SakuraEffect when there isn't one!");
+                            ScriptMaster.NextLine();
+                            return;
+                        }
                     }
                     SakuraEffectScript.Stop();
                 }

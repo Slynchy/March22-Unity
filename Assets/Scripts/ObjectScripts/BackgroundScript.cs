@@ -63,7 +63,7 @@ namespace M22
 
         public void UpdateBackground(int _xOff, int _yOff, float _w, float _h)
         {
-            RT.sizeDelta = new Vector2(Screen.currentResolution.width * _w, Screen.currentResolution.height * _h);
+            RT.sizeDelta = new Vector2(Screen.currentResolution.width * (_w-1), Screen.currentResolution.height * (_h - 1));
             RT.anchoredPosition = new Vector2((RT.sizeDelta.x * 0.5f) + _xOff, (RT.sizeDelta.y * 0.5f) + _yOff);
         }
 
@@ -78,8 +78,8 @@ namespace M22
         // Use this for initialization
         void Start()
         {
-            SM = Camera.main.GetComponent<ScriptMaster>();
-            VN = Camera.main.GetComponent<VNHandler>();
+            SM = Camera.main.GetComponent<SceneManager>().ScriptMaster;
+            VN = Camera.main.GetComponent<SceneManager>().VNHandler;
         }
 
         // Update is called once per frame

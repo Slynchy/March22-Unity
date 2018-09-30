@@ -15,22 +15,26 @@ namespace M22
 
     public class March22Master : MonoBehaviour
     {
-        public bool DebugMode = false;
+        public GameObject DebugDisplayPrefab;
         ScriptMaster SMPtr;
 
         // Use this for initialization
         void Start()
         {
-            SMPtr = Camera.main.GetComponent<ScriptMaster>();
+            SMPtr = Camera.main.GetComponent<SceneManager>().ScriptMaster;
             SMPtr.LoadScript("START_SCRIPT");
 
-            if(DebugMode == true)
+            if(DebugDisplayPrefab == null)
             {
-                GameObject debugPrefab = Resources.Load<GameObject>("Prefabs/DebugDisplay") as GameObject;
-                if(debugPrefab != null)
+                DebugDisplayPrefab = Resources.Load<GameObject>("Prefabs/DebugDisplay") as GameObject;
+                if(DebugDisplayPrefab != null)
                 {
-                    GameObject.Instantiate<GameObject>(debugPrefab, Camera.main.transform);
+                    GameObject.Instantiate<GameObject>(DebugDisplayPrefab, Camera.main.transform);
                 }
+            }
+            else
+            {
+                GameObject.Instantiate<GameObject>(DebugDisplayPrefab, Camera.main.transform);
             }
         }
 

@@ -10,7 +10,7 @@
 
 	A light breeze causes the naked branches overhead to rattle like wooden windchimes.
 
-	Goto debugGotolmao
+	Goto en_A2
 
 	This is a popular retreat for couples in the summer. The deciduous trees provide a beautiful green canopy, far out of sight of teachers and fellow students.
 
@@ -234,7 +234,7 @@
 	//m22IF testFlag1 PlayMusic Lullaby_of_Open_Eyes
 
 	// This is where video would play!
-	PlayVideo op_1
+	//PlayVideo op_1
 	
 	EnableNovelMode
 	NewPage
@@ -854,7 +854,7 @@
 		mi "Shicchan is deaf, so I'm the person who translates things back and forth for her."
 
 		//show misha hips_grin
-		DrawCharacter misha hips_grin 300
+		DrawCharacter misha hips_grin -300
 		//with charachange
 
 		mi "I'm like an interpreter~! She says it's nice to meet you, too!"
@@ -875,7 +875,7 @@
 	--en_A2d
 
 		mi "He seems like a very interesting person, doesn't he~!"
-
+		Goto en_A2f
 
 
 	--en_A2e
@@ -885,6 +885,8 @@
 		mi "We don't know much about him, but maybe we'll find out later."
 		
 		Maybe I should've introduced myself after all. Anything would've given a better first impression than the teacher's drone and fumbling with my name.
+
+		Goto en_A2f
 		
 	--en_A2f
 

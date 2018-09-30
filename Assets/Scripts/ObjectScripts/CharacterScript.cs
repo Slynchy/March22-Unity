@@ -47,7 +47,7 @@ namespace M22
             img.material.SetTexture("_SecondaryTex", destSpr.texture);
             img.material.SetTexture("_MainTex", tempSpr.texture);
 
-            parent = Camera.main.GetComponent<VNHandler>();
+            parent = Camera.main.GetComponent<SceneManager>().VNHandler;
             if (parent == null)
                 Debug.LogError("Failed to get VNHandler from main camera!");
 

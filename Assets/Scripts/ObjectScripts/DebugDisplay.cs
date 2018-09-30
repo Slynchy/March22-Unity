@@ -18,7 +18,7 @@ namespace M22
         void Start()
         {
             debugTxt = GetComponentInChildren<Text>();
-            M22SM = Camera.main.GetComponent<M22.ScriptMaster>();
+            M22SM = Camera.main.GetComponent<M22.SceneManager>().ScriptMaster;
         }
 
         // Update is called once per frame

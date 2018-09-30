@@ -5,8 +5,14 @@ using UnityEngine;
 namespace M22
 {
 
-    public class CustomFunctionHandler : MonoBehaviour
+    public class CustomFunctionHandler
     {
+
+        public CustomFunctionHandler()
+        {
+            Awake();
+            Start();
+        }
 
         public delegate void CustomFunctionDelegate(string[] _params);
 

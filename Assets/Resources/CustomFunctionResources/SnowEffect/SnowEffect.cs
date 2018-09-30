@@ -42,9 +42,24 @@ namespace M22
                 {
                     if (SnowEffectInstance == null || SnowEffectScript == null)
                     {
-                        Debug.LogError("Trying to stop SnowEffect when there isn't one!");
-                        Camera.main.GetComponent<M22.ScriptMaster>().NextLine();
-                        return;
+                        var gameObjects = GameObject.FindObjectsOfType<GameObject>() as GameObject[];
+
+                        for (var i = 0; i < gameObjects.Length; i++)
+                        {
+                            if (gameObjects[i].name.Contains("SakuraPrefab"))
+                            {
+                                SnowEffectInstance = gameObjects[i];
+                                SnowEffectScript = SnowEffectInstance.GetComponent<SnowEffectObjectScript>();
+                                break;
+                            }
+                        }
+
+                        if (!SnowEffectInstance || !SnowEffectScript)
+                        {
+                            Debug.LogError("Trying to stop SnowEffect when there isn't one!");
+                            Camera.main.GetComponent<M22.ScriptMaster>().NextLine();
+                            return;
+                        }
                     }
                     SnowEffectScript.Stop();
                 }

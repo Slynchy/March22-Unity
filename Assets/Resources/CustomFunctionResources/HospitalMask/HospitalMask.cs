@@ -20,7 +20,7 @@ namespace M22
 
             public override void Start()
             {
-                ScriptMaster = Camera.main.GetComponent<M22.ScriptMaster>();
+                ScriptMaster = Camera.main.GetComponent<M22.SceneManager>().ScriptMaster;
             }
 
             public override void Func(string[] _params)

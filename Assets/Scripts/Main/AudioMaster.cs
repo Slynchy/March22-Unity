@@ -5,13 +5,21 @@ using UnityEngine;
 namespace M22
 {
 
-    public class AudioMaster : MonoBehaviour
+    public class AudioMaster
     {
         static Dictionary<string, AudioClip> loadedAudio = new Dictionary<string, AudioClip>();
 
         static AudioSource musicSrc;
 
         static bool _forceStop = false;
+
+        MonoBehaviour _eventMonoBehaviour;
+
+        public AudioMaster(AudioSource _musicSrc, MonoBehaviour __eventMonoBehaviour)
+        {
+            musicSrc = _musicSrc;
+            _eventMonoBehaviour = __eventMonoBehaviour;
+        }
 
         // Courtesy: https://forum.unity3d.com/threads/fade-out-audio-source.335031/
         public static IEnumerator FadeOut(AudioSource audioSource, float FadeTime)
@@ -62,7 +70,6 @@ namespace M22
         // Use this for initialization
         void Start()
         {
-            musicSrc = this.GetComponent<AudioSource>();
             if (musicSrc == null)
                 Debug.LogError("AudioSource for music not attached to camera!");
         }
@@ -80,7 +87,7 @@ namespace M22
         public void StopMusic(string _floatInput)
         {
             float speed = float.Parse(_floatInput);
-            StartCoroutine(FadeOut(musicSrc, speed));
+            _eventMonoBehaviour.StartCoroutine(FadeOut(musicSrc, speed));
         }
 
         static public bool LoadMusic(string name)

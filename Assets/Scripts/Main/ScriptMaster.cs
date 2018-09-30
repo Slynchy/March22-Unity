@@ -10,55 +10,6 @@ using System.Text.RegularExpressions;
 namespace M22
 {
 
-
-    public static class FadeEffectClass
-    {
-
-        public static IEnumerator FadeOutIMG(Image img, float FadeTime)
-        {
-            while (img.color.a > 0)
-            {
-                img.color = new Color(img.color.r, img.color.g, img.color.b, img.color.a - (Time.deltaTime * FadeTime));
-
-                yield return null;
-            }
-            img.color = new Color(img.color.r, img.color.g, img.color.b, 0);
-        }
-
-        public static IEnumerator FadeInIMG(Image img, float FadeTime)
-        {
-            while (img.color.a < 1)
-            {
-                img.color = new Color(img.color.r, img.color.g, img.color.b, img.color.a + (Time.deltaTime * FadeTime));
-
-                yield return null;
-            }
-            img.color = new Color(img.color.r, img.color.g, img.color.b, 1);
-        }
-
-        public static IEnumerator FadeInTXT(Text img, float FadeTime)
-        {
-            while (img.color.a < 1)
-            {
-                img.color = new Color(img.color.r, img.color.g, img.color.b, img.color.a + (Time.deltaTime * FadeTime));
-
-                yield return null;
-            }
-            img.color = new Color(img.color.r, img.color.g, img.color.b, 1);
-        }
-
-        public static IEnumerator FadeOutTXT(Text img, float FadeTime)
-        {
-            while (img.color.a > 0)
-            {
-                img.color = new Color(img.color.r, img.color.g, img.color.b, img.color.a - (Time.deltaTime * FadeTime));
-
-                yield return null;
-            }
-            img.color = new Color(img.color.r, img.color.g, img.color.b, 0);
-        }
-    }
-
     public enum WAIT_STATE
     {
         NOT_WAITING,
@@ -101,7 +52,7 @@ namespace M22
         }
     }
 
-    public class ScriptMaster : MonoBehaviour
+    public class ScriptMaster
     {
         [HideInInspector]
         public line_c CURRENT_LINE;
@@ -120,6 +71,7 @@ namespace M22
         private AudioMaster AudioMasterScript;
 
         private Image TextboxIMG;
+        private TextboxScript TextboxIMG_script;
 
         public TypeWriterScript TEXT;
 
@@ -157,6 +109,27 @@ namespace M22
 
         static public ScriptCompiler.ANIMATION_TYPES ActiveAnimationType;
 
+        public ScriptMaster(
+            VNHandler _VNHandlerScript, 
+            AudioMaster _AudioMasterScript, 
+            Image _TextboxImage, 
+            GameObject _DecisionsPrefab, 
+            GameObject _TransitionPrefab, 
+            GameObject _VideoPlayerPrefab,
+            GameObject _LoopedSFXPrefab
+        ) {
+            VNHandlerScript = _VNHandlerScript;
+            AudioMasterScript = _AudioMasterScript;
+            TextboxIMG = _TextboxImage;
+            DecisionsPrefab = _DecisionsPrefab;
+            TransitionPrefab = _TransitionPrefab;
+            VideoPlayerPrefab = _VideoPlayerPrefab;
+            LoopedSFXPrefab = _LoopedSFXPrefab;
+
+            this.Awake();
+            this.Start();
+        }
+
         static public bool LoadVideoFile(string _file)
         {
             if (loadedVideoClips.ContainsKey(_file))
@@ -181,19 +154,16 @@ namespace M22
             loadedVideoClips = new Dictionary<string, VideoClip>();
             SCRIPT_FLAGS = new List<string>();
             M22.ScriptCompiler.Initialize();
+        }
 
+        void Start()
+        {
             if (DecisionsPrefab == null)
             {
                 Debug.Log("Decisions prefab not specified under ScriptMaster! Attempting to load from Resources/Prefabs...");
                 DecisionsPrefab = Resources.Load<GameObject>("Prefabs/Decisions");
             }
-        }
 
-        void Start()
-        {
-            VNHandlerScript = this.gameObject.GetComponent<M22.VNHandler>();
-            AudioMasterScript = this.gameObject.GetComponent<AudioMaster>();
-            TextboxIMG = GameObject.Find("Textbox").GetComponent<Image>();
             if (TEXT == null)
             {
                 Debug.Log("TEXT not found in ScriptMaster; falling back to searching...");
@@ -209,9 +179,15 @@ namespace M22
             {
                 Debug.Log("background not found in ScriptMaster; falling back to searching...");
                 if (GameObject.Find("Background") != null)
+                {
                     background = GameObject.Find("Background").GetComponent<Image>();
+                    if(background == null)
+                    {
+                        Debug.LogError("This also failed :(");
+                    }
+                }
                 if (background == null)
-                    Debug.Log("This also failed! :(");
+                    Debug.LogError("This also failed :(");
                 else
                     backgroundScript = background.gameObject.GetComponent<BackgroundScript>();
             }
@@ -257,13 +233,17 @@ namespace M22
 
             if (VideoPlayerPrefab == null)
                 Debug.LogError("VideoPlayerPrefab not attached to ScriptMaster! Check this under Main Camera!");
-
-            LoopedSFXPrefab = Resources.Load("Prefabs/SFXPrefab") as GameObject;
+            
             if(LoopedSFXPrefab == null)
-                Debug.LogError("Failed to load LoopedSFXPrefab! Check \"Resources/Prefabs\" for this!");
+            {
+                LoopedSFXPrefab = Resources.Load("Prefabs/SFXPrefab") as GameObject;
+                if (LoopedSFXPrefab == null)
+                {
+                    Debug.LogError("Failed to load LoopedSFXPrefab! Check \"Resources/Prefabs\" for this!");
+                }
+            }
 
-            if (TextboxIMG != null)
-                HideText();
+            TextboxIMG_script = TextboxIMG.gameObject.GetComponent<TextboxScript>();
         }
 
         public delegate void VoidDelegate();
@@ -557,7 +537,7 @@ namespace M22
                     break;
                 case LINETYPE.TRANSITION:
                     GameObject tempGO = GameObject.Instantiate<GameObject>(TransitionPrefab, Canvases[(int)CANVAS_TYPES.POSTCHARACTER].transform);
-                    tempGO.GetComponent<Image>().material = Instantiate<Material>(tempGO.GetComponent<Image>().material) as Material;
+                    tempGO.GetComponent<Image>().material = GameObject.Instantiate<Material>(tempGO.GetComponent<Image>().material) as Material;
                     BackgroundTransition TransitionObj = tempGO.GetComponent<BackgroundTransition>();
                     TransitionObj.callback = FadeToBlackCallback;
                     if(_line.m_parameters_txt.Count >= 4)
@@ -618,39 +598,15 @@ namespace M22
 
         void HideText(bool _fade = true, float _speed = 6.0f)
         {
-            for (int i = 0; i < TextboxIMG.gameObject.transform.childCount; i++)
-            {
-                var obj = TextboxIMG.gameObject.transform.GetChild(i).gameObject.GetComponent<Text>();
-                if (_fade == true)
-                    StartCoroutine(FadeEffectClass.FadeOutTXT(obj, _speed));
-                else
-                    obj.color = new Color(255, 255, 255, 0);
-            }
-
-            if (_fade == true)
-                StartCoroutine(FadeEffectClass.FadeOutIMG(TextboxIMG, _speed));
-            else
-                TextboxIMG.color = new Color(255, 255, 255, 0);
+            TextboxIMG_script.HideText(_fade, _speed);
         }
 
         void ShowText(bool _fade = true, float _speed = 6.0f)
         {
-            for (int i = 0; i < TextboxIMG.gameObject.transform.childCount; i++)
-            {
-                var obj = TextboxIMG.gameObject.transform.GetChild(i).gameObject.GetComponent<Text>();
-                if (_fade == true)
-                    StartCoroutine(FadeEffectClass.FadeInTXT(obj, _speed));
-                else
-                    obj.color = new Color(255, 255, 255, 255);
-            }
-
-            if (_fade == true)
-                StartCoroutine(FadeEffectClass.FadeInIMG(TextboxIMG, _speed));
-            else
-                TextboxIMG.color = new Color(255, 255, 255, 255);
+            TextboxIMG_script.ShowText(_fade, _speed);
         }
 
-        void Update()
+        public void Update()
         {
             if ((WaitQueue.Count == 0 && InputWrapper.NextLineButton()) || InputWrapper.SkipTextButton())
             {
@@ -700,7 +656,7 @@ namespace M22
                         if (VideoPlayerInstance.isPlaying == false)
                         {
                             WaitQueue.RemoveAt(0);
-                            Destroy(VideoPlayerInstance.gameObject);
+                            GameObject.Destroy(VideoPlayerInstance.gameObject);
                             NextLine();
                         }
                         break;

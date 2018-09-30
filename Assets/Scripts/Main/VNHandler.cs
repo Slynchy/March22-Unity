@@ -19,13 +19,13 @@ namespace M22
         }
     }
 
-    public class VNHandler : MonoBehaviour
+    public class VNHandler
     {
         static private Dictionary<string, Character> loadedCharacters;
 
-        public bool VNMode = false;
-        public int VNFontSize = 16;
-        public int NovelFontSize = 34;
+        public bool VNMode = true;
+        public int VNFontSize = 49;
+        public int NovelFontSize = 49;
 
         private Sprite TextboxNarrative;
         private Sprite TextboxDialogue;
@@ -46,6 +46,32 @@ namespace M22
         private Text CharacterName;
 
         private float MovementSpeed = 1.0f;
+
+        public VNHandler(GameObject _CharacterPrefab)
+        {
+            loadedCharacters = new Dictionary<string, Character>();
+            CharacterPrefab = _CharacterPrefab;
+
+            VN = new TextboxSettings(
+                0,
+                0,
+                200,
+                400,
+                0, 0, 1, 0);
+            VNSay = new TextboxSettings(67.5f, 49.5f, 134, 64);
+
+            Novel = new TextboxSettings(
+                0,
+                0,
+                0,
+                0,
+                0, 0, 1, 1);
+            NovelTxt = new TextboxSettings(50, 50, 80, 80);
+
+            Awake();
+            Start();
+        }
+
         public bool SetMovementSpeed(float _newSpeed)
         {
             if (_newSpeed > 0)
@@ -84,27 +110,10 @@ namespace M22
 
         void Start()
         {
-            loadedCharacters = new Dictionary<string, Character>();
-            Text = GameObject.Find("M22ScriptText").GetComponent<Text>();
-            Textrect = GameObject.Find("M22ScriptText").GetComponent<RectTransform>();
+            Text = GameObject.Find("Text").GetComponent<Text>();
+            Textrect = GameObject.Find("Text").GetComponent<RectTransform>();
             Textbox = GameObject.Find("Textbox").GetComponent<Image>();
             CharacterName = (GameObject.Find("CharName") != null ? GameObject.Find("CharName").GetComponent<Text>() : null);
-
-            VN = new TextboxSettings(
-                0,
-                0,
-                200,
-                400,
-                0, 0, 1, 0);
-            VNSay = new TextboxSettings(67.5f, 49.5f, 134, 64);
-
-            Novel = new TextboxSettings(
-                0,
-                0,
-                0,
-                0,
-                0, 0, 1, 1);
-            NovelTxt = new TextboxSettings(50, 50, 80, 80);
 
             if (VNMode == true)
             {
@@ -152,7 +161,7 @@ namespace M22
             CharacterName.color = new Color(CharacterName.color.r, CharacterName.color.g, CharacterName.color.b, 0);
         }
 
-        private void Update()
+        public void Update()
         {
             if (Input.GetKeyDown(KeyCode.F1))
             {
@@ -317,27 +326,3 @@ namespace M22
         }
     }
 }
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(M22.VNHandler))]
-public class VNHandlerEditor : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        var myScript = target as M22.VNHandler;
-
-        myScript.VNMode = GUILayout.Toggle(myScript.VNMode, "VN Mode");
-
-        if (myScript.VNMode)
-        {
-            myScript.VNFontSize = EditorGUILayout.IntSlider("Font size:", myScript.VNFontSize, 8, 64);
-            myScript.CharacterPrefab = (GameObject)EditorGUILayout.ObjectField("Character Prefab", myScript.CharacterPrefab, typeof(GameObject), false);
-        }
-        else
-        {
-            myScript.NovelFontSize = EditorGUILayout.IntSlider("Font size:", myScript.NovelFontSize, 8, 64);
-        }
-
-    }
-}
-#endif
