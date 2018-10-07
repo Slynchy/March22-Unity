@@ -152,6 +152,12 @@ namespace M22
 
         public void SetCurrentInlineFunction(line_c _lineC) { CurrentInlineFunction = _lineC; }
 
+        public void RegisterCustomFunction (CustomFunction func)
+        {
+            var me = this;
+            M22.ScriptCompiler.RegisterCustomFunction(func, ref me);
+        }
+
         public Sprite TryToLoadImage(string imgName)
         {
             var result = Resources.Load<Sprite>(imgName);
@@ -361,7 +367,7 @@ namespace M22
                     if (_line.m_parameters[2] == 1)
                     {
                         //WaitState = WAIT_STATE.NOT_WAITING;
-                        if(WaitQueue.Count > 0)
+                        if (WaitQueue.Count > 0)
                             WaitQueue.RemoveAt(0);
                         NextLine(_isInLine);
                     }
@@ -535,31 +541,25 @@ namespace M22
                         WaitQueue.Add(new WaitObject(WAIT_STATE.CHARACTER_FADEOUT_INDIVIDUAL, _line.m_parameters_txt[0]));
                     break;
                 case LINETYPE.CLEAR_CHARACTERS:
-                    VNHandlerScript.ClearCharacters(_line.m_parameters[0] == 1 ? true : false );
+                    VNHandlerScript.ClearCharacters(_line.m_parameters[0] == 1 ? true : false);
                     HideText();
                     //WaitState = WAIT_STATE.CHARACTER_FADEOUT;
                     WaitQueue.Add(new WaitObject(WAIT_STATE.CHARACTER_FADEOUT));
                     break;
                 case LINETYPE.EXECUTE_FUNCTION:
-                    CustomFunctionHandler.CustomFunctionDelegate temp = CustomFunctionHandler.GetFunction(_line.m_parameters_txt[0]);
-                    if (temp != null)
+                    string[] funcParams = new string[_line.m_parameters_txt.Count - 1];
+                    for (int i = 1; i < _line.m_parameters_txt.Count; i++)
                     {
-                        string[] funcParams = new string[_line.m_parameters_txt.Count-1];
-                        for (int i = 1; i < _line.m_parameters_txt.Count; i++)
-                        {
-                            funcParams[i-1] = _line.m_parameters_txt[i];
-                        }
-                        temp(funcParams);
+                        funcParams[i - 1] = _line.m_parameters_txt[i];
                     }
-                    else
-                        Debug.LogError("Failed to find custom function: " + _line.m_parameters_txt[0]);
+                    _line.m_custFunc.Func(funcParams);
                     break;
                 case LINETYPE.TRANSITION:
                     GameObject tempGO = GameObject.Instantiate<GameObject>(TransitionPrefab, Canvases[(int)CANVAS_TYPES.POSTCHARACTER].transform);
                     tempGO.GetComponent<Image>().material = GameObject.Instantiate<Material>(tempGO.GetComponent<Image>().material) as Material;
                     BackgroundTransition TransitionObj = tempGO.GetComponent<BackgroundTransition>();
                     TransitionObj.callback = FadeToBlackCallback;
-                    if(_line.m_parameters_txt.Count >= 4)
+                    if (_line.m_parameters_txt.Count >= 4)
                     {
                         TransitionObj.Speed = float.Parse(_line.m_parameters_txt[3]);
                     }
@@ -782,6 +782,10 @@ namespace M22
                 }
                 else
                     return LINETYPE.NARRATIVE;
+            }
+            else if (M22.ScriptCompiler.RegisteredCustomFunctions.ContainsKey(_input))
+            {
+                return LINETYPE.EXECUTE_FUNCTION;
             }
             else
             {

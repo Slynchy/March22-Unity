@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,6 +22,13 @@ namespace M22
         void Start()
         {
             SMPtr = Camera.main.GetComponent<SceneManager>().ScriptMaster;
+            SMPtr.RegisterCustomFunction(new M22.CustomFunctions.DrawSprite());
+            SMPtr.RegisterCustomFunction(new M22.CustomFunctions.HeartThrob());
+            SMPtr.RegisterCustomFunction(new M22.CustomFunctions.SakuraEffect());
+            SMPtr.RegisterCustomFunction(new M22.CustomFunctions.SnowEffect());
+            SMPtr.RegisterCustomFunction(new M22.CustomFunctions.WrittenNote());
+            SMPtr.RegisterCustomFunction(new M22.CustomFunctions.HospitalMask());
+            M22.ScriptCompiler.InitializeCustomFunctions();
             SMPtr.LoadScript("START_SCRIPT");
 
             if(DebugDisplayPrefab == null)

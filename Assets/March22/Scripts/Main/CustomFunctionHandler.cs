@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -72,6 +72,9 @@ namespace M22
 
     abstract public class CustomFunction
     {
+        protected ScriptMaster scriptMaster;
+        public void SetScriptMaster(ref ScriptMaster smPtr) { this.scriptMaster = smPtr; }
+        virtual public string Keyword() { return ""; }
         virtual public void Awake() { }
         virtual public void Start() { }
         virtual public void Func(string[] _params) { }

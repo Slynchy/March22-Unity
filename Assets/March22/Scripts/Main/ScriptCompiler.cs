@@ -49,7 +49,8 @@ namespace M22
         public List<int> m_parameters;
         public List<string> m_parameters_txt;
         public string m_lineContents;
-        public script_character m_speaker; 
+        public script_character m_speaker;
+        public CustomFunction m_custFunc;
         public int m_ID;
         public int m_origScriptPos; // used to tell where it is in the original script
     }
@@ -74,6 +75,9 @@ namespace M22
     {
         public static Dictionary<ulong, script_character> CharacterNames;
         public static Dictionary<ulong, M22.LINETYPE> FunctionHashes;
+
+        public static Dictionary<string,CustomFunction> RegisteredCustomFunctions;
+
         public static List<M22.script_checkpoint> currentScript_checkpoints = new List<M22.script_checkpoint>();
         public static readonly string[] FunctionNames = {
                 "nopnopnop",
@@ -114,6 +118,25 @@ namespace M22
             SMOOTH,
             LERP,
             NUM_OF_ANIMATION_TYPES
+        }
+
+        public static void RegisterCustomFunction(CustomFunction func, ref ScriptMaster smPtr)
+        {
+            if (RegisteredCustomFunctions == null)
+            {
+                RegisteredCustomFunctions = new Dictionary<string, CustomFunction>();
+            }
+            func.SetScriptMaster(ref smPtr);
+            RegisteredCustomFunctions.Add(func.Keyword(), func);
+            func.Awake();
+        }
+
+        public static void InitializeCustomFunctions()
+        {
+            foreach (KeyValuePair<string, CustomFunction> func in RegisteredCustomFunctions)
+            {
+                func.Value.Start();
+            }
         }
 
         private static void InitializeCharNames()
@@ -348,6 +371,11 @@ namespace M22
             return hashedValue;
         }
 
+        static private bool CheckIfCustomFunction(string keyword)
+        {
+            return RegisteredCustomFunctions.ContainsKey(keyword);
+        }
+
         static public M22.LINETYPE CheckLineType(string _input)
         {
             string temp = _input.Trim('\r', '\n', '\t');
@@ -369,7 +397,17 @@ namespace M22
                     else
                     {
                         if (!CharacterNames.ContainsKey(CalculateHash(temp)))
-                            return M22.LINETYPE.NARRATIVE;
+                        {
+                            if (CheckIfCustomFunction(temp))
+                            {
+                                return M22.LINETYPE.EXECUTE_FUNCTION;
+                            }
+                            else
+                            {
+                                // must be narrative at this point
+                                return M22.LINETYPE.NARRATIVE;
+                            }
+                        }
                         else
                         {
                             //Debug.Log("rbeakboot!");
@@ -556,9 +594,11 @@ namespace M22
                     break;
                 case M22.LINETYPE.EXECUTE_FUNCTION:
                     if (_splitStr.Count > 1)
-                    {
+                    { 
+                        // heart_throb 4.0 2.0
+                        //            |       
                         _lineC.m_parameters_txt = new List<string>();
-                        for (int i = 1; i < _splitStr.Count-1; i++)
+                        for (int i = 1; i < _splitStr.Count; i++)
                         {
                             _lineC.m_parameters_txt.Add(_splitStr[i]);
                         }
@@ -569,7 +609,7 @@ namespace M22
                         while(_lineC.m_parameters_txt.Count < 4)
                             _lineC.m_parameters_txt.Add("");
 
-                        if(CustomFunctionHandler.CheckFunctionExists(_lineC.m_parameters_txt[0]) == false)
+                        if (RegisteredCustomFunctions.TryGetValue(_splitStr[0], out _lineC.m_custFunc) == false)
                         {
                             UnityWrapper.LogErrorFormat("Custom function \"{0}\" does not exist at line {1}!", _lineC.m_parameters_txt[0], _lineC.m_origScriptPos);
                         }
