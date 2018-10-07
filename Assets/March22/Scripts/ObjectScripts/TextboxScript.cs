@@ -103,7 +103,6 @@ public class TextboxScript : MonoBehaviour
             {
                 if (currTxtCoroutines[i] != null)
                 {
-                    Debug.Log("STOPPING CO ROUTINE");
                     StopCoroutine(currTxtCoroutines[i]);
                     txt[i].color = new Color(1, 1, 1, 1);
                     currTxtCoroutines[i] = null;
@@ -118,7 +117,6 @@ public class TextboxScript : MonoBehaviour
         {
             if (currImgCoroutine != null)
             {
-                Debug.Log("STOPPING CO ROUTINE");
                 StopCoroutine(currImgCoroutine);
                 img.color = new Color(1, 1, 1, 1);
                 currImgCoroutine = null;
