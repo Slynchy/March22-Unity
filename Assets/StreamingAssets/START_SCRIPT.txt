@@ -1,7 +1,7 @@
 ﻿--en_NOP1
 
 	HideWindow 100.0
-	//ExecuteFunction snow_effect start
+	//snow_effect start
 	DrawBackground op_snowywoods
 
 	ShowWindow
@@ -10,11 +10,11 @@
 
 	A light breeze causes the naked branches overhead to rattle like wooden windchimes.
 
-	Goto en_A2
+	Goto en_A1
 
 	This is a popular retreat for couples in the summer. The deciduous trees provide a beautiful green canopy, far out of sight of teachers and fellow students.
 
-	//ExecuteFunction heart_throb 4.0 2.0
+	//heart_throb 4.0 2.0
 
 	//Transition other_iwanako tr_eyes 0
 
@@ -84,18 +84,18 @@
 
 
 	PlaySting heart_single_slow
-	ExecuteFunction heart_throb 4.0 2.0
+	heart_throb 4.0 2.0
 	Wait 200
 	PlaySting heart_single_slow
-	ExecuteFunction heart_throb 4.0 2.0
+	heart_throb 4.0 2.0
 
 	Wait 1000
 
 	PlaySting heart_single_slow
-	ExecuteFunction heart_throb 4.0 2.0
+	heart_throb 4.0 2.0
 	Wait 200
 	PlaySting heart_single_slow
-	ExecuteFunction heart_throb 4.0 2.0
+	heart_throb 4.0 2.0
 
 	Wait 1000
 
@@ -142,7 +142,7 @@
 	HideWindow
 
 	PlaySting heart_single_slow
-	ExecuteFunction heart_throb 4.0 2.0
+	heart_throb 4.0 2.0
 	Wait 600
 
 	ShowWindow
@@ -152,10 +152,10 @@
 	HideWindow
 
 	PlaySting heart_single_slow
-	ExecuteFunction heart_throb 4.0 2.0
+	heart_throb 4.0 2.0
 	Wait 200
 	PlaySting heart_single_fast
-	ExecuteFunction heart_throb 4.0 2.0
+	heart_throb 4.0 2.0
 	Wait 600
 
 	ShowWindow
@@ -177,10 +177,10 @@
 
 	HideWindow
 	PlaySting heart_single_slow
-	ExecuteFunction heart_throb 4.0 2.0
+	heart_throb 4.0 2.0
 	Wait 200
 	PlaySting heart_single_slow
-	ExecuteFunction heart_throb 4.0 2.0
+	heart_throb 4.0 2.0
 	Wait 600
 	ShowWindow
 
@@ -188,20 +188,20 @@
 
 	HideWindow
 	PlaySting heart_single_fast
-	ExecuteFunction heart_throb 4.0 2.0
+	heart_throb 4.0 2.0
 	Wait 200
 
 	PlaySting heart_single_slow
-	ExecuteFunction heart_throb 4.0 2.0
+	heart_throb 4.0 2.0
 
 	PlaySting heart_single_fast
-	ExecuteFunction heart_throb 4.0 2.0
+	heart_throb 4.0 2.0
 	Wait 200
 
 	// it's meant to persist here until the fade to black
 	PlaySting heart_stop
 	StopMusic
-	ExecuteFunction heart_throb 4.0 1.0
+	heart_throb 4.0 1.0
 
 	ShowWindow
 
@@ -213,7 +213,7 @@
 
 --OP_2
 
-	ExecuteFunction snow_effect stop
+	snow_effect stop
 	StopMusic
 	Transition black tr-flashback 0
 
@@ -234,7 +234,7 @@
 	//m22IF testFlag1 PlayMusic Lullaby_of_Open_Eyes
 
 	// This is where video would play!
-	//PlayVideo op_1
+	PlayVideo op_1
 	
 	EnableNovelMode
 	NewPage
@@ -249,8 +249,8 @@
 	//scene bg hosp_room
 	//show sakura
 	//show hospitalmask
-	ExecuteFunction sakura_effect start
-	ExecuteFunction HospitalMask show
+	sakura_effect start
+	HospitalMask show
 
 	PlayMusic Raindrops_and_Puddles
 
@@ -472,19 +472,19 @@
 	A clean slate isn't a bad thing.
 
 	That is all I can think of to get me through this. At least I still have something; even if it's a “special school,” it's something. It's a fresh start, and my life isn't over. It would be a mistake to just resign myself to thinking that.
+	
+	sakura_effect stop
 
 	At the very least, I'll try to see what my new life will look like.
 
 	HideWindow
-	ExecuteFunction sakura_effect stop
 	Transition white default 0
-	ExecuteFunction HospitalMask hide
+	HospitalMask hide
 	PlayVideo tc_act1
 
 --en_A1
 
 	HideWindow
-	ExecuteFunction snow_effect stop
 	DrawBackground school_gate
 	PlayMusic Fripperies
 	ShowWindow
@@ -641,7 +641,7 @@
 
 		The third door down the third floor corridor is marked as the classroom for class 3-3.
 
-		play sound sfx_dooropen
+		//play sound sfx_dooropen
 
 		Mutou opens the door and enters.
 
@@ -665,7 +665,7 @@
 
 		Ah, get a grip! This is a big step, I know that… But there isn't any point to worrying so much about it, at least not this soon.
 
-		//ExecuteFunction ScrollingBackground hisao_class init
+		//ScrollingBackground hisao_class init
 		HideWindow
 		DrawBackground hisao_class 0 0 2.00 1.0
 		ShowWindow
@@ -684,7 +684,7 @@
 
 		I stop walking in front of the classroom and face the other students. They all look normal, like students in any other school. But then, why would they be here?
 
-			//ExecuteFunction ScrollingBackground hisao_class start
+			//ScrollingBackground hisao_class start
 		// SetMovementType { Lerp, Smooth }
 		SetMovementSpeed 0.04
 		SetAnimationType Lerp
@@ -724,6 +724,8 @@
 			Probably realizing he doesn't know anything about me, he just ends up saying my name wrong again, and asks me to write it on the blackboard.
 
 			I do that, and turn back to face the class, feeling awkward.
+
+			Goto en_A2c
 			
 		--en_A2b
 
@@ -758,7 +760,7 @@
 
 		It makes me feel a little bad.
 		
-		//ExecuteFunction ScrollingBackground hisao_class exit
+		//ScrollingBackground hisao_class exit
 		HideWindow
 		DrawBackground school_scienceroom 0 0 1.25 1.0
 		DrawCharacter muto normal 0
@@ -927,7 +929,7 @@
 
 		DrawCharacter misha perky_confused -300
 
-		"Misha seems a little overwhelmed."
+		Misha seems a little overwhelmed.
 		
 		DrawCharacter misha hips_grin -300
 
@@ -1724,8 +1726,8 @@
 
 		HideWindow
 		PlaySting paper
-		ExecuteFunction WrittenNote in Hi_Hicchan._We've_unpacked_your_things_and_made_your_bed.\nThey_said_that_if_these_don't_fit_then_you_should_go_to_the_office_tomorrow.\nIf_you_have_any_problems,_you_can_always_call_us.\n\nLove,_Mom_and_Dad
-		ExecuteFunction WrittenNote out
+		WrittenNote in Hi_Hicchan._We've_unpacked_your_things_and_made_your_bed.\nThey_said_that_if_these_don't_fit_then_you_should_go_to_the_office_tomorrow.\nIf_you_have_any_problems,_you_can_always_call_us.\n\nLove,_Mom_and_Dad
+		WrittenNote out
 		ShowWindow
 
 		Well, at least I don't have to worry about unpacking.
@@ -1758,16 +1760,16 @@
 		//	alpha 0.0 xalign 0.5 yanchor 0.5 ypos 0.7 subpixel True
 		//	easein 1.0 ypos 0.5 alpha 1.0
 		//with Pause (1.0)
-		ExecuteFunction DrawSprite in pills
+		DrawSprite in pills
 
 		The bottles of medications neatly arranged on my night table catch my eye.
 
 		I pick up one and shake it just to hear the contents rattle inside, and then read the glued-on pharmacy label.
 
-		ExecuteFunction DrawSprite out pills
+		DrawSprite out pills
 		HideWindow
-		ExecuteFunction WrittenNote in Hisao_Nakai\nTwo_tablets_daily_to_stay_alive
-		ExecuteFunction WrittenNote out 
+		WrittenNote in Hisao_Nakai\nTwo_tablets_daily_to_stay_alive
+		WrittenNote out 
 		ShowWindow
 
 		It doesn't really say that, but it could just as well.
