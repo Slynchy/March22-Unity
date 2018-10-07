@@ -100,9 +100,9 @@ namespace M22
 
         private void Awake()
         {
-            TextboxNarrative = Resources.Load<Sprite>("TextBoxes/bg-narration");
-            TextboxDialogue = Resources.Load<Sprite>("TextBoxes/bg-say");
-            TextboxNovel = Resources.Load<Sprite>("TextBoxes/textbox_big");
+            TextboxNarrative = Resources.Load<Sprite>("March22/TextBoxes/bg-narration");
+            TextboxDialogue = Resources.Load<Sprite>("March22/TextBoxes/bg-say");
+            TextboxNovel = Resources.Load<Sprite>("March22/TextBoxes/textbox_big");
 
             if (TextboxDialogue == null || TextboxNarrative == null || TextboxNovel == null)
                 Debug.LogError("Failed to load a textbox! Check your \"Resources/Textboxes\" folder!");
@@ -210,8 +210,8 @@ namespace M22
 
         static public bool LoadCharacter(string _charname, string _modifier)
         {
-            string path = "Characters/" + _charname + "/" + _modifier;
-            string backuppath = "Characters/" + _charname + "/" + _charname + "_" + _modifier;
+            string path = "March22/Characters/" + _charname + "/" + _modifier;
+            string backuppath = "March22/Characters/" + _charname + "/" + _charname + "_" + _modifier;
             if (loadedCharacters.ContainsKey(_charname))
             {
                 Character temp;

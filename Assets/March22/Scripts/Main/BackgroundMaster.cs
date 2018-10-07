@@ -23,9 +23,9 @@ namespace M22
 
         void Awake()
         {
-            Texture2D tempTex = Resources.Load("Images/black") as Texture2D;
+            Texture2D tempTex = Resources.Load("March22/Images/black") as Texture2D;
             black = Sprite.Create(tempTex, new Rect(0, 0, tempTex.width, tempTex.height), new Vector2(0, 0));
-            tempTex = Resources.Load("Images/white") as Texture2D;
+            tempTex = Resources.Load("March22/Images/white") as Texture2D;
             white = Sprite.Create(tempTex, new Rect(0, 0, tempTex.width, tempTex.height), new Vector2(0, 0));
 
             if (black == null || white == null)
@@ -42,7 +42,7 @@ namespace M22
                 return true;
             if (loadedBackgrounds.ContainsKey(name))
                 return true;
-            Texture2D temp = Resources.Load("Backgrounds/" + name) as Texture2D;
+            Texture2D temp = Resources.Load("March22/Backgrounds/" + name) as Texture2D;
             if (temp)
             {
                 Sprite tempSpr = Sprite.Create(temp, new Rect(0, 0, temp.width, temp.height), new Vector2(0, 0));

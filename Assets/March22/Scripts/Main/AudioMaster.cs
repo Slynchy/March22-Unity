@@ -93,7 +93,7 @@ namespace M22
         static public bool LoadMusic(string name)
         {
             if (loadedAudio.ContainsKey(name)) return true;
-            AudioClip temp = Resources.Load("Music/" + name) as AudioClip;
+            AudioClip temp = Resources.Load("March22/Music/" + name) as AudioClip;
             if (temp != null)
             {
                 loadedAudio.Add(name, temp);
@@ -101,7 +101,7 @@ namespace M22
             }
             else
             {
-                Debug.LogError("Failed to load audio: Music/" + name);
+                Debug.LogError("Failed to load audio: March22/Music/" + name);
                 return false;
             }
         }
@@ -109,7 +109,7 @@ namespace M22
         static public bool LoadSting(string name)
         {
             if (loadedAudio.ContainsKey(name)) return true;
-            AudioClip temp = Resources.Load("SFX/" + name) as AudioClip;
+            AudioClip temp = Resources.Load("March22/SFX/" + name) as AudioClip;
             if (temp != null)
             {
                 loadedAudio.Add(name, temp);
@@ -117,7 +117,7 @@ namespace M22
             }
             else
             {
-                Debug.LogError("Failed to load audio: SFX/" + name);
+                Debug.LogError("Failed to load audio: March22/SFX/" + name);
                 return false;
             }
         }

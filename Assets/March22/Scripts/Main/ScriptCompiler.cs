@@ -119,7 +119,7 @@ namespace M22
         private static void InitializeCharNames()
         {
             CharacterNames = new Dictionary<ulong, script_character>();
-            string tempStr = UnityWrapper.LoadTextFileAsString("CHARACTER_NAMES");
+            string tempStr = UnityWrapper.LoadTextFileAsString("March22/CHARACTER_NAMES");
             tempStr += "\n\n"; // <- hack to fix last line being cut off
 
             string[] lines = tempStr.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
@@ -218,10 +218,10 @@ namespace M22
         static public LoadedVariables LoadVariablesFile()
         {
             var result = new LoadedVariables();
-            var file = UnityWrapper.LoadTextFileAsString("VARIABLES");
+            var file = UnityWrapper.LoadTextFileAsString("March22/VARIABLES");
             if (file == null || file == "")
             {
-                UnityWrapper.LogError("Failed to load \"Resources/VARIABLES.txt\"! You should have one even if you aren't using it!");
+                UnityWrapper.LogError("Failed to load \"Resources/March22/VARIABLES.txt\"! You should have one even if you aren't using it!");
                 return result;
             }
 

@@ -137,12 +137,17 @@ namespace M22
 
             VideoClip temp = Resources.Load<VideoClip>("Video/" + _file) as VideoClip;
             if (temp == null)
-                return false;
-            else
             {
-                loadedVideoClips.Add(_file, temp);
-                return true;
+                temp = Resources.Load<VideoClip>("March22/Video/" + _file) as VideoClip;
+
+                if(temp == null)
+                {
+                    return false;
+                }
             }
+
+            loadedVideoClips.Add(_file, temp);
+            return true;
         }
 
         public void SetCurrentInlineFunction(line_c _lineC) { CurrentInlineFunction = _lineC; }
@@ -236,7 +241,7 @@ namespace M22
             
             if(LoopedSFXPrefab == null)
             {
-                LoopedSFXPrefab = Resources.Load("Prefabs/SFXPrefab") as GameObject;
+                LoopedSFXPrefab = Resources.Load("March22/Prefabs/SFXPrefab") as GameObject;
                 if (LoopedSFXPrefab == null)
                 {
                     Debug.LogError("Failed to load LoopedSFXPrefab! Check \"Resources/Prefabs\" for this!");
@@ -737,7 +742,7 @@ namespace M22
 
         public void DialogueExampleFunction()
         {
-            LoadScript("DialogueExample");
+            LoadScript("March22/DialogueExample");
             ShowText();
         }
 
