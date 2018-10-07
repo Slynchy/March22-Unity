@@ -13,7 +13,9 @@ namespace M22
 
         static bool _forceStop = false;
 
-        MonoBehaviour _eventMonoBehaviour;
+        static MonoBehaviour _eventMonoBehaviour;
+
+        static private Coroutine currCoroutine;
 
         public AudioMaster(AudioSource _musicSrc, MonoBehaviour __eventMonoBehaviour)
         {
@@ -27,18 +29,12 @@ namespace M22
             float startVolume = audioSource.volume;
 
             while (audioSource.volume > 0)
-            {
-                if (_forceStop == true)
-                {
-                    _forceStop = false;
-                    yield break;
-                }
-
+            { 
                 audioSource.volume -= startVolume * Time.deltaTime * FadeTime;
 
                 yield return null;
             }
-
+            
             audioSource.Stop();
             audioSource.volume = startVolume;
         }
@@ -87,7 +83,15 @@ namespace M22
         public void StopMusic(string _floatInput)
         {
             float speed = float.Parse(_floatInput);
-            _eventMonoBehaviour.StartCoroutine(FadeOut(musicSrc, speed));
+            //Debug.LogFormat("Stopping music at speed of {0}", _floatInput);
+
+            if(currCoroutine != null)
+            {
+                _eventMonoBehaviour.StopCoroutine(currCoroutine);
+                currCoroutine = null;
+            }
+
+            currCoroutine = _eventMonoBehaviour.StartCoroutine(FadeOut(musicSrc, speed));
         }
 
         static public bool LoadMusic(string name)
@@ -132,7 +136,11 @@ namespace M22
 
         static public void ChangeTrack(string _track)
         {
-            _forceStop = true;
+            if (currCoroutine != null)
+            {
+                _eventMonoBehaviour.StopCoroutine(currCoroutine);
+                currCoroutine = null;
+            }
             musicSrc.Stop();
             musicSrc.time = 0;
             AudioClip track;
