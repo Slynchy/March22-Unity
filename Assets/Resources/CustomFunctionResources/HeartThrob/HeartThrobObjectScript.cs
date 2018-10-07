@@ -41,7 +41,10 @@ namespace M22
                             stage++;
                         break;
                     case 2:
-                        callback();
+                        if (callback != null)
+                        {
+                            callback();
+                        }
                         Destroy(this.gameObject);
                         break;
                 }

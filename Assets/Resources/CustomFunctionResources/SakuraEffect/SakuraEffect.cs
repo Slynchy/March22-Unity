@@ -7,15 +7,20 @@ namespace M22
 {
     namespace CustomFunctions
     {
-        public class SnowEffect : CustomFunction
+        public class SakuraEffect : CustomFunction
         {
-            GameObject SnowEffectPrefab;
-            GameObject SnowEffectInstance;
-            SnowEffectObjectScript SnowEffectScript;
+            GameObject SakuraEffectPrefab;
+            GameObject SakuraEffectInstance;
+            SakuraEffectObjectScript SakuraEffectScript;
+
+            public override string Keyword()
+            {
+                return "sakura_effect";
+            }
 
             public override void Awake()
             {
-                SnowEffectPrefab = Resources.Load<GameObject>("CustomFunctionResources/SnowEffect/SnowEffectPrefab") as GameObject;
+                SakuraEffectPrefab = Resources.Load<GameObject>("CustomFunctionResources/SakuraEffect/SakuraPrefab") as GameObject;
             }
 
             public override void Func(string[] _params)
@@ -28,19 +33,19 @@ namespace M22
                 else
                 {
                     Debug.LogError("Invalid parameter on SnowEffect function!");
-                    Camera.main.GetComponent<M22.ScriptMaster>().NextLine();
+                    this.scriptMaster.NextLine();
                     return;
                 }
 
                 // starting
                 if (stopOrStart == true)
                 {
-                    SnowEffectInstance = GameObject.Instantiate<GameObject>(SnowEffectPrefab, GameObject.Find("PostCharacterEffectCanvas").transform);
-                    SnowEffectScript = SnowEffectInstance.GetComponent<SnowEffectObjectScript>();
+                    SakuraEffectInstance = GameObject.Instantiate<GameObject>(SakuraEffectPrefab, this.scriptMaster.GetCanvas(M22.ScriptMaster.CANVAS_TYPES.POSTCHARACTER).transform);
+                    SakuraEffectScript = SakuraEffectInstance.GetComponent<SakuraEffectObjectScript>();
                 }
                 else // stopping
                 {
-                    if (SnowEffectInstance == null || SnowEffectScript == null)
+                    if (SakuraEffectInstance == null || SakuraEffectScript == null)
                     {
                         var gameObjects = GameObject.FindObjectsOfType<GameObject>() as GameObject[];
 
@@ -48,23 +53,23 @@ namespace M22
                         {
                             if (gameObjects[i].name.Contains("SakuraPrefab"))
                             {
-                                SnowEffectInstance = gameObjects[i];
-                                SnowEffectScript = SnowEffectInstance.GetComponent<SnowEffectObjectScript>();
+                                SakuraEffectInstance = gameObjects[i];
+                                SakuraEffectScript = SakuraEffectInstance.GetComponent<SakuraEffectObjectScript>();
                                 break;
                             }
                         }
 
-                        if (!SnowEffectInstance || !SnowEffectScript)
+                        if (!SakuraEffectInstance || !SakuraEffectScript)
                         {
-                            Debug.LogError("Trying to stop SnowEffect when there isn't one!");
-                            Camera.main.GetComponent<M22.ScriptMaster>().NextLine();
+                            Debug.LogError("Trying to stop SakuraEffect when there isn't one!");
+                            this.scriptMaster.NextLine();
                             return;
                         }
                     }
-                    SnowEffectScript.Stop();
+                    SakuraEffectScript.Stop();
                 }
 
-                Camera.main.GetComponent<M22.ScriptMaster>().NextLine();
+                this.scriptMaster.NextLine();
 
             }
         }

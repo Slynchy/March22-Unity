@@ -13,6 +13,11 @@ namespace M22
             GameObject HeartThrobInstance;
             HeartThrobObjectScript HeartThrobScript;
 
+            public override string Keyword()
+            {
+                return "heart_throb";
+            }
+
             public override void Awake()
             {
                 HeartThrobPrefab = Resources.Load<GameObject>("CustomFunctionResources/HeartThrob/HeartThrobPrefab") as GameObject;
@@ -24,7 +29,7 @@ namespace M22
                 HeartThrobScript = HeartThrobInstance.GetComponent<HeartThrobObjectScript>();
                 HeartThrobScript.fadeInSpeed = float.Parse(_params[0]);
                 HeartThrobScript.fadeOutSpeed = float.Parse(_params[1]);
-                HeartThrobScript.callback = Camera.main.GetComponent<M22.ScriptMaster>().NextLine;
+                HeartThrobScript.callback = this.scriptMaster.NextLine;
             }
         }
     }

@@ -11,23 +11,22 @@ namespace M22
         {
             GameObject HospitalMaskPrefab;
             GameObject HospitalMaskInstance;
-            M22.ScriptMaster ScriptMaster;
+
+            public override string Keyword()
+            {
+                return "HospitalMask";
+            }
 
             public override void Awake()
             {
                 HospitalMaskPrefab = Resources.Load<GameObject>("CustomFunctionResources/HospitalMask/HospitalMaskPrefab") as GameObject;
             }
 
-            public override void Start()
-            {
-                ScriptMaster = Camera.main.GetComponent<M22.SceneManager>().ScriptMaster;
-            }
-
             public override void Func(string[] _params)
             {
                 if (_params[0].Equals("show"))
                 {
-                    HospitalMaskInstance = GameObject.Instantiate<GameObject>(HospitalMaskPrefab, ScriptMaster.GetCanvas(M22.ScriptMaster.CANVAS_TYPES.POSTCHARACTER).GetComponent<RectTransform>().transform) as GameObject;
+                    HospitalMaskInstance = GameObject.Instantiate<GameObject>(HospitalMaskPrefab, this.scriptMaster.GetCanvas(M22.ScriptMaster.CANVAS_TYPES.POSTCHARACTER).GetComponent<RectTransform>().transform) as GameObject;
                 }
                 else
                 {
@@ -36,7 +35,7 @@ namespace M22
                     else
                         GameObject.Destroy(HospitalMaskInstance);
                 }
-                Camera.main.GetComponent<M22.ScriptMaster>().NextLine();
+                this.scriptMaster.NextLine();
             }
         }
     }

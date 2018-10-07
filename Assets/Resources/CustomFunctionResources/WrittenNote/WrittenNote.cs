@@ -12,16 +12,15 @@ namespace M22
         {
             GameObject WrittenNoteInstance;
             GameObject WrittenNotePrefab;
-            ScriptMaster ScriptMaster;
+
+            public override string Keyword()
+            {
+                    return "WrittenNote";
+            }
 
             public override void Awake()
             {
                 WrittenNotePrefab = Resources.Load<GameObject>("CustomFunctionResources/WrittenNote/NotePrefab") as GameObject;
-            }
-
-            public override void Start()
-            {
-                ScriptMaster = Camera.main.GetComponent<M22.SceneManager>().ScriptMaster;
             }
 
             // param1 = in or out
@@ -44,7 +43,7 @@ namespace M22
                 {
                     string param2_fixed = _params[1].Replace('_', ' ');
                     param2_fixed = param2_fixed.Replace("\\n", "\n");
-                    WrittenNoteInstance = GameObject.Instantiate<GameObject>(WrittenNotePrefab, ScriptMaster.GetCanvas(M22.ScriptMaster.CANVAS_TYPES.POSTCHARACTER).transform);
+                    WrittenNoteInstance = GameObject.Instantiate<GameObject>(WrittenNotePrefab, this.scriptMaster.GetCanvas(M22.ScriptMaster.CANVAS_TYPES.POSTCHARACTER).transform);
                     WrittenNoteInstance.GetComponentInChildren<Text>().text = param2_fixed;
                 }
             }

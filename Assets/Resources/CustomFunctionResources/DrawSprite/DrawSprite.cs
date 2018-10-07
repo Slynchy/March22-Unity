@@ -11,16 +11,15 @@ namespace M22
         {
             GameObject SpriteInstance;
             GameObject SpritePrefab;
-            ScriptMaster ScriptMaster;
+
+            public override string Keyword()
+            {
+                return "DrawSprite";
+            }
 
             public override void Awake()
             {
-                SpritePrefab = Resources.Load<GameObject>("CustomFunctionResources/DrawSprite/SpritePrefab") as GameObject;
-            }
-
-            public override void Start()
-            {
-                ScriptMaster = Camera.main.GetComponent<M22.SceneManager>().ScriptMaster;
+                SpritePrefab = Resources.Load<GameObject>("March22/CustomFunctionResources/DrawSprite/SpritePrefab") as GameObject;
             }
 
             public override void Func(string[] _params)
@@ -39,7 +38,7 @@ namespace M22
                 }
                 else
                 {
-                    SpriteInstance = GameObject.Instantiate<GameObject>(SpritePrefab, ScriptMaster.GetCanvas(M22.ScriptMaster.CANVAS_TYPES.POSTCHARACTER).transform);
+                    SpriteInstance = GameObject.Instantiate<GameObject>(SpritePrefab, this.scriptMaster.GetCanvas(M22.ScriptMaster.CANVAS_TYPES.POSTCHARACTER).transform);
                     SpriteInstance.GetComponent<SpriteObjectScript>().SetSprite(Resources.Load<Sprite>("Images/" + _params[1]));
                 }
             }
