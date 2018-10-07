@@ -53,7 +53,7 @@ namespace M22
 
             if (effect == null)
             {
-                effect = Resources.Load<Sprite>("Images/white") as Sprite;
+                effect = Resources.Load<Sprite>("March22/Images/white") as Sprite;
             }
             img.material.SetTexture("_TertiaryTex", effect.texture);
             img.material.SetColor("_AmbientLighting", RenderSettings.ambientLight);
