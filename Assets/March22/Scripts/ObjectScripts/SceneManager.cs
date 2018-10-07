@@ -76,19 +76,19 @@ namespace M22
 
         private void AddPrefabs()
         {
-            BackgroundCanvas = GameObject.Instantiate(BackgroundCanvasPrefab);
-            PreCharacterEffectCanvas = GameObject.Instantiate(PreCharacterEffectCanvasPrefab);
-            CharacterCanvas = GameObject.Instantiate(CharacterCanvasPrefab);
-            PostCharacterEffectCanvas = GameObject.Instantiate(PostCharacterEffectCanvasPrefab);
-            TextboxCanvas = GameObject.Instantiate(TextboxCanvasPrefab);
-            EffectCanvas = GameObject.Instantiate(EffectCanvasPrefab);
+            BackgroundCanvas = GameObject.Instantiate(BackgroundCanvasPrefab, this.transform);
+            PreCharacterEffectCanvas = GameObject.Instantiate(PreCharacterEffectCanvasPrefab, this.transform);
+            CharacterCanvas = GameObject.Instantiate(CharacterCanvasPrefab, this.transform);
+            PostCharacterEffectCanvas = GameObject.Instantiate(PostCharacterEffectCanvasPrefab, this.transform);
+            TextboxCanvas = GameObject.Instantiate(TextboxCanvasPrefab, this.transform);
+            EffectCanvas = GameObject.Instantiate(EffectCanvasPrefab, this.transform);
 
-            BackgroundCanvas.transform.SetParent(this.transform);
-            PreCharacterEffectCanvas.transform.SetParent(this.transform);
-            CharacterCanvas.transform.SetParent(this.transform);
-            PostCharacterEffectCanvas.transform.SetParent(this.transform);
-            TextboxCanvas.transform.SetParent(this.transform);
-            EffectCanvas.transform.SetParent(this.transform);
+            BackgroundCanvas.name = "BackgroundCanvas";
+            PreCharacterEffectCanvas.name = "PreCharacterEffectCanvas";
+            CharacterCanvas.name = "CharacterCanvas";
+            PostCharacterEffectCanvas.name = "PostCharacterEffectCanvas";
+            TextboxCanvas.name = "TextboxCanvas";
+            EffectCanvas.name = "EffectCanvas";
 
             BackgroundCanvas.GetComponent<Canvas>().worldCamera = this.camera;
             PreCharacterEffectCanvas.GetComponent<Canvas>().worldCamera = this.camera;
