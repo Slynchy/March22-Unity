@@ -107,7 +107,7 @@ namespace M22
                 choiceButtons.RemoveAt(2);
             }
 
-            scriptMastRef = Camera.main.GetComponent<M22.ScriptMaster>();
+            scriptMastRef = Camera.main.GetComponent<SceneManager>().ScriptMaster;
             foreach (Image img in this.gameObject.GetComponentsInChildren<Image>())
             {
                 img.color = new Color(1, 1, 1, 0);
