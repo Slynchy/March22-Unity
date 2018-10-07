@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -152,6 +152,20 @@ namespace M22
 
         public void SetCurrentInlineFunction(line_c _lineC) { CurrentInlineFunction = _lineC; }
 
+        public Sprite TryToLoadImage(string imgName)
+        {
+            var result = Resources.Load<Sprite>(imgName);
+            if(result == null)
+            {
+                result = Resources.Load<Sprite>("March22/" + imgName);
+                if(result == null)
+                {
+                    Debug.LogErrorFormat("Failed to find image {0}!", imgName);
+                }
+            }
+            return result;
+        }
+
         void Awake()
         {
             WaitQueue = new List<WaitObject>();
@@ -228,13 +242,13 @@ namespace M22
             if (TransitionPrefab == null)
                 Debug.LogError("TransitionPrefab not attached to ScriptMaster! Check this under Main Camera!");
             TransitionEffects = new Dictionary<string, Sprite>();
-            TransitionEffects.Add("tr_eyes", Resources.Load<Sprite>("Transitions/tr_eyes") as Sprite);
-            TransitionEffects.Add("default", Resources.Load<Sprite>("Images/white") as Sprite);
-            TransitionEffects.Add("tr-pronoise", Resources.Load<Sprite>("Transitions/tr-pronoise") as Sprite);
-            TransitionEffects.Add("tr-clockwipe", Resources.Load<Sprite>("Transitions/tr-clockwipe") as Sprite);
-            TransitionEffects.Add("tr-softwipe", Resources.Load<Sprite>("Transitions/tr-softwipe") as Sprite);
-            TransitionEffects.Add("tr-delayblinds", Resources.Load<Sprite>("Transitions/tr-delayblinds") as Sprite);
-            TransitionEffects.Add("tr-flashback", Resources.Load<Sprite>("Transitions/tr-flashback") as Sprite);
+            TransitionEffects.Add("tr_eyes", TryToLoadImage("Transitions/tr_eyes") as Sprite);
+            TransitionEffects.Add("default", TryToLoadImage("Images/white") as Sprite);
+            TransitionEffects.Add("tr-pronoise", TryToLoadImage("Transitions/tr-pronoise") as Sprite);
+            TransitionEffects.Add("tr-clockwipe", TryToLoadImage("Transitions/tr-clockwipe") as Sprite);
+            TransitionEffects.Add("tr-softwipe", TryToLoadImage("Transitions/tr-softwipe") as Sprite);
+            TransitionEffects.Add("tr-delayblinds", TryToLoadImage("Transitions/tr-delayblinds") as Sprite);
+            TransitionEffects.Add("tr-flashback", TryToLoadImage("Transitions/tr-flashback") as Sprite);
 
             if (VideoPlayerPrefab == null)
                 Debug.LogError("VideoPlayerPrefab not attached to ScriptMaster! Check this under Main Camera!");
@@ -550,7 +564,7 @@ namespace M22
                         TransitionObj.Speed = float.Parse(_line.m_parameters_txt[3]);
                     }
                     //TransitionObj.srcSprite = background.sprite;
-                    TransitionObj.srcSprite = Resources.Load<Sprite>("Images/empty") as Sprite;
+                    TransitionObj.srcSprite = TryToLoadImage("Images/empty") as Sprite;
                     TransitionEffects.TryGetValue(_line.m_parameters_txt[1], out TransitionObj.effect);
                     TransitionObj.destSprite = M22.BackgroundMaster.GetBackground(_line.m_parameters_txt[0]);
                     TransitionObj.inOrOut = (String.Equals(_line.m_parameters_txt[2], "in") ? BackgroundTransition.IN_OR_OUT.IN : BackgroundTransition.IN_OR_OUT.OUT);
