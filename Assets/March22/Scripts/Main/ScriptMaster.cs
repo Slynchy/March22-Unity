@@ -22,6 +22,15 @@ namespace M22
         VIDEO_PLAYING
     }
 
+    abstract public class InternalFunction
+    {
+        protected ScriptMaster scriptMaster;
+        public void SetScriptMaster(ref ScriptMaster smPtr) { this.scriptMaster = smPtr; }
+        virtual public void Awake() { }
+        virtual public void Start() { }
+        virtual public void Func(ref line_c _line, bool _isInline = false) { }
+    }
+
     public struct WaitObject
     {
         public WAIT_STATE type;
@@ -76,7 +85,7 @@ namespace M22
         public TypeWriterScript TEXT;
 
         //private WAIT_STATE WaitState = 0;
-        private List<WaitObject> WaitQueue;
+        public List<WaitObject> WaitQueue;
 
         public GameObject TransitionPrefab;
         private Dictionary<string, Sprite> TransitionEffects;
@@ -109,6 +118,8 @@ namespace M22
 
         static public ScriptCompiler.ANIMATION_TYPES ActiveAnimationType;
 
+        private Dictionary<LINETYPE, InternalFunction> registeredFunctions;
+
         public ScriptMaster(
             VNHandler _VNHandlerScript, 
             AudioMaster _AudioMasterScript, 
@@ -126,8 +137,26 @@ namespace M22
             VideoPlayerPrefab = _VideoPlayerPrefab;
             LoopedSFXPrefab = _LoopedSFXPrefab;
 
+            this.registeredFunctions = new Dictionary<LINETYPE, InternalFunction>();
+            this.registerFunctionClass(LINETYPE.GOTO, new M22.Functions.Goto());
+            this.registerFunctionClass(LINETYPE.DRAW_CHARACTER, new M22.Functions.DrawCharacter());
+            this.registerFunctionClass(LINETYPE.WAIT, new M22.Functions.Wait());
+            this.registerFunctionClass(LINETYPE.NEW_PAGE, new M22.Functions.NewPage());
+            this.registerFunctionClass(LINETYPE.DRAW_BACKGROUND, new M22.Functions.DrawBackground());
+
             this.Awake();
             this.Start();
+        }
+
+        void registerFunctionClass(LINETYPE _lineType, InternalFunction _function)
+        {
+            if (this.registeredFunctions.ContainsKey(_lineType))
+            {
+                throw new Exception("LINETYPE " + _lineType + " IS ALREADY REGISTERED");
+            }
+            var me = this;
+            _function.SetScriptMaster(ref me);
+            this.registeredFunctions.Add(_lineType, _function);
         }
 
         static public bool LoadVideoFile(string _file)
@@ -148,6 +177,11 @@ namespace M22
 
             loadedVideoClips.Add(_file, temp);
             return true;
+        }
+
+        public void setWaitCommandTimer(float value)
+        {
+            waitCommandTimer = value;
         }
 
         public void SetCurrentInlineFunction(line_c _lineC) { CurrentInlineFunction = _lineC; }
@@ -301,15 +335,54 @@ namespace M22
                 TEXT.SetNewCurrentLine("");
             ExecuteFunction(CURRENT_LINE);
         }
+
         public void GotoLine(int lineNum)
         {
             lineIndex = lineNum - 1;
             NextLine();
         }
 
+        public ref BackgroundScript getBackgroundTransScript()
+        {
+            return ref this.backgroundTransScript;
+        }
+
+        public ref List<WaitObject> getWaitQueue()
+        {
+            return ref this.WaitQueue;
+        }
+
+        public ref UnityEngine.UI.Image getBackground()
+        {
+            return ref this.background;
+        }
+
+        public ref UnityEngine.UI.Image getBackgroundTrans()
+        {
+            return ref this.backgroundTrans;
+        }
+
+        public ref BackgroundScript getBackgroundScript()
+        {
+            return ref this.backgroundScript;
+        }
+
+        public ref VNHandler getVNHandler()
+        {
+            return ref this.VNHandlerScript;
+        }
+
         public void ExecuteFunction(line_c _line, bool _isInLine = false)
         {
             if (_isInLine == true) inLineFunctionMode = true;
+
+            if (this.registeredFunctions.ContainsKey(_line.m_lineType))
+            {
+                InternalFunction func;
+                this.registeredFunctions.TryGetValue(_line.m_lineType, out func);
+                
+                func.Func(ref _line);
+            }
 
             switch (_line.m_lineType)
             {
@@ -373,21 +446,8 @@ namespace M22
                     }
                     break;
                 case LINETYPE.GOTO:
-                    bool success = false;
-                    foreach (var item in M22.ScriptCompiler.currentScript_checkpoints)
-                    {
-                        if (item.m_name == _line.m_parameters_txt[0])
-                        {
-                            success = true;
-                            GotoLine(item.m_position);
-                            break;
-                        }
-                    }
-                    if (!success)
-                    {
-                        Debug.LogError("Failed to find checkpoint: " + _line.m_parameters_txt[0]);
-                        NextLine(_isInLine);
-                    }
+                    // NextLine is handled by GotoLine function
+                    // Also cannot be run inline, but #wontfix
                     break;
                 case LINETYPE.WAIT:
                     //WaitState = WAIT_STATE.WAIT_COMMAND;
@@ -395,15 +455,6 @@ namespace M22
                     waitCommandTimer = 0;
                     break;
                 case LINETYPE.DRAW_CHARACTER:
-                    VNHandlerScript.CreateCharacter(_line.m_parameters_txt[0], _line.m_parameters_txt[1], _line.m_parameters[0]);
-                    if (_line.m_parameters[1] != 1)
-                    {
-                        HideText();
-                        //WaitState = WAIT_STATE.CHARACTER_FADEIN;
-                        WaitQueue.Add(new WaitObject(WAIT_STATE.CHARACTER_FADEIN));
-                    }
-                    else
-                        NextLine(_isInLine);
                     break;
                 case LINETYPE.PLAY_MUSIC:
                     M22.AudioMaster.ChangeTrack(_line.m_parameters_txt[0]);
@@ -615,12 +666,12 @@ namespace M22
             }
         }
 
-        void HideText(bool _fade = true, float _speed = 6.0f)
+        public void HideText(bool _fade = true, float _speed = 6.0f)
         {
             TextboxIMG_script.HideText(_fade, _speed);
         }
 
-        void ShowText(bool _fade = true, float _speed = 6.0f)
+        public void ShowText(bool _fade = true, float _speed = 6.0f)
         {
             TextboxIMG_script.ShowText(_fade, _speed);
         }
