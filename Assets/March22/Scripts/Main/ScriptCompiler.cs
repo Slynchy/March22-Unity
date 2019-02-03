@@ -356,6 +356,8 @@ namespace M22
                 scriptPos++;
             }
 
+            result.ClearNullOperators();
+
             return result;
         }
 
@@ -475,8 +477,9 @@ namespace M22
             switch (_lineC.m_lineType)
             {
                 case M22.LINETYPE.CHECKPOINT:
-                    _splitStr[0] = _splitStr[0].Substring(2);
-                    _splitStr[0] = _splitStr[0].TrimEnd('\r', '\n');
+                    _lineC.m_parameters_txt = new List<string>();
+                    _splitStr[0] = _splitStr[0].Substring(2).TrimEnd('\r', '\n');
+                    _lineC.m_parameters_txt.Add(_splitStr[0]);
                     _chkpnt.Add(new M22.script_checkpoint(_scriptPos, _splitStr[0]));
                     break;
                 case M22.LINETYPE.ANIMATION_TYPE:

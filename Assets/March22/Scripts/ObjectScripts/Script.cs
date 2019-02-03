@@ -25,6 +25,22 @@ namespace M22
                 return compiledLines[index];
             }
 
+            public int GetCheckpointIndex(string chkpntName)
+            {
+                for (var i = 0; i < this.compiledLines.Count(); i++)
+                {
+                    var current = this.compiledLines[i];
+                    if (current.m_lineType == LINETYPE.CHECKPOINT)
+                    {
+                        if(current.m_parameters_txt[0] == chkpntName)
+                        {
+                            return i;
+                        }
+                    }
+                }
+                return -1;
+            }
+
             public int Length()
             {
                 return compiledLines.Count;
@@ -62,6 +78,12 @@ namespace M22
                 //}
                 //return default(Texture2D);
                 return default(Texture2D);
+            }
+
+            public void ClearNullOperators()
+            {
+                var query = this.compiledLines.Where((line, index) => line.m_lineType != LINETYPE.NULL_OPERATOR);
+                this.compiledLines = query.ToList();
             }
 
             public Script()

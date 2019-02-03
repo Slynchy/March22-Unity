@@ -17,7 +17,7 @@ namespace M22
         }
 
         public bool complete = false;
-        public float speed = 0.025f;
+        public float speed = 0.1f;
         public float delay = 1.0f;
         public Sprite effect;
         public Sprite destSpr;
