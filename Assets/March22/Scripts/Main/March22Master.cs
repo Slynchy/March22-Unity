@@ -45,6 +45,11 @@ namespace M22
             }
         }
 
+        public ref ScriptMaster getScriptMaster()
+        {
+            return ref SMPtr;
+        }
+
         // Update is called once per frame
         void Update()
         {

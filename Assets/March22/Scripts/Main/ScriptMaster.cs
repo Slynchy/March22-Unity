@@ -98,6 +98,8 @@ namespace M22
         private bool inLineFunctionMode = false;
         private line_c CurrentInlineFunction;
 
+        private bool makingDecision = false;
+
         private List<Canvas> Canvases;
         public enum CANVAS_TYPES
         {
@@ -338,6 +340,8 @@ namespace M22
                 TEXT.FinishedInlineFunction();
                 inLineFunctionMode = false;
                 return;
+            } else if (isMakingDecision()) {
+                return;
             }
 
             ++lineIndex;
@@ -353,6 +357,16 @@ namespace M22
         {
             lineIndex = lineNum - 1;
             NextLine();
+        }
+
+        public void setMakingDecision(bool value)
+        {
+            this.makingDecision = value;
+        }
+
+        public bool isMakingDecision()
+        {
+            return this.makingDecision;
         }
 
         public ref BackgroundScript getBackgroundTransScript()
@@ -468,6 +482,7 @@ namespace M22
                     NextLine(_isInLine);
                     break;
                 case LINETYPE.MAKE_DECISION:
+                    setMakingDecision(true);
                     GameObject tempObj = GameObject.Instantiate<GameObject>(DecisionsPrefab, Canvases[(int)CANVAS_TYPES.EFFECTS].transform);
                     if (_line.m_parameters_txt.Count == 6)
                         tempObj.GetComponent<Decision>().Initialize(_line.m_parameters_txt[0], _line.m_parameters_txt[1], _line.m_parameters_txt[2], _line.m_parameters_txt[3], _line.m_parameters_txt[4], _line.m_parameters_txt[5]);

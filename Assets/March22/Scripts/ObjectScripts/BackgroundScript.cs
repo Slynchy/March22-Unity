@@ -41,7 +41,7 @@ namespace M22
                     }
                     break;
                 case ScriptCompiler.ANIMATION_TYPES.LERP:
-                    while (RT.anchoredPosition != newPos)
+                    while (progress < 1)
                     {
                         if (isMoving == false) break;
                         progress += Time.deltaTime * speed;

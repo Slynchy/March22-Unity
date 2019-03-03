@@ -568,6 +568,12 @@ namespace M22
                     }
                     else
                         _lineC.m_parameters.Add(0);
+                    if (_splitStr.Count > 2 && _splitStr[2].Equals("true"))
+                    {
+                        _lineC.m_parameters.Add(1);
+                    }
+                    else
+                        _lineC.m_parameters.Add(0);
                     break;
                 case M22.LINETYPE.PLAY_STING:
                     if (_splitStr.Count > 1)

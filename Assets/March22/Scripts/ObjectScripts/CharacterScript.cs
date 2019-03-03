@@ -17,7 +17,7 @@ namespace M22
         }
 
         public bool complete = false;
-        public float speed = 0.1f;
+        public float speed = 0.2f;
         public float delay = 1.0f;
         public Sprite effect;
         public Sprite destSpr;
@@ -98,7 +98,7 @@ namespace M22
                     }
                     break;
                 case ScriptCompiler.ANIMATION_TYPES.LERP:
-                    while (rect.anchoredPosition != newPos || progress >= 1.0f)
+                    while ((rect.anchoredPosition != newPos) || (progress < 1.0f))
                     {
                         progress += Time.deltaTime * speed;
                         rect.anchoredPosition = Vector2.Lerp(oldPos, newPos, progress);

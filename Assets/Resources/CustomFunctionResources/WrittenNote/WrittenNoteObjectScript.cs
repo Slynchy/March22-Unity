@@ -69,7 +69,7 @@ public class WrittenNoteObjectScript : MonoBehaviour {
             RT.anchoredPosition = new Vector2(0, Mathf.Lerp(0, origYPos, progress));
             yield return null;
         }
-        Camera.main.GetComponent<M22.ScriptMaster>().NextLine(false);
+        GameObject.Find("March22-MasterObj").GetComponent<M22.March22Master>().getScriptMaster().NextLine(false);
         Destroy(this.gameObject);
     }
 
@@ -95,7 +95,7 @@ public class WrittenNoteObjectScript : MonoBehaviour {
     {
 		if(entered == true && M22.InputWrapper.NextLineButton())
         {
-            Camera.main.GetComponent<M22.ScriptMaster>().NextLine(false);
+            GameObject.Find("March22-MasterObj").GetComponent<M22.March22Master>().getScriptMaster().NextLine(false);
         }
 	}
 }

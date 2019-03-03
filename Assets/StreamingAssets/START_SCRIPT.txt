@@ -10,7 +10,7 @@
 
 	A light breeze causes the naked branches overhead to rattle like wooden windchimes.
 
-	Goto en_A2c
+	Goto notedebug
 
 	This is a popular retreat for couples in the summer. The deciduous trees provide a beautiful green canopy, far out of sight of teachers and fellow students.
 
@@ -1070,7 +1070,10 @@
 		HideWindow
 		PlaySting time
 		Transition black tr-delayblinds 0
-		ClearCharacters true
+		ClearCharacter misha true
+		ClearCharacter shizu true
+		// ClearCharacters true
+		// there's a bug here where clearcharacters re-shows the window. fixme
 		PlaySting time
 		Transition school_scienceroom tr-delayblinds 0
 		ShowWindow
@@ -1237,6 +1240,8 @@
 		HideWindow
 		PlaySting time
 		Transition black tr-delayblinds 0
+		ClearCharacter misha true
+		ClearCharacter shizu true
 		PlaySting time
 		Transition school_scienceroom tr-delayblinds 0
 		ShowWindow
@@ -1282,6 +1287,7 @@
 
 		//scene bg school_scienceroom
 		//with shorttimeskip
+	--fixdrawcharbug
 		HideWindow
 		PlaySting time
 		Transition black tr-delayblinds 0
@@ -1318,9 +1324,9 @@
 
 		mi "Is that so? We can at least show you that much~!"
 
-		mi "Come on, the nurses have their own building, so we have to go outside."
+		ClearCharacters false true
 
-		ClearCharacters
+		mi "Come on, the nurses have their own building, so we have to go outside."
 		
 		HideWindow
 		Transition school_hallway3 tr-softwipe 0
@@ -1366,7 +1372,9 @@
 
 		StopMusic 0.16
 
+		HideWindow
 		ClearCharacters
+		ShowWindow
 
 		A whole building for stuff that has nothing to do with the actual education?
 
@@ -1380,13 +1388,13 @@
 
 		On a white door on the left is a green cross with the text “Head Nurse” and a nameplate.
 
-		PlaySound doorknock2
+		PlaySting doorknock2
 
 		A voice from the inside responds to my knock almost immediately, but I can't quite make it out.
 
 		It sounded a bit like an invitation to open the door, so I invite myself further in.
 
-		PlaySound dooropen
+		PlaySting dooropen
 		
 		HideWindow
 		Transition school_nurseoffice tr-softwipe 0
@@ -1420,7 +1428,7 @@
 
 		hi "Right… err, I'm a new student and my homeroom teacher told me to come and meet you. My name is Hisao Nakai."
 
-		PlaySound snap
+		PlaySting snap
 
 		His eyes light up with revelation and he snaps his fingers.
 
@@ -1529,10 +1537,10 @@
 		nk "Good. That's it, then. Come meet me if you ever need something."
 		
 		HideWindow
+		StopMusic 0.4
+		ClearCharacter nurse true
 		Transition school_nursehall tr-softwipe 0
 		ShowWindow
-
-		StopMusic 0.4
 
 		I'm ushered out before I even realize it. A quick visit, indeed.
 
@@ -1573,7 +1581,7 @@
 
 		DrawBackground school_dormext_start -400 0 1.25 1.0
 
-		"The dorm building is big and made of red brick. Like the others, it feels way too pompous for what it is, so I push forward, going inside."
+		The dorm building is big and made of red brick. Like the others, it feels way too pompous for what it is, so I push forward, going inside.
 		
 		HideWindow
 		Transition school_dormhallground tr-softwipe 0
@@ -1700,6 +1708,7 @@
 		ke "Never mind, it doesn't matter."
 
 		ClearCharacters
+		--notedebug
 		StopMusic 0.2
 
 		With that, he turns, fumbles around for a moment in search of the door handle,{{PlaySting doorslam}}{{Wait 300}} and shuts the door behind him.
