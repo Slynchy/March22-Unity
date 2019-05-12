@@ -298,6 +298,7 @@ namespace M22
                 Debug.LogError("TransitionPrefab not attached to ScriptMaster! Check this under Main Camera!");
             TransitionEffects = new Dictionary<string, Sprite>();
             TransitionEffects.Add("tr_eyes", TryToLoadImage("Transitions/tr_eyes") as Sprite);
+            TransitionEffects.Add("tr_flash", TryToLoadImage("Transitions/tr_flash") as Sprite);
             TransitionEffects.Add("default", TryToLoadImage("Images/white") as Sprite);
             TransitionEffects.Add("tr-pronoise", TryToLoadImage("Transitions/tr-pronoise") as Sprite);
             TransitionEffects.Add("tr-clockwipe", TryToLoadImage("Transitions/tr-clockwipe") as Sprite);
@@ -523,10 +524,10 @@ namespace M22
                     NextLine();
                     break;
                 case LINETYPE.EXECUTE_FUNCTION:
-                    string[] funcParams = new string[_line.m_parameters_txt.Count - 1];
-                    for (int i = 1; i < _line.m_parameters_txt.Count; i++)
+                    string[] funcParams = new string[_line.m_parameters_txt.Count];
+                    for (int i = 0; i < _line.m_parameters_txt.Count; i++)
                     {
-                        funcParams[i - 1] = _line.m_parameters_txt[i];
+                        funcParams[i] = _line.m_parameters_txt[i];
                     }
                     _line.m_custFunc.Func(funcParams);
                     break;

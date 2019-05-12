@@ -612,7 +612,7 @@ namespace M22
                             _lineC.m_parameters_txt.Add(_splitStr[i]);
                         }
                         _splitStr[_splitStr.Count - 1] = _splitStr[_splitStr.Count - 1].TrimEnd('\r', '\n');
-                        _lineC.m_parameters_txt.Add(_splitStr[_splitStr.Count - 1]);
+                        // _lineC.m_parameters_txt.Add(_splitStr[_splitStr.Count - 1]);
 
                         // should be 4
                         while(_lineC.m_parameters_txt.Count < 4)
