@@ -128,6 +128,7 @@ namespace M22
             {
                 scriptMastRef.SCRIPT_FLAGS.Add(choiceFlags[stringIndex]);
             }
+            scriptMastRef.setMakingDecision(false);
             scriptMastRef.NextLine();
         }
     }

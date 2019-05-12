@@ -19,7 +19,7 @@ namespace M22
 
             public override void Awake()
             {
-                SpritePrefab = Resources.Load<GameObject>("March22/CustomFunctionResources/DrawSprite/SpritePrefab") as GameObject;
+                SpritePrefab = Resources.Load<GameObject>("CustomFunctionResources/DrawSprite/SpritePrefab") as GameObject;
             }
 
             public override void Func(string[] _params)
@@ -39,7 +39,7 @@ namespace M22
                 else
                 {
                     SpriteInstance = GameObject.Instantiate<GameObject>(SpritePrefab, this.scriptMaster.GetCanvas(M22.ScriptMaster.CANVAS_TYPES.POSTCHARACTER).transform);
-                    SpriteInstance.GetComponent<SpriteObjectScript>().SetSprite(Resources.Load<Sprite>("Images/" + _params[1]));
+                    SpriteInstance.GetComponent<SpriteObjectScript>().SetSprite(Resources.Load<Sprite>("March22/Images/" + _params[1]));
                 }
             }
         }

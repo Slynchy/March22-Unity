@@ -52,20 +52,10 @@ namespace M22
             loadedCharacters = new Dictionary<string, Character>();
             CharacterPrefab = _CharacterPrefab;
 
-            VN = new TextboxSettings(
-                0,
-                0,
-                200,
-                400,
-                0, 0, 1, 0);
+            VN = new TextboxSettings(0, 0, 200, 400, 0, 0, 1, 0);
             VNSay = new TextboxSettings(67.5f, 49.5f, 134, 64);
 
-            Novel = new TextboxSettings(
-                0,
-                0,
-                0,
-                0,
-                0, 0, 1, 1);
+            Novel = new TextboxSettings(0, 0, 0, 0, 0, 0, 1, 1);
             NovelTxt = new TextboxSettings(50, 50, 80, 80);
 
             Awake();

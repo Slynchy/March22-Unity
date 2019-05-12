@@ -41,11 +41,10 @@ namespace M22
                 if (stopOrStart == true)
                 {
                     SakuraEffectInstance = GameObject.Instantiate<GameObject>(SakuraEffectPrefab, this.scriptMaster.GetCanvas(M22.ScriptMaster.CANVAS_TYPES.POSTCHARACTER).transform);
-                    SakuraEffectScript = SakuraEffectInstance.GetComponent<SakuraEffectObjectScript>();
                 }
                 else // stopping
                 {
-                    if (SakuraEffectInstance == null || SakuraEffectScript == null)
+                    if (SakuraEffectInstance == null)
                     {
                         var gameObjects = GameObject.FindObjectsOfType<GameObject>() as GameObject[];
 
@@ -54,19 +53,18 @@ namespace M22
                             if (gameObjects[i].name.Contains("SakuraPrefab"))
                             {
                                 SakuraEffectInstance = gameObjects[i];
-                                SakuraEffectScript = SakuraEffectInstance.GetComponent<SakuraEffectObjectScript>();
                                 break;
                             }
                         }
 
-                        if (!SakuraEffectInstance || !SakuraEffectScript)
+                        if (SakuraEffectInstance == null)
                         {
                             Debug.LogError("Trying to stop SakuraEffect when there isn't one!");
                             this.scriptMaster.NextLine();
                             return;
                         }
                     }
-                    SakuraEffectScript.Stop();
+                    GameObject.Destroy(SakuraEffectInstance);
                 }
 
                 this.scriptMaster.NextLine();

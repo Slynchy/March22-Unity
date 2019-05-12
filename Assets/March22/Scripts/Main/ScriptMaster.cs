@@ -98,6 +98,8 @@ namespace M22
         private bool inLineFunctionMode = false;
         private line_c CurrentInlineFunction;
 
+        private bool makingDecision = false;
+
         private List<Canvas> Canvases;
         public enum CANVAS_TYPES
         {
@@ -143,9 +145,22 @@ namespace M22
             this.registerFunctionClass(LINETYPE.WAIT, new M22.Functions.Wait());
             this.registerFunctionClass(LINETYPE.NEW_PAGE, new M22.Functions.NewPage());
             this.registerFunctionClass(LINETYPE.DRAW_BACKGROUND, new M22.Functions.DrawBackground());
+            this.registerFunctionClass(LINETYPE.SET_FLAG, new M22.Functions.SetFlag());
+            this.registerFunctionClass(LINETYPE.NARRATIVE, new M22.Functions.Narrative());
+            this.registerFunctionClass(LINETYPE.DIALOGUE, new M22.Functions.Dialogue());
+            this.registerFunctionClass(LINETYPE.CLEAR_CHARACTER, new M22.Functions.ClearCharacter());
+            this.registerFunctionClass(LINETYPE.CLEAR_CHARACTERS, new M22.Functions.ClearCharacters());
+            this.registerFunctionClass(LINETYPE.STOP_SFX_LOOPED, new M22.Functions.StopSFXLooped());
+            this.registerFunctionClass(LINETYPE.MOVEMENT_SPEED, new M22.Functions.MovementSpeed());
+            this.registerFunctionClass(LINETYPE.LOAD_SCRIPT, new M22.Functions.LoadScript());
 
             this.Awake();
             this.Start();
+        }
+
+        public ref M22.Script.Script getCurrentScript()
+        {
+            return ref this.currentScript_c;
         }
 
         void registerFunctionClass(LINETYPE _lineType, InternalFunction _function)
@@ -283,6 +298,7 @@ namespace M22
                 Debug.LogError("TransitionPrefab not attached to ScriptMaster! Check this under Main Camera!");
             TransitionEffects = new Dictionary<string, Sprite>();
             TransitionEffects.Add("tr_eyes", TryToLoadImage("Transitions/tr_eyes") as Sprite);
+            TransitionEffects.Add("tr_flash", TryToLoadImage("Transitions/tr_flash") as Sprite);
             TransitionEffects.Add("default", TryToLoadImage("Images/white") as Sprite);
             TransitionEffects.Add("tr-pronoise", TryToLoadImage("Transitions/tr-pronoise") as Sprite);
             TransitionEffects.Add("tr-clockwipe", TryToLoadImage("Transitions/tr-clockwipe") as Sprite);
@@ -325,6 +341,8 @@ namespace M22
                 TEXT.FinishedInlineFunction();
                 inLineFunctionMode = false;
                 return;
+            } else if (isMakingDecision()) {
+                return;
             }
 
             ++lineIndex;
@@ -340,6 +358,16 @@ namespace M22
         {
             lineIndex = lineNum - 1;
             NextLine();
+        }
+
+        public void setMakingDecision(bool value)
+        {
+            this.makingDecision = value;
+        }
+
+        public bool isMakingDecision()
+        {
+            return this.makingDecision;
         }
 
         public ref BackgroundScript getBackgroundTransScript()
@@ -386,75 +414,10 @@ namespace M22
 
             switch (_line.m_lineType)
             {
-                case LINETYPE.NARRATIVE:
-                    TEXT.SetNewCurrentLine(CURRENT_LINE.m_lineContents);
-                    VNHandlerScript.ClearCharacterName();
-                    break;
-                case LINETYPE.DIALOGUE:
-                    TEXT.SetNewCurrentLine(CURRENT_LINE.m_lineContents);
-                    VNHandlerScript.UpdateCharacterName(CURRENT_LINE.m_speaker);
-                    break;
-                case LINETYPE.NEW_PAGE:
-                    if (VNHandlerScript == null || VNHandlerScript.VNMode == false)
-                        TEXT.Reset(true, NextLine);
-                    else
-                        NextLine(_isInLine);
-                    break;
-                case LINETYPE.MOVEMENT_SPEED:
-                    if (VNHandlerScript != null)
-                        VNHandlerScript.SetMovementSpeed(float.Parse(_line.m_parameters_txt[0]));
-                    NextLine(_isInLine);
-                    break;
                 case LINETYPE.TEXT_SPEED:
                     if (TEXT != null)
                         TEXT.SetTextSpeed(float.Parse(_line.m_parameters_txt[0]));
                     NextLine(_isInLine);
-                    break;
-                case LINETYPE.DRAW_BACKGROUND:
-                    if (backgroundScript.IsMoving())
-                        backgroundScript.SetIsMoving(false);
-                    backgroundTrans.sprite = M22.BackgroundMaster.GetBackground(_line.m_parameters_txt[0]);
-                    //RectTransform tempRT = backgroundTrans.gameObject.GetComponent<RectTransform>();
-                    //tempRT.offsetMax = new Vector2(backgroundTrans.sprite.texture.height, 0);
-
-                    if (backgroundTrans.sprite == background.sprite)
-                    {
-                        //WaitState = WAIT_STATE.BACKGROUND_MOVING;
-                        WaitQueue.Add(new M22.WaitObject(WAIT_STATE.BACKGROUND_MOVING));
-                        backgroundScript.UpdatePos(
-                            _line.m_parameters[0],
-                            _line.m_parameters[1]
-                        );
-                    }
-                    else
-                    {
-                        backgroundTransScript.UpdateBackground(
-                            _line.m_parameters[0],
-                            _line.m_parameters[1],
-                            float.Parse(_line.m_parameters_txt[1]),
-                            float.Parse(_line.m_parameters_txt[2])
-                        );
-                        backgroundTrans.color = new Color(1, 1, 1, 0.001f);
-                    }
-
-                    if (_line.m_parameters[2] == 1)
-                    {
-                        //WaitState = WAIT_STATE.NOT_WAITING;
-                        if (WaitQueue.Count > 0)
-                            WaitQueue.RemoveAt(0);
-                        NextLine(_isInLine);
-                    }
-                    break;
-                case LINETYPE.GOTO:
-                    // NextLine is handled by GotoLine function
-                    // Also cannot be run inline, but #wontfix
-                    break;
-                case LINETYPE.WAIT:
-                    //WaitState = WAIT_STATE.WAIT_COMMAND;
-                    WaitQueue.Add(new WaitObject(WAIT_STATE.WAIT_COMMAND));
-                    waitCommandTimer = 0;
-                    break;
-                case LINETYPE.DRAW_CHARACTER:
                     break;
                 case LINETYPE.PLAY_MUSIC:
                     M22.AudioMaster.ChangeTrack(_line.m_parameters_txt[0]);
@@ -489,17 +452,6 @@ namespace M22
                         ShowText();
                     NextLine(_isInLine);
                     break;
-                case LINETYPE.SET_FLAG:
-                    if (SCRIPT_FLAGS.Contains(_line.m_parameters_txt[0]))
-                    {
-                        // Flag already set, ignore
-                    }
-                    else
-                    {
-                        SCRIPT_FLAGS.Add(_line.m_parameters_txt[0]);
-                    }
-                    NextLine(_isInLine);
-                    break;
                 case LINETYPE.IF_STATEMENT:
                     // m22IF _flag_to_check_if_true Command [params]
                     if (SCRIPT_FLAGS.Contains(_line.m_parameters_txt[0]))
@@ -531,6 +483,7 @@ namespace M22
                     NextLine(_isInLine);
                     break;
                 case LINETYPE.MAKE_DECISION:
+                    setMakingDecision(true);
                     GameObject tempObj = GameObject.Instantiate<GameObject>(DecisionsPrefab, Canvases[(int)CANVAS_TYPES.EFFECTS].transform);
                     if (_line.m_parameters_txt.Count == 6)
                         tempObj.GetComponent<Decision>().Initialize(_line.m_parameters_txt[0], _line.m_parameters_txt[1], _line.m_parameters_txt[2], _line.m_parameters_txt[3], _line.m_parameters_txt[4], _line.m_parameters_txt[5]);
@@ -562,46 +515,19 @@ namespace M22
                 case LINETYPE.LOAD_SCRIPT:
                     LoadScript(_line.m_parameters_txt[0]);
                     break;
+                case LINETYPE.CHECKPOINT:
+                    NextLine(_isInLine);
+                    break;
                 case LINETYPE.PLAY_SFX_LOOPED:
                     SFXScript temploopSFX = GameObject.Instantiate<GameObject>(LoopedSFXPrefab, Camera.main.transform).GetComponent<SFXScript>();
                     temploopSFX.Init(AudioMaster.GetAudio(_line.m_parameters_txt[0]), _line.m_parameters_txt[1], _line.m_parameters_txt[2], true);
                     NextLine();
                     break;
-                case LINETYPE.STOP_SFX_LOOPED:
-                    GameObject loopSFXobj = GameObject.Find(_line.m_parameters_txt[0]);
-                    if (loopSFXobj == null)
-                    {
-                        Debug.LogErrorFormat("Failed to stop looping SFX \"{0}\" at line {1}; is not currently playing!", _line.m_parameters_txt[0], _line.m_origScriptPos);
-                        NextLine();
-                        return;
-                    }
-                    SFXScript stopSFXloop = loopSFXobj.GetComponent<SFXScript>();
-                    stopSFXloop.Stop(_line.m_parameters_txt[1]);
-                    NextLine();
-                    break;
-                case LINETYPE.CLEAR_CHARACTER:
-                    if (VNHandlerScript.ClearCharacter(_line.m_parameters_txt[0], _line.m_parameters[0] == 1 ? true : false) == false)
-                    {
-                        Debug.LogErrorFormat("Unable to clear character {0} at line {1}", _line.m_parameters_txt[0], _line.m_origScriptPos);
-                        NextLine(_isInLine);
-                        break;
-                    }
-                    if (_line.m_parameters[0] == 1)
-                        NextLine(_isInLine);
-                    else
-                        WaitQueue.Add(new WaitObject(WAIT_STATE.CHARACTER_FADEOUT_INDIVIDUAL, _line.m_parameters_txt[0]));
-                    break;
-                case LINETYPE.CLEAR_CHARACTERS:
-                    VNHandlerScript.ClearCharacters(_line.m_parameters[0] == 1 ? true : false);
-                    HideText();
-                    //WaitState = WAIT_STATE.CHARACTER_FADEOUT;
-                    WaitQueue.Add(new WaitObject(WAIT_STATE.CHARACTER_FADEOUT));
-                    break;
                 case LINETYPE.EXECUTE_FUNCTION:
-                    string[] funcParams = new string[_line.m_parameters_txt.Count - 1];
-                    for (int i = 1; i < _line.m_parameters_txt.Count; i++)
+                    string[] funcParams = new string[_line.m_parameters_txt.Count];
+                    for (int i = 0; i < _line.m_parameters_txt.Count; i++)
                     {
-                        funcParams[i - 1] = _line.m_parameters_txt[i];
+                        funcParams[i] = _line.m_parameters_txt[i];
                     }
                     _line.m_custFunc.Func(funcParams);
                     break;
@@ -628,7 +554,7 @@ namespace M22
                     HideText();
                     break;
                 default:
-                    NextLine(_isInLine);
+                    // NextLine(_isInLine);
                     break;
             }
         }
@@ -706,12 +632,15 @@ namespace M22
                         0
                     );
                     background.sprite = backgroundTrans.sprite;
-                    backgroundScript.UpdateBackground(
-                        CURRENT_LINE.m_parameters[0],
-                        CURRENT_LINE.m_parameters[1],
-                        float.Parse(CURRENT_LINE.m_parameters_txt[1]),
-                        float.Parse(CURRENT_LINE.m_parameters_txt[2])
-                    );
+                    if(CURRENT_LINE.m_lineType == LINETYPE.DRAW_BACKGROUND)
+                    {
+                        backgroundScript.UpdateBackground(
+                            CURRENT_LINE.m_parameters[0],
+                            CURRENT_LINE.m_parameters[1],
+                            float.Parse(CURRENT_LINE.m_parameters_txt[1]),
+                            float.Parse(CURRENT_LINE.m_parameters_txt[2])
+                        );
+                    }
                     NextLine();
                 }
             }
@@ -745,7 +674,10 @@ namespace M22
                         if (size == count)
                         {
                             WaitQueue.RemoveAt(0);
-                            ShowText();
+                            if (currentScript_c.GetLine(lineIndex + 1).m_lineType != LINETYPE.DRAW_CHARACTER)
+                            {
+                                ShowText();
+                            }
                             NextLine();
                         }
                         break;
@@ -754,7 +686,10 @@ namespace M22
                         if (size == 0)
                         {
                             WaitQueue.RemoveAt(0);
-                            ShowText();
+                            if(currentScript_c.GetLine(lineIndex+1).m_lineType != LINETYPE.DRAW_CHARACTER)
+                            {
+                                ShowText();
+                            }
                             NextLine();
                         }
                         break;
@@ -765,7 +700,10 @@ namespace M22
                             if(find == null)
                             {
                                 WaitQueue.RemoveAt(0);
-                                ShowText();
+                                if (currentScript_c.GetLine(lineIndex + 1).m_lineType != LINETYPE.DRAW_CHARACTER)
+                                {
+                                    ShowText();
+                                }
                                 NextLine();
                             }
                         }

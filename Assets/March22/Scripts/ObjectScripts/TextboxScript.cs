@@ -97,6 +97,8 @@ public class TextboxScript : MonoBehaviour
 
     public void HideText(bool _fade = true, float _speed = 6.0f)
     {
+        if (img.color.a == 0) return;
+
         for (int i = 0; i < txt.Length; i++)
         {
             if (_fade == true)
@@ -129,6 +131,8 @@ public class TextboxScript : MonoBehaviour
 
     public void ShowText(bool _fade = true, float _speed = 6.0f)
     {
+        if (img.color.a == 1) return;
+
         for (int i = 0; i < txt.Length; i++)
         {
             if (_fade == true)

@@ -9,6 +9,7 @@ mi_not_shi "S̶h̶i̶z̶u̶n̶e̶ Misha" 255 255 255
 shi "Shizune" 50 50 255
 mi "Misha" 255 105 180
 _nk "???" 255 255 255
-nk "Nurse" 255 255 255
+nk_ "???" 255 255 255
+nk "Nurse" 126 121 166
 ke_ "???" 255 255 255
 ke "Kenji" 255 255 255
